@@ -3,6 +3,7 @@ services:
     name: simple-school-management
     env: node
     plan: free
+    rootDir: backend
     buildCommand: npm install
-    startCommand: npm start
+    startCommand: node server.js
     autoDeploy: true
