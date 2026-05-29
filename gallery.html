@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়ের ফটো ও ভিডিও গ্যালারি - বিদ্যালয়ের বিভিন্ন কার্যক্রমের ছবি ও ভিডিও।">
+  <title>গ্যালারি | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="top-bar" id="top-bar">
+    <div class="container">
+      <div class="top-bar__left">
+        <img src="assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
+        <div class="top-bar__info">
+          <a href="index.html" style="color:inherit;"><h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1></a>
+          <span class="top-bar__subtitle">চট্টগ্রাম, বাংলাদেশ | EIIN: ১০৪৫৬৭</span>
+        </div>
+      </div>
+      <div class="top-bar__right">
+        <span class="top-bar__badge top-bar__badge--gold">📅 স্থাপিত: ১৯৮৯ খ্রি.</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION -->
+  <nav class="main-nav" id="main-nav" aria-label="প্রধান নেভিগেশন">
+    <div class="container">
+      <button class="nav-toggle" id="nav-toggle" aria-label="মেনু টগল"><span></span><span></span><span></span></button>
+      <ul class="nav-menu" id="nav-menu" role="menubar">
+        <li class="nav-menu__item" role="none"><a href="index.html" class="nav-menu__link" role="menuitem">🏠 হোম</a></li>
+        <li class="nav-menu__item" role="none"><a href="about.html" class="nav-menu__link" role="menuitem">🏛️ প্রশাসন</a></li>
+        <li class="nav-menu__item" role="none"><a href="teachers.html" class="nav-menu__link" role="menuitem">👨‍🏫 শিক্ষকবৃন্দ</a></li>
+        <li class="nav-menu__item" role="none"><a href="results.html" class="nav-menu__link" role="menuitem">📊 ফলাফল</a></li>
+        <li class="nav-menu__item" role="none"><a href="gallery.html" class="nav-menu__link nav-menu__link--active" role="menuitem">📸 গ্যালারি</a></li>
+        <li class="nav-menu__item" role="none"><a href="notices.html" class="nav-menu__link" role="menuitem">📋 নোটিশ</a></li>
+        <li class="nav-menu__item" role="none"><a href="contact.html" class="nav-menu__link" role="menuitem">📞 যোগাযোগ</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <section class="page-header" id="page-header">
+    <h1>ফটো ও ভিডিও গ্যালারি</h1>
+    <p>বিদ্যালয়ের স্মৃতিময় মুহূর্তগুলো ছবি ও ভিডিওতে</p>
+    <div class="breadcrumb">
+      <a href="index.html">হোম</a><span>/</span><span>গ্যালারি</span>
+    </div>
+  </section>
+
+  <!-- PHOTO GALLERY -->
+  <section class="gallery-section" id="photo-gallery" style="padding: 50px 0;">
+    <div class="container">
+      <div class="section-title-center animate-on-scroll">
+        <h2>ফটো গ্যালারি</h2>
+        <p>বিদ্যালয়ের বিভিন্ন অনুষ্ঠান ও কার্যক্রমের ছবি</p>
+      </div>
+
+      <!-- Filter -->
+      <div class="results-filter animate-on-scroll" style="justify-content: center;" id="gallery-filter">
+        <button class="filter-btn filter-btn--active">সকল</button>
+        <button class="filter-btn">অনুষ্ঠান</button>
+        <button class="filter-btn">ক্রীড়া</button>
+        <button class="filter-btn">সাংস্কৃতিক</button>
+        <button class="filter-btn">ক্যাম্পাস</button>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item animate-on-scroll delay-1" id="g-1">
+          <img src="assets/images/hero_banner.png" alt="বিদ্যালয় ভবন">
+          <div class="gallery-item__overlay">
+            <span class="gallery-item__caption">বিদ্যালয় প্রধান ভবন</span>
+          </div>
+        </div>
+        <div class="gallery-item animate-on-scroll delay-2" id="g-2">
+          <img src="assets/images/gallery_events.png" alt="সাংস্কৃতিক অনুষ্ঠান">
+          <div class="gallery-item__overlay">
+            <span class="gallery-item__caption">বার্ষিক সাংস্কৃতিক অনুষ্ঠান</span>
+          </div>
+        </div>
+        <div class="gallery-item animate-on-scroll delay-3" id="g-3">
+          <img src="assets/images/teachers_grid.png" alt="শিক্ষকবৃন্দ">
+          <div class="gallery-item__overlay">
+            <span class="gallery-item__caption">শিক্ষক সম্মেলন ২০২৬</span>
+          </div>
+        </div>
+        <div class="gallery-item animate-on-scroll delay-1" id="g-4">
+          <img src="assets/images/chairman_photo.png" alt="পুরস্কার বিতরণ">
+          <div class="gallery-item__overlay">
+            <span class="gallery-item__caption">পুরস্কার বিতরণী অনুষ্ঠান</span>
+          </div>
+        </div>
+        <div class="gallery-item animate-on-scroll delay-2" id="g-5">
+          <img src="assets/images/gallery_events.png" alt="বিজ্ঞান মেলা">
+          <div class="gallery-item__overlay">
+            <span class="gallery-item__caption">বিজ্ঞান মেলা ২০২৬</span>
+          </div>
+        </div>
+        <div class="gallery-item animate-on-scroll delay-3" id="g-6">
+          <img src="assets/images/hero_banner.png" alt="ক্রীড়া প্রতিযোগিতা">
+          <div class="gallery-item__overlay">
+            <span class="gallery-item__caption">বার্ষিক ক্রীড়া প্রতিযোগিতা</span>
+          </div>
+        </div>
+        <div class="gallery-item animate-on-scroll delay-1" id="g-7">
+          <img src="assets/images/headteacher_photo.png" alt="স্বাধীনতা দিবস">
+          <div class="gallery-item__overlay">
+            <span class="gallery-item__caption">স্বাধীনতা দিবস উদযাপন</span>
+          </div>
+        </div>
+        <div class="gallery-item animate-on-scroll delay-2" id="g-8">
+          <img src="assets/images/school_logo.png" alt="স্কুল লোগো">
+          <div class="gallery-item__overlay">
+            <span class="gallery-item__caption">বিদ্যালয়ের প্রতীক</span>
+          </div>
+        </div>
+        <div class="gallery-item animate-on-scroll delay-3" id="g-9">
+          <img src="assets/images/gallery_events.png" alt="বৃক্ষরোপণ">
+          <div class="gallery-item__overlay">
+            <span class="gallery-item__caption">বৃক্ষরোপণ কর্মসূচি</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-label="ছবি দেখুন">
+    <button class="lightbox__close" id="lightbox-close" aria-label="বন্ধ করুন">&times;</button>
+    <img src="" alt="গ্যালারি ছবি">
+  </div>
+
+  <!-- VIDEO GALLERY -->
+  <section class="video-section" id="video-gallery" style="padding: 50px 0;">
+    <div class="container">
+      <div class="section-title-center animate-on-scroll">
+        <h2>ভিডিও গ্যালারি</h2>
+        <p>বিদ্যালয়ের বিভিন্ন কার্যক্রমের ভিডিও সংকলন</p>
+      </div>
+
+      <div class="video-grid">
+        <div class="video-card animate-on-scroll delay-1" id="v-1">
+          <div class="video-card__wrapper">
+            <img src="assets/images/hero_banner.png" alt="বার্ষিক সাংস্কৃতিক অনুষ্ঠান">
+            <div class="video-card__play">▶</div>
+          </div>
+          <div class="video-card__info">
+            <div class="video-card__title">বার্ষিক সাংস্কৃতিক অনুষ্ঠান ২০২৬</div>
+          </div>
+        </div>
+        <div class="video-card animate-on-scroll delay-2" id="v-2">
+          <div class="video-card__wrapper">
+            <img src="assets/images/gallery_events.png" alt="বিজ্ঞান মেলা">
+            <div class="video-card__play">▶</div>
+          </div>
+          <div class="video-card__info">
+            <div class="video-card__title">বিজ্ঞান মেলা ও প্রদর্শনী ২০২৬</div>
+          </div>
+        </div>
+        <div class="video-card animate-on-scroll delay-3" id="v-3">
+          <div class="video-card__wrapper">
+            <img src="assets/images/teachers_grid.png" alt="শিক্ষক দিবস">
+            <div class="video-card__play">▶</div>
+          </div>
+          <div class="video-card__info">
+            <div class="video-card__title">বিশ্ব শিক্ষক দিবস উদযাপন</div>
+          </div>
+        </div>
+        <div class="video-card animate-on-scroll delay-1" id="v-4">
+          <div class="video-card__wrapper">
+            <img src="assets/images/hero_banner.png" alt="ক্রীড়া দিবস">
+            <div class="video-card__play">▶</div>
+          </div>
+          <div class="video-card__info">
+            <div class="video-card__title">বার্ষিক ক্রীড়া প্রতিযোগিতা ২০২৬</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 class="footer-col__title">আমাদের সম্পর্কে</h3>
+          <p class="footer-col__text">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয় ১৯৮৯ সালে প্রতিষ্ঠিত।</p>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col__title">গুরুত্বপূর্ণ লিংক</h3>
+          <a href="index.html" class="footer-link">হোম</a>
+          <a href="about.html" class="footer-link">প্রশাসন</a>
+          <a href="teachers.html" class="footer-link">শিক্ষকবৃন্দ</a>
+          <a href="notices.html" class="footer-link">নোটিশ বোর্ড</a>
+          <a href="results.html" class="footer-link">ফলাফল</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col__title">যোগাযোগ</h3>
+          <div class="footer-contact"><div class="footer-contact__icon">📍</div><div>চট্টগ্রাম, বাংলাদেশ</div></div>
+          <div class="footer-contact"><div class="footer-contact__icon">📞</div><div>+৮৮০ ৩১ ৬১২৩৪৫</div></div>
+          <div class="footer-contact"><div class="footer-contact__icon">✉️</div><div>info@demopilotschool.edu.bd</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom"><div class="container">&copy; ২০২৬ ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়। সর্বস্বত্ব সংরক্ষিত।</div></div>
+  </footer>
+
+  <button class="back-to-top" id="back-to-top" aria-label="উপরে যান">↑</button>
+  <script src="js/api.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
