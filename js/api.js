@@ -99,6 +99,68 @@ async function fetchGalleryItems(category = 'all') {
   }
 }
 
+// 6. Submit Student Registration (public — uses FormData for photo upload)
+async function submitRegistration(formData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/registrations`, {
+      method: 'POST',
+      body: formData   // No Content-Type header — browser sets multipart boundary
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('Error submitting registration:', error);
+    return { success: false, message: 'সার্ভার সংযোগ ত্রুটি। আবেদন জমা দেওয়া সম্ভব হয়নি।' };
+  }
+}
+
+// 7. Fetch all registrations (admin)
+async function fetchRegistrations(token, status = '') {
+  try {
+    let url = `${API_BASE_URL}/registrations`;
+    if (status) url += `?status=${status}`;
+    const response = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const result = await response.json();
+    return result.success ? result.data : [];
+  } catch (error) {
+    console.error('Error fetching registrations:', error);
+    return [];
+  }
+}
+
+// 8. Update registration status (admin)
+async function updateRegistrationStatus(id, status, token) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/registrations/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ status })
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('Error updating registration:', error);
+    return { success: false, message: 'স্ট্যাটাস আপডেট ব্যর্থ।' };
+  }
+}
+
+// 9. Delete registration (admin)
+async function deleteRegistrationById(id, token) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/registrations/${id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('Error deleting registration:', error);
+    return { success: false, message: 'মুছে ফেলা ব্যর্থ।' };
+  }
+}
+
 // Helper: Resolve image/photo paths safely
 function getMediaUrl(photoPath) {
   if (!photoPath) return 'assets/images/default_teacher.png';

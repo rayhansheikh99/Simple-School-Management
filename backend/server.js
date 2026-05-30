@@ -29,6 +29,7 @@ app.use('/api/teachers', require('./routes/teacherRoutes'));
 app.use('/api/results', require('./routes/resultRoutes'));
 app.use('/api/contact', require('./routes/contactRoutes'));
 app.use('/api/gallery', require('./routes/galleryRoutes'));
+app.use('/api/registrations', require('./routes/registrationRoutes'));
 
 // Basic Entry Endpoint
 app.get('/', (req, res) => {

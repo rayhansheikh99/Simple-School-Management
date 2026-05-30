@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="top-bar__right">
-        <a href="index.html" class="btn btn--outline btn--sm">🏠 হোমপেজে ফিরুন</a>
+        <a href="index.html" class="btn btn--secondary btn--sm">🏠 হোমপেজে ফিরুন</a>
       </div>
     </div>
   </header>
@@ -62,7 +62,8 @@
           <button class="db-menu-btn" data-tab="teachers-tab">👨‍🏫 শিক্ষকবৃন্দ ডাটাবেজ</button>
           <button class="db-menu-btn" data-tab="results-tab">📊 পরীক্ষার ফলাফল এন্ট্রি</button>
           <button class="db-menu-btn" data-tab="gallery-tab">📸 ফটো গ্যালারি আপলোড</button>
-          <button class="db-menu-btn" data-tab="messages-tab">✉️ যোগাযোগের বার্তা (${toBengaliNumerals(0)})</button>
+          <button class="db-menu-btn" data-tab="registrations-tab">📝 নিবন্ধন আবেদন (০)</button>
+          <button class="db-menu-btn" data-tab="messages-tab">✉️ যোগাযোগের বার্তা (০)</button>
         </nav>
         <button id="logout-btn" class="btn btn-logout">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; display: inline-block; vertical-align: middle;">
@@ -294,6 +295,22 @@
         </section>
 
         <!-- ============================================================
+             TAB 6: REGISTRATION APPLICATIONS
+             ============================================================ -->
+        <section id="registrations-tab" class="tab-content">
+          <div class="db-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #f4f7f6; padding-bottom: 15px;">
+            <h2 class="db-title">📝 শিক্ষার্থী নিবন্ধন আবেদনসমূহ</h2>
+            <div style="display: flex; gap: 8px;">
+              <button class="filter-btn filter-btn--active" id="btn-reg-filter-all" onclick="filterRegistrations('all')">সকল</button>
+              <button class="filter-btn" id="btn-reg-filter-pending" onclick="filterRegistrations('pending')">পেন্ডিং</button>
+              <button class="filter-btn" id="btn-reg-filter-approved" onclick="filterRegistrations('approved')">অনুমোদিত</button>
+              <button class="filter-btn" id="btn-reg-filter-rejected" onclick="filterRegistrations('rejected')">প্রত্যাখ্যাত</button>
+            </div>
+          </div>
+          <div id="admin-registrations-list" style="display: flex; flex-direction: column; gap: 15px;"></div>
+        </section>
+
+        <!-- ============================================================
              TAB 5: CONTACT INBOX
              ============================================================ -->
         <section id="messages-tab" class="tab-content">
@@ -379,6 +396,7 @@
         loadAdminNotices();
         loadAdminTeachers();
         loadInboxMessages();
+        loadAdminRegistrations();
       }
 
       // 2. Tab Navigation Trigger
@@ -948,6 +966,249 @@
         } catch (error) {
           console.error(error);
         }
+      };
+
+      // ============================================================
+      // STUDENT REGISTRATIONS (নিবন্ধন) API TRANSACTIONS
+      // ============================================================
+      let currentRegFilter = 'all';
+      const adminRegistrationsList = document.getElementById('admin-registrations-list');
+
+      async function loadAdminRegistrations(filterStatus = 'all') {
+        if (!jwtToken) return;
+        currentRegFilter = filterStatus;
+        
+        try {
+          // Fetch all registrations (without status filter first, so we can count pending)
+          const allRegs = await fetchRegistrations(jwtToken);
+          
+          // Calculate pending count for sidebar badge
+          const pendingCount = allRegs.filter(r => r.status === 'pending').length;
+          const regBtn = document.querySelector('button[data-tab="registrations-tab"]');
+          if (regBtn) {
+            regBtn.textContent = `📝 নিবন্ধন আবেদন (${toBengaliNumerals(pendingCount)})`;
+          }
+
+          // Filter registrations based on filterStatus
+          let filteredRegs = allRegs;
+          if (filterStatus !== 'all') {
+            filteredRegs = allRegs.filter(r => r.status === filterStatus);
+          }
+
+          if (filteredRegs.length === 0) {
+            adminRegistrationsList.innerHTML = '<p style="color:#777; padding: 20px; text-align: center;">কোনো আবেদন পাওয়া যায়নি।</p>';
+            return;
+          }
+
+          function formatDesiredClass(classStr) {
+            const classMap = {
+              '6': '৬ষ্ঠ', '7': '৭ম', '8': '৮ম', '9': '৯ম', '10': '১০ম',
+              '৬': '৬ষ্ঠ', '৭': '৭ম', '৮': '৮ম', '৯': '৯ম', '১০': '১০ম'
+            };
+            return classMap[classStr] || classStr;
+          }
+
+          let regHTML = '';
+          filteredRegs.forEach(r => {
+            let statusText = 'পেন্ডিং';
+            let statusClass = 'background: #fff8eb; color: #d08700; border: 1px solid #ffe8cc;';
+            let borderStyle = 'border-left: 5px solid #f1c40f; background: #fffdfc;';
+            
+            if (r.status === 'approved') {
+              statusText = 'অনুমোদিত';
+              statusClass = 'background: #e6f9ed; color: #1e7e34; border: 1px solid #c3e6cb;';
+              borderStyle = 'border-left: 5px solid #2ecc71; background: #fcfdfc;';
+            } else if (r.status === 'rejected') {
+              statusText = 'প্রত্যাখ্যাত';
+              statusClass = 'background: #fdf2f2; color: #dc3545; border: 1px solid #f5c6cb;';
+              borderStyle = 'border-left: 5px solid #dc3545; background: #fffcfc;';
+            }
+
+            regHTML += `
+              <div class="manager-item" style="display: block; ${borderStyle} margin-bottom: 15px; padding: 20px; border-radius: 8px;">
+                <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                  <img src="${getMediaUrl(r.photo)}" style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; background: #fafafa;" onerror="this.src='assets/images/default_teacher.png'">
+                  <div style="flex: 1; min-width: 250px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+                      <h3 style="margin: 0; color: #333; font-size: 1.25rem; font-weight: 700;">${r.studentName}</h3>
+                      <span style="font-size: 0.8rem; font-weight: bold; padding: 4px 12px; border-radius: 20px; ${statusClass}">${statusText}</span>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; font-size: 0.9rem; color: #555;">
+                      <div><strong>শ্রেণি:</strong> ${formatDesiredClass(r.desiredClass)}</div>
+                      <div><strong>মোবাইল:</strong> ${toBengaliNumerals(r.phone)}</div>
+                      <div><strong>লিঙ্গ:</strong> ${r.gender === 'male' ? 'ছেলে' : 'মেয়ে'}</div>
+                      <div><strong>জন্ম তারিখ:</strong> ${formatBengaliDate(r.dateOfBirth)}</div>
+                      <div><strong>পিতার নাম:</strong> ${r.fatherName}</div>
+                      <div><strong>মাতার নাম:</strong> ${r.motherName}</div>
+                      <div><strong>ইমেইল:</strong> ${r.email || 'নেই'}</div>
+                      <div><strong>পূর্ববর্তী বিদ্যালয়:</strong> ${r.previousSchool || 'নেই'}</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div style="margin-top: 15px; padding-top: 12px; border-top: 1px dashed #eee; font-size: 0.9rem; color: #555; line-height: 1.5;">
+                  <strong>ঠিকানা:</strong> ${r.address}
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 18px; flex-wrap: wrap; gap: 12px;">
+                  <div style="font-size: 0.8rem; color: #888;">
+                    আবেদনের তারিখ: ${formatBengaliDate(r.submittedAt)}
+                  </div>
+                  <div style="display: flex; gap: 8px;">
+                    ${r.status === 'pending' ? `
+                      <button class="btn btn--sm" style="background: #2ecc71; color: white; border: none; font-weight: 600; padding: 6px 14px;" onclick="approveRegistration('${r._id}')">✅ অনুমোদন</button>
+                      <button class="btn btn--sm" style="background: #e67e22; color: white; border: none; font-weight: 600; padding: 6px 14px;" onclick="rejectRegistration('${r._id}')">❌ প্রত্যাখ্যান</button>
+                    ` : ''}
+                    ${r.status === 'rejected' ? `
+                      <button class="btn btn--sm" style="background: #2ecc71; color: white; border: none; font-weight: 600; padding: 6px 14px;" onclick="approveRegistration('${r._id}')">✅ অনুমোদন</button>
+                    ` : ''}
+                    ${r.status === 'approved' ? `
+                      <button class="btn btn--sm" style="background: #e67e22; color: white; border: none; font-weight: 600; padding: 6px 14px;" onclick="rejectRegistration('${r._id}')">❌ প্রত্যাখ্যান</button>
+                    ` : ''}
+                    <button class="btn-delete" style="padding: 6px 14px; border-radius: 4px; font-weight: 600;" onclick="deleteRegistrationItem('${r._id}')">🗑️ মুছুন</button>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          adminRegistrationsList.innerHTML = regHTML;
+        } catch (error) {
+          console.error('Error loading registrations:', error);
+          adminRegistrationsList.innerHTML = '<p style="color:red; text-align:center; padding:20px;">উপাত্ত লোড করতে ব্যর্থ হয়েছে।</p>';
+        }
+      }
+
+      window.filterRegistrations = (status) => {
+        const filters = ['all', 'pending', 'approved', 'rejected'];
+        filters.forEach(f => {
+          const btn = document.getElementById(`btn-reg-filter-${f}`);
+          if (btn) {
+            if (f === status) {
+              btn.classList.add('filter-btn--active');
+            } else {
+              btn.classList.remove('filter-btn--active');
+            }
+          }
+        });
+        loadAdminRegistrations(status);
+      };
+
+      window.approveRegistration = async (id) => {
+        Swal.fire({
+          title: 'আবেদনটি অনুমোদন করতে চান?',
+          text: "শিক্ষার্থীর ভর্তি আবেদনটি অনুমোদিত বলে গণ্য হবে।",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#2ecc71',
+          cancelButtonColor: '#aaa',
+          confirmButtonText: 'হ্যাঁ, অনুমোদন করুন',
+          cancelButtonText: 'বাতিল'
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: 'আপডেট করা হচ্ছে...',
+              allowOutsideClick: false,
+              didOpen: () => Swal.showLoading()
+            });
+
+            const res = await updateRegistrationStatus(id, 'approved', jwtToken);
+            if (res.success) {
+              Swal.fire({
+                icon: 'success',
+                title: 'অনুমোদিত!',
+                text: 'ভর্তি আবেদনটি সফলভাবে অনুমোদন করা হয়েছে।',
+                timer: 1500,
+                showConfirmButton: false
+              });
+              loadAdminRegistrations(currentRegFilter);
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'ব্যর্থ!',
+                text: res.message
+              });
+            }
+          }
+        });
+      };
+
+      window.rejectRegistration = async (id) => {
+        Swal.fire({
+          title: 'আবেদনটি প্রত্যাখ্যান করতে চান?',
+          text: "শিক্ষার্থীর ভর্তি আবেদনটি প্রত্যাখ্যাত বলে গণ্য হবে।",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#dc3545',
+          cancelButtonColor: '#aaa',
+          confirmButtonText: 'হ্যাঁ, প্রত্যাখ্যান করুন',
+          cancelButtonText: 'বাতিল'
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: 'আপডেট করা হচ্ছে...',
+              allowOutsideClick: false,
+              didOpen: () => Swal.showLoading()
+            });
+
+            const res = await updateRegistrationStatus(id, 'rejected', jwtToken);
+            if (res.success) {
+              Swal.fire({
+                icon: 'success',
+                title: 'প্রত্যাখ্যাত!',
+                text: 'ভর্তি আবেদনটি প্রত্যাখ্যান করা হয়েছে।',
+                timer: 1500,
+                showConfirmButton: false
+              });
+              loadAdminRegistrations(currentRegFilter);
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'ব্যর্থ!',
+                text: res.message
+              });
+            }
+          }
+        });
+      };
+
+      window.deleteRegistrationItem = async (id) => {
+        Swal.fire({
+          title: 'আবেদনটি মুছে ফেলতে চান?',
+          text: "এই আবেদন রেকর্ডটি স্থায়ীভাবে মুছে ফেলা হবে!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#dc3545',
+          cancelButtonColor: '#aaa',
+          confirmButtonText: 'হ্যাঁ, মুছুন!',
+          cancelButtonText: 'বাতিল'
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: 'মুছে ফেলা হচ্ছে...',
+              allowOutsideClick: false,
+              didOpen: () => Swal.showLoading()
+            });
+
+            const res = await deleteRegistrationById(id, jwtToken);
+            if (res.success) {
+              Swal.fire({
+                icon: 'success',
+                title: 'মুছে ফেলা হয়েছে!',
+                text: 'আবেদনটি সফলভাবে মুছে ফেলা হয়েছে।',
+                timer: 1500,
+                showConfirmButton: false
+              });
+              loadAdminRegistrations(currentRegFilter);
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'ব্যর্থ!',
+                text: res.message
+              });
+            }
+          }
+        });
       };
 
     });
