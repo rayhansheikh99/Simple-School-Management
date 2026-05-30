@@ -206,6 +206,14 @@
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        const originalBtnHTML = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <div class="loader-spinner" style="border: 2px solid #f3f3f3; border-top: 2px solid #fff; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; margin-right: 8px; vertical-align: middle;"></div>
+          প্রবেশ করা হচ্ছে...
+        `;
+
         try {
           const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
@@ -233,6 +241,8 @@
             });
           } else {
             Swal.fire({ icon: 'error', title: 'লগইন ব্যর্থ', text: data.message });
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHTML;
           }
         } catch (error) {
           console.error(error);
@@ -241,6 +251,8 @@
             title: 'সার্ভার সংযোগে ত্রুটি',
             text: 'দয়া করে নিশ্চিত করুন যে ব্যাকএন্ড সার্ভিসটি চালু আছে।'
           });
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHTML;
         }
       });
 
