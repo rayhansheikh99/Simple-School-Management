@@ -75,6 +75,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  // Lightbox Close Events
+  const lightbox = document.querySelector('.lightbox');
+  const lightboxClose = document.getElementById('lightbox-close');
+
+  if (lightbox && lightboxClose) {
+    lightboxClose.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
   // Initial Load
   await renderGallery('all');
 
