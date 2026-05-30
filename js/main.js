@@ -274,4 +274,170 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // ============================================================
+  // Dynamic Header Admin/Login status
+  // ============================================================
+  const adminToken = localStorage.getItem('adminToken');
+  const topBarLinks = document.querySelector('.top-bar__links');
+  const mainNavMenu = document.getElementById('nav-menu');
+
+  if (adminToken) {
+    // 1. Update Top Bar Links: Show Dashboard & Logout
+    if (topBarLinks) {
+      topBarLinks.innerHTML = `
+        <a href="admin.html" class="top-bar__link" id="login-link">🖥️ ড্যাশবোর্ড</a>
+        <a href="#" class="top-bar__link" id="header-logout-btn">🔓 লগআউট</a>
+      `;
+
+      // Handle logout click
+      const headerLogoutBtn = document.getElementById('header-logout-btn');
+      if (headerLogoutBtn) {
+        headerLogoutBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (typeof Swal !== 'undefined') {
+            Swal.fire({
+              title: 'লগআউট করতে চান?',
+              text: 'আপনি ড্যাশবোর্ড সেশনটি বন্ধ করতে যাচ্ছেন।',
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'হ্যাঁ, লগআউট করুন',
+              cancelButtonText: 'বাতিল'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminUser');
+                window.location.reload();
+              }
+            });
+          } else {
+            if (confirm('লগআউট করতে চান?')) {
+              localStorage.removeItem('adminToken');
+              localStorage.removeItem('adminUser');
+              window.location.reload();
+            }
+          }
+        });
+      }
+    }
+    // 2. Append Admin Panel menu link to Main Navigation Menu
+    if (mainNavMenu) {
+      const adminMenuItem = document.createElement('li');
+      adminMenuItem.className = 'nav-menu__item';
+      adminMenuItem.setAttribute('role', 'none');
+      adminMenuItem.innerHTML = `
+        <a href="admin.html" class="nav-menu__link" role="menuitem" style="color: #e74c3c; font-weight: bold;">⚙️ এডমিন প্যানেল</a>
+      `;
+      mainNavMenu.appendChild(adminMenuItem);
+    }
+  }
+
+  // 3. Apply Dynamic School Settings
+  applyDynamicSchoolSettings();
+
 });
+
+// ============================================================
+// Apply Dynamic School Settings globally from DB
+// ============================================================
+async function applyDynamicSchoolSettings() {
+  if (typeof fetchSettings !== 'function') return;
+
+  try {
+    const settings = await fetchSettings();
+    if (!settings) return;
+
+    // 1. Update document title
+    if (settings.schoolName) {
+      document.title = document.title.replaceAll('ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়', settings.schoolName);
+    }
+
+    // 2. Update top bar elements
+    const topBarTitle = document.querySelector('.top-bar__title');
+    if (topBarTitle && settings.schoolName) {
+      topBarTitle.textContent = settings.schoolName;
+    }
+
+    const topBarSubtitle = document.querySelector('.top-bar__subtitle');
+    if (topBarSubtitle && settings.schoolNameEnglish) {
+      if (topBarSubtitle.textContent.includes('|')) {
+        const parts = topBarSubtitle.textContent.split('|');
+        topBarSubtitle.textContent = `${settings.schoolNameEnglish} | ${parts[1].trim()}`;
+      } else {
+        topBarSubtitle.textContent = settings.schoolNameEnglish;
+      }
+    }
+
+    const topBarLogo = document.querySelector('.top-bar__logo');
+    if (topBarLogo && settings.logoUrl) {
+      topBarLogo.src = getLogoUrl(settings.logoUrl);
+    }
+
+    const topBarBadge = document.querySelector('.top-bar__badge--gold');
+    if (topBarBadge && settings.establishedYear) {
+      topBarBadge.textContent = `📅 স্থাপিত: ${toBengaliNumerals(settings.establishedYear)} খ্রি.`;
+    }
+
+    // 3. Update Hero Banner Image
+    const heroImage = document.querySelector('.hero__image');
+    if (heroImage && settings.bannerUrl) {
+      heroImage.src = getLogoUrl(settings.bannerUrl, 'assets/images/hero_banner.png');
+    }
+
+    // 4. Update Footer About Column
+    const footerAboutText = document.querySelector('#footer-about .footer-col__text');
+    if (footerAboutText && settings.aboutText) {
+      footerAboutText.textContent = settings.aboutText;
+    }
+
+    // 5. Update Footer Contact Column
+    const footerContact = document.getElementById('footer-contact');
+    if (footerContact) {
+      const contactDivs = footerContact.querySelectorAll('.footer-contact');
+      if (contactDivs.length >= 3) {
+        const addressDiv = contactDivs[0].querySelector('div:not(.footer-contact__icon)');
+        if (addressDiv && settings.address) {
+          addressDiv.textContent = settings.address;
+        }
+        const phoneDiv = contactDivs[1].querySelector('div:not(.footer-contact__icon)');
+        if (phoneDiv && settings.phone) {
+          phoneDiv.textContent = settings.phone;
+        }
+        const emailDiv = contactDivs[2].querySelector('div:not(.footer-contact__icon)');
+        if (emailDiv && settings.email) {
+          emailDiv.textContent = settings.email;
+        }
+      }
+    }
+
+    // 6. Update Footer Social Links
+    const socialFb = document.getElementById('social-fb');
+    if (socialFb && settings.facebookLink) {
+      socialFb.href = settings.facebookLink;
+    }
+    const socialYt = document.getElementById('social-yt');
+    if (socialYt && settings.youtubeLink) {
+      socialYt.href = settings.youtubeLink;
+    }
+
+    // 7. Update Copyright Text in footer
+    const footerBottomContainer = document.querySelector('.footer-bottom .container');
+    if (footerBottomContainer && settings.schoolName) {
+      footerBottomContainer.innerHTML = footerBottomContainer.innerHTML.replaceAll(
+        'ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়',
+        settings.schoolName
+      );
+    }
+
+    // 8. Replace dynamic table values on index page if there is an info card
+    document.querySelectorAll('td').forEach(td => {
+      if (td.textContent.trim() === 'ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়') {
+        td.textContent = settings.schoolName;
+      }
+    });
+
+  } catch (error) {
+    console.error('Error applying dynamic school settings:', error);
+  }
+}

@@ -179,3 +179,27 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
 }
+
+/* Dashboard Quick Action Buttons */
+.db-action-btn {
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: bold;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  color: #1c69b5;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+.db-action-btn:hover {
+  background: #1c69b5;
+  color: #fff;
+  border-color: #1c69b5;
+}

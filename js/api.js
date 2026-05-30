@@ -3,8 +3,12 @@
    Frontend Client API Connector
    ============================================================ */
 
-const API_BASE_URL = 'https://simple-school-management.onrender.com/api';
-const UPLOADS_BASE_URL = 'https://simple-school-management.onrender.com';
+const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:5000/api'
+  : 'https://simple-school-management.onrender.com/api';
+const UPLOADS_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:5000'
+  : 'https://simple-school-management.onrender.com';
 
 // Helper: Translate digits to Bengali numerals
 function toBengaliNumerals(num) {
@@ -169,3 +173,42 @@ function getMediaUrl(photoPath) {
   }
   return `${UPLOADS_BASE_URL}/${photoPath}`;
 }
+
+// 10. Fetch school settings
+async function fetchSettings() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/settings`);
+    const result = await response.json();
+    return result.success ? result.data : null;
+  } catch (error) {
+    console.error('Error fetching settings:', error);
+    return null;
+  }
+}
+
+// 11. Update school settings (admin)
+async function updateSettings(formData, token) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/settings`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('Error updating settings:', error);
+    return { success: false, message: 'সার্ভার সংযোগ ত্রুটি। সেটিংস আপডেট করা সম্ভব হয়নি।' };
+  }
+}
+
+// Helper: Resolve logo/banner image paths safely with specific fallbacks
+function getLogoUrl(logoPath, fallback = 'assets/images/school_logo.png') {
+  if (!logoPath) return fallback;
+  if (logoPath.startsWith('http://') || logoPath.startsWith('https://') || logoPath.startsWith('assets/')) {
+    return logoPath;
+  }
+  return `${UPLOADS_BASE_URL}/${logoPath}`;
+}
+

@@ -30,6 +30,7 @@ app.use('/api/results', require('./routes/resultRoutes'));
 app.use('/api/contact', require('./routes/contactRoutes'));
 app.use('/api/gallery', require('./routes/galleryRoutes'));
 app.use('/api/registrations', require('./routes/registrationRoutes'));
+app.use('/api/settings', require('./routes/settingRoutes'));
 
 // Basic Entry Endpoint
 app.get('/', (req, res) => {

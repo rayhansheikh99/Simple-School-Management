@@ -78,8 +78,25 @@ const updateInquiryStatus = async (req, res) => {
   }
 };
 
+// @desc    Delete a message
+// @route   DELETE /api/contact/messages/:id
+// @access  Private/Admin
+const deleteInquiry = async (req, res) => {
+  try {
+    const message = await ContactMessage.findById(req.params.id);
+    if (!message) {
+      return res.status(404).json({ success: false, message: 'বার্তাটি খুঁজে পাওয়া যায়নি।' });
+    }
+    await ContactMessage.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'বার্তাটি সফলভাবে মুছে ফেলা হয়েছে।' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   submitInquiry,
   getInquiries,
-  updateInquiryStatus
+  updateInquiryStatus,
+  deleteInquiry
 };

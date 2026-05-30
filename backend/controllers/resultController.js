@@ -198,10 +198,27 @@ const getAllResults = async (req, res) => {
   }
 };
 
+// @desc    Delete result record
+// @route   DELETE /api/results/:id
+// @access  Private/Admin
+const deleteResult = async (req, res) => {
+  try {
+    const result = await Result.findById(req.params.id);
+    if (!result) {
+      return res.status(404).json({ success: false, message: 'ফলাফলটি খুঁজে পাওয়া যায়নি।' });
+    }
+    await Result.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'ফলাফলটি সফলভাবে মুছে ফেলা হয়েছে।' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   searchResult,
   getResultsSummary,
   createResult,
   bulkUploadResults,
-  getAllResults
+  getAllResults,
+  deleteResult
 };

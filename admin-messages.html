@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>যোগাযোগ বার্তা ইনবক্স | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <!-- TOP INFO BAR -->
+  <header class="top-bar" id="top-bar">
+    <div class="container">
+      <div class="top-bar__left">
+        <img src="assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
+        <div class="top-bar__info">
+          <a href="index.html" style="color:inherit;"><h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1></a>
+          <span class="top-bar__subtitle">প্রশাসনিক ড্যাশবোর্ড নিয়ন্ত্রণ কক্ষ</span>
+        </div>
+      </div>
+      <div class="top-bar__right">
+        <a href="index.html" class="btn btn--secondary btn--sm">🏠 হোমপেজে ফিরুন</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-wrapper">
+    <div class="dashboard-grid" id="dashboard-grid" style="display: grid;">
+      
+      <!-- Side Navigation -->
+      <aside class="db-sidebar">
+        <div class="db-user-info">
+          <div style="font-size: 3rem; margin-bottom: 8px;">👨‍💻</div>
+          <h4 id="admin-username" style="color: #333; margin: 0;">স্কুল এডমিন</h4>
+          <span style="font-size: 0.8rem; color: #1c69b5; font-weight: bold; background: #e6f9fd; padding: 2px 8px; border-radius: 20px; margin-top: 6px; display: inline-block;">সুপার এডমিন</span>
+        </div>
+        <nav>
+          <a href="admin.html" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
+          <a href="admin-notices.html" class="db-menu-btn" style="text-decoration: none;">📋 নোটিশবোর্ড পরিচালনা</a>
+          <a href="admin-teachers.html" class="db-menu-btn" style="text-decoration: none;">👨‍🏫 শিক্ষকবৃন্দ ডাটাবেজ</a>
+          <a href="admin-results.html" class="db-menu-btn" style="text-decoration: none;">📊 পরীক্ষার ফলাফল এন্ট্রি</a>
+          <a href="admin-gallery.html" class="db-menu-btn" style="text-decoration: none;">📸 ফটো গ্যালারি আপলোড</a>
+          <a href="admin-registrations.html" class="db-menu-btn" style="text-decoration: none;">📝 নিবন্ধন আবেদন (০)</a>
+          <a href="admin-messages.html" class="db-menu-btn active" style="text-decoration: none;">✉️ যোগাযোগের বার্তা (০)</a>
+          <a href="admin-settings.html" class="db-menu-btn" style="text-decoration: none;">⚙️ জেনারেল সেটিংস</a>
+        </nav>
+        <button id="logout-btn" class="btn btn-logout">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; display: inline-block; vertical-align: middle;">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          লগআউট
+        </button>
+      </aside>
+
+      <!-- Main Panel Work Area -->
+      <main class="db-content">
+        <section id="messages-tab" class="tab-content active">
+          <div class="db-header">
+            <h2 class="db-title">✉️ যোগাযোগ বক্স (অভিভাবক/শিক্ষার্থী জিজ্ঞাসা)</h2>
+          </div>
+          <div id="inbox-messages-list"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let jwtToken = localStorage.getItem('adminToken');
+      let adminUser = localStorage.getItem('adminUser');
+
+      if (!jwtToken) {
+        window.location.href = 'admin.html';
+        return;
+      }
+
+      document.getElementById('admin-username').textContent = adminUser;
+      
+      // Load initial page data & badges
+      updateSidebarBadges();
+      loadInboxMessages();
+
+      // Logout handler
+      document.getElementById('logout-btn').addEventListener('click', () => {
+        Swal.fire({
+          title: 'লগআউট করতে চান?',
+          text: "আপনি ড্যাশবোর্ড সেশনটি বন্ধ করতে যাচ্ছেন।",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'হ্যাঁ, লগআউট করুন',
+          cancelButtonText: 'বাতিল'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            window.location.href = 'admin.html';
+          }
+        });
+      });
+
+      // Badges sync helper
+      async function updateSidebarBadges() {
+        try {
+          const [contactData, registrationsData] = await Promise.all([
+            fetch(`${API_BASE_URL}/contact/messages`, { headers: { 'Authorization': `Bearer ${jwtToken}` } }).then(r => r.json()),
+            fetch(`${API_BASE_URL}/registrations`, { headers: { 'Authorization': `Bearer ${jwtToken}` } }).then(r => r.json())
+          ]);
+          
+          const unreadMessages = contactData.success ? contactData.data.filter(m => m.status === 'unread').length : 0;
+          const pendingRegs = registrationsData.success ? registrationsData.data.filter(r => r.status === 'pending').length : 0;
+
+          const inboxBtn = document.querySelector('a[href="admin-messages.html"]');
+          if (inboxBtn) {
+            inboxBtn.innerHTML = `✉️ যোগাযোগের বার্তা (${toBengaliNumerals(unreadMessages)})`;
+          }
+          const regBtn = document.querySelector('a[href="admin-registrations.html"]');
+          if (regBtn) {
+            regBtn.innerHTML = `📝 নিবন্ধন আবেদন (${toBengaliNumerals(pendingRegs)})`;
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      // ============================================================
+      // CONTACT MESSAGES INBOX API TRANSACTIONS
+      // ============================================================
+      const inboxMessagesList = document.getElementById('inbox-messages-list');
+      
+      async function loadInboxMessages() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/contact/messages`, {
+            headers: { 'Authorization': `Bearer ${jwtToken}` }
+          });
+          const data = await response.json();
+
+          if (data.success) {
+            const count = data.data.filter(m => m.status === 'unread').length;
+            
+            // Update sidebar badge
+            const inboxBtn = document.querySelector('a[href="admin-messages.html"]');
+            if (inboxBtn) {
+              inboxBtn.innerHTML = `✉️ যোগাযোগের বার্তা (${toBengaliNumerals(count)})`;
+            }
+
+            if (data.data.length === 0) {
+              inboxMessagesList.innerHTML = '<p style="color:#777; padding: 20px; text-align:center;">ইনবক্স বর্তমানে শূন্য।</p>';
+              return;
+            }
+
+            let inboxHTML = '';
+            data.data.forEach(m => {
+              const border = m.status === 'unread' ? 'border-left: 5px solid #1c69b5; background: #fbfdff;' : 'border-left: 5px solid #ccc;';
+              inboxHTML += `
+                <div class="manager-item" style="display: block; ${border} margin-bottom: 12px; padding: 20px; border-radius: 8px;">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                      <strong style="color: #333; font-size: 1.05rem;">${m.name}</strong> 
+                      <span style="color:#777; font-size:0.8rem;">(${m.email} | ${m.phone || 'ফোন নেই'})</span>
+                    </div>
+                    <div>
+                      <span style="font-size:0.8rem; color:#777;">${formatBengaliDate(m.date)}</span>
+                    </div>
+                  </div>
+                  <div style="font-weight: 600; color: #1c69b5; margin-bottom: 6px;">বিষয়: ${m.subject}</div>
+                  <p style="color: #555; background: #f9f9f9; padding: 12px; border-radius: 4px; font-size:0.9rem; line-height:1.5;">${m.message}</p>
+                  
+                  <div style="margin-top: 12px; display:flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                    ${m.status === 'unread' 
+                      ? `<button class="btn btn--outline btn--sm" style="cursor:pointer;" onclick="markMessageRead('${m._id}')">👁️ পড়া হয়েছে চিহ্নিত করুন</button>` 
+                      : `<span style="font-size:0.8rem; color:green; display:flex; align-items:center; margin-right: auto; font-weight: bold;">✓ পড়া হয়েছে</span>`
+                    }
+                    <button class="btn-delete" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 6px; font-weight: 600; cursor: pointer;" onclick="deleteMessageItem('${m._id}')"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> মুছুন</button>
+                  </div>
+                </div>
+              `;
+            });
+            inboxMessagesList.innerHTML = inboxHTML;
+          }
+        } catch (error) {
+          console.error(error);
+          inboxMessagesList.innerHTML = '<p style="color:red; text-align:center; padding:20px;">বার্তা লোড করতে ব্যর্থ হয়েছে।</p>';
+        }
+      }
+
+      window.markMessageRead = async (id) => {
+        try {
+          const response = await fetch(`${API_BASE_URL}/contact/messages/${id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${jwtToken}`
+            },
+            body: JSON.stringify({ status: 'read' })
+          });
+          const data = await response.json();
+          if (data.success) {
+            loadInboxMessages();
+            updateSidebarBadges();
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      window.deleteMessageItem = async (id) => {
+        Swal.fire({
+          title: 'মুছে ফেলতে চান?',
+          text: "এই বার্তা রেকর্ডটি স্থায়ীভাবে মুছে ফেলা হবে!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#e74c3c',
+          cancelButtonColor: '#aaa',
+          confirmButtonText: 'হ্যাঁ, মুছুন!',
+          cancelButtonText: 'বাতিল'
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const response = await fetch(`${API_BASE_URL}/contact/messages/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${jwtToken}` }
+              });
+              const data = await response.json();
+              if (data.success) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'সফল!',
+                  text: 'বার্তাটি সফলভাবে মুছে ফেলা হয়েছে।',
+                  timer: 1500,
+                  showConfirmButton: false
+                });
+                loadInboxMessages();
+                updateSidebarBadges();
+              }
+            } catch (error) {
+              console.error(error);
+              Swal.fire({ icon: 'error', title: 'ব্যর্থ', text: 'মুছে ফেলা সম্ভব হয়নি।' });
+            }
+          }
+        });
+      };
+
+    });
+  </script>
+</body>
+</html>
