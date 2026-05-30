@@ -265,7 +265,7 @@
         const notices = await fetchNotices();
 
         if (notices.length === 0) {
-          adminNoticesList.innerHTML = '<p style="color:#777;">কোনো নোটিশ পাওয়া যায়নি।</p>';
+          adminNoticesList.innerHTML = '<p style="color:#e74c3c; font-weight: bold; padding: 10px;">কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>';
           return;
         }
 

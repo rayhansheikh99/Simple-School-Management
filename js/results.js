@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div style="text-align: center; padding: 50px 0; color: #e74c3c; border: 1px dashed #e74c3c; border-radius: 8px; background: #fff;">
           <span style="font-size: 3rem;">⚠️</span>
           <h3 style="margin-top: 15px; color: #c0392b;">ফলাফল পাওয়া যায়নি!</h3>
-          <p style="color: #666; margin-top: 8px;">${response.message || 'প্রদত্ত তথ্যাদির সাথে সামঞ্জস্যপূর্ণ কোন ফলাফল ডেটাবেজে পাওয়া যায়নি।'}</p>
+          <p style="color: #666; margin-top: 8px; font-weight: bold;">কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>
           <button id="btn-reset-results" class="btn btn--secondary" style="margin-top: 15px; padding: 8px 16px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px;">পূর্ববর্তী তালিকায় ফিরে যান</button>
         </div>
       `;

@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (teachers.length === 0) {
     const errorHTML = `
       <div style="text-align: center; padding: 30px 0; color: #e74c3c; grid-column: 1 / -1; width: 100%;">
-        <p>শিক্ষকবৃন্দের তালিকা লোড করা সম্ভব হয়নি।</p>
+        <p>কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>
       </div>
     `;
     headteacherContainer.innerHTML = errorHTML;
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     headteacherContainer.innerHTML = htHTML;
   } else {
-    headteacherContainer.innerHTML = '<div style="text-align: center; grid-column: 1/-1;">কোন প্রধান শিক্ষক পাওয়া যায়নি।</div>';
+    headteacherContainer.innerHTML = '<div style="text-align: center; grid-column: 1/-1; color: #777;">প্রধান শিক্ষক: কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</div>';
   }
 
   // Render Assistant Teachers
@@ -78,6 +78,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     assistantsContainer.innerHTML = astHTML;
   } else {
-    assistantsContainer.innerHTML = '<div style="text-align: center; grid-column: 1/-1;">কোন সহকারী শিক্ষক পাওয়া যায়নি।</div>';
+    assistantsContainer.innerHTML = '<div style="text-align: center; grid-column: 1/-1; color: #777;">সহকারী শিক্ষক: কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</div>';
   }
 });

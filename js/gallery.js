@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (items.length === 0) {
       galleryGrid.innerHTML = `
         <div style="text-align: center; padding: 40px 0; color: #777; grid-column: 1 / -1; width: 100%; border: 1px dashed #ddd; border-radius: 8px;">
-          <p>এই ক্যাটাগরিতে বর্তমানে কোন ছবি আপলোড করা নেই।</p>
+          <p>কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>
         </div>
       `;
       return;

@@ -274,7 +274,7 @@
         badge.textContent = `মোট: ${toBengaliNumerals(gallery.length)} টি`;
 
         if (gallery.length === 0) {
-          adminGalleryList.innerHTML = '<p style="color:#777; grid-column: 1/-1; text-align:center; padding:20px;">গ্যালারিতে কোনো ছবি পাওয়া যায়নি।</p>';
+          adminGalleryList.innerHTML = '<p style="color:#e74c3c; font-weight: bold; grid-column: 1/-1; text-align:center; padding:20px;">কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>';
           return;
         }
 
