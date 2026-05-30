@@ -10,10 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!searchForm || !resultTableWrapper) return;
 
-  // Save the original static table structure so we can restore it on reset
-  const originalTableHeader = detailedResultsHeader ? detailedResultsHeader.outerHTML : '';
-  const originalTableBody = resultTableWrapper.innerHTML;
-
   const departmentTranslations = {
     science: 'বিজ্ঞান',
     humanities: 'মানবিক',
@@ -26,6 +22,110 @@ document.addEventListener('DOMContentLoaded', () => {
     'annual': 'বার্ষিক',
     'ssc': 'এসএসসি'
   };
+
+  // Class translations for header
+  const classTranslations = {
+    'all': 'সকল শ্রেণি',
+    '6': 'ষষ্ঠ শ্রেণি',
+    '7': 'সপ্তম শ্রেণি',
+    '8': 'অষ্টম শ্রেণি',
+    '9': 'নবম শ্রেণি',
+    '10': 'দশম শ্রেণি'
+  };
+
+  let currentSelectedClass = 'all';
+
+  // Function to render results list dynamically
+  async function renderPublicResults(className = 'all') {
+    if (detailedResultsHeader) {
+      const headerText = classTranslations[className] || 'সকল শ্রেণি';
+      detailedResultsHeader.querySelector('.section-header__text').textContent = 
+        className === 'all' ? 'সকল শ্রেণির পরীক্ষার ফলাফল সারসংক্ষেপ' : `${headerText}র পরীক্ষার ফলাফল`;
+    }
+
+    resultTableWrapper.innerHTML = `
+      <div style="text-align: center; padding: 40px 0; color: #555; background: #fff; border-radius: 8px; border: 1px solid #eee;">
+        <div class="loader-spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid var(--color-primary, #1c69b5); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 15px;"></div>
+        <p>ফলাফল লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...</p>
+      </div>
+    `;
+
+    const results = await fetchPublicResults(className);
+
+    if (results.length === 0) {
+      resultTableWrapper.innerHTML = `
+        <table class="result-table">
+          <thead>
+            <tr>
+              <th>ক্রমিক</th>
+              <th>শিক্ষার্থীর নাম</th>
+              <th>রোল নং</th>
+              <th>মোট নম্বর</th>
+              <th>গ্রেড</th>
+              <th>জিপিএ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="6" style="padding: 20px; text-align: center; color: #e74c3c; font-weight: bold;">
+                কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+      return;
+    }
+
+    let tbodyHTML = '';
+    results.forEach((item, index) => {
+      tbodyHTML += `
+        <tr>
+          <td>${toBengaliNumerals(index + 1)}</td>
+          <td>${item.studentName}</td>
+          <td>${toBengaliNumerals(item.roll)}</td>
+          <td>${toBengaliNumerals(item.totalMarks)}</td>
+          <td><span class="grade-badge grade-badge--${item.grade.toLowerCase().replace('+', '-plus').replace('-', '-minus')}">${item.grade}</span></td>
+          <td>${toBengaliNumerals(item.gpa.toFixed(2))}</td>
+        </tr>
+      `;
+    });
+
+    resultTableWrapper.innerHTML = `
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>ক্রমিক</th>
+            <th>শিক্ষার্থীদের নাম</th>
+            <th>রোল নং</th>
+            <th>মোট নম্বর</th>
+            <th>গ্রেড</th>
+            <th>জিপিএ</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tbodyHTML}
+        </tbody>
+      </table>
+    `;
+  }
+
+  // Load All Results by default
+  renderPublicResults('all');
+
+  // Bind Class Filters Click Handler
+  const filterButtons = document.querySelectorAll('#results-filter .filter-btn');
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', async () => {
+      filterButtons.forEach(b => b.classList.remove('filter-btn--active'));
+      btn.classList.add('filter-btn--active');
+
+      const id = btn.getAttribute('id');
+      const className = id.replace('rf-', ''); // e.g. "rf-6" -> "6"
+      currentSelectedClass = className;
+      await renderPublicResults(className);
+    });
+  });
 
   searchForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -130,10 +230,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function resetToStatic() {
-    if (detailedResultsHeader) {
-      detailedResultsHeader.outerHTML = originalTableHeader;
-    }
-    resultTableWrapper.innerHTML = originalTableBody;
     searchForm.reset();
+    renderPublicResults(currentSelectedClass);
   }
 });
+
+// CSS Injection for dynamic loading spinner
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+document.head.appendChild(style);

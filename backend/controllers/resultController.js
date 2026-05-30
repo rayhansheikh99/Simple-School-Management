@@ -101,6 +101,23 @@ const getResultsSummary = async (req, res) => {
   }
 };
 
+// @desc    Get public results (optionally filtered by class)
+// @route   GET /api/results/public
+// @access  Public
+const getPublicResults = async (req, res) => {
+  try {
+    const { class: className } = req.query;
+    const filter = {};
+    if (className && className !== 'all') {
+      filter.class = className;
+    }
+    const results = await Result.find(filter).sort({ roll: 1 });
+    res.json({ success: true, count: results.length, data: results });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // @desc    Add single result record
 // @route   POST /api/results
 // @access  Private/Admin
@@ -217,6 +234,7 @@ const deleteResult = async (req, res) => {
 module.exports = {
   searchResult,
   getResultsSummary,
+  getPublicResults,
   createResult,
   bulkUploadResults,
   getAllResults,

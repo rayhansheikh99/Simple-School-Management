@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   searchResult,
   getResultsSummary,
+  getPublicResults,
   createResult,
   bulkUploadResults,
   getAllResults,
@@ -12,6 +13,7 @@ const { protect, adminOnly } = require('../middleware/authMiddleware');
 
 router.get('/search', searchResult);
 router.get('/summary', getResultsSummary);
+router.get('/public', getPublicResults);
 
 router.route('/')
   .get(protect, getAllResults)

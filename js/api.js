@@ -74,6 +74,19 @@ async function queryStudentResult(roll, className, examType, year) {
   }
 }
 
+// 3.1 Fetch Public Results
+async function fetchPublicResults(className = 'all') {
+  try {
+    const url = `${API_BASE_URL}/results/public?class=${className}`;
+    const response = await fetch(url);
+    const result = await response.json();
+    return result.success ? result.data : [];
+  } catch (error) {
+    console.error('Error fetching public results:', error);
+    return [];
+  }
+}
+
 // 4. Submit Contact Message
 async function sendContactMessage(name, email, phone, subject, message) {
   try {
