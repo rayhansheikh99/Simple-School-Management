@@ -193,6 +193,7 @@
       
       let jwtToken = localStorage.getItem('adminToken');
       let adminUser = localStorage.getItem('adminUser');
+      let adminRole = localStorage.getItem('adminRole');
 
       // Check current auth status
       if (jwtToken) {
@@ -216,8 +217,10 @@
           if (data.success) {
             localStorage.setItem('adminToken', data.token);
             localStorage.setItem('adminUser', data.user.username);
+            localStorage.setItem('adminRole', data.user.role);
             jwtToken = data.token;
             adminUser = data.user.username;
+            adminRole = data.user.role;
             
             Swal.fire({
               icon: 'success',
@@ -245,6 +248,20 @@
         loginContainer.style.display = 'none';
         dashboardGrid.style.display = 'grid';
         document.getElementById('admin-username').textContent = adminUser;
+
+        const roleBadge = document.querySelector('.db-user-info span');
+        if (roleBadge) {
+          if (adminRole === 'viewer') {
+            roleBadge.textContent = 'পরিদর্শক (রিড-অনলি)';
+            roleBadge.style.color = '#7f8c8d';
+            roleBadge.style.background = '#eaeded';
+          } else {
+            roleBadge.textContent = 'সুপার এডমিন';
+            roleBadge.style.color = '#1c69b5';
+            roleBadge.style.background = '#e6f9fd';
+          }
+        }
+
         loadDashboardOverview();
       }
 
@@ -263,6 +280,7 @@
           if (result.isConfirmed) {
             localStorage.removeItem('adminToken');
             localStorage.removeItem('adminUser');
+            localStorage.removeItem('adminRole');
             window.location.reload();
           }
         });

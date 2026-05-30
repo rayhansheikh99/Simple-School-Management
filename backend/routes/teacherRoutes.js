@@ -7,16 +7,16 @@ const {
   updateTeacher,
   deleteTeacher
 } = require('../controllers/teacherController');
-const { protect } = require('../middleware/authMiddleware');
+const { protect, adminOnly } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
 router.route('/')
   .get(getTeachers)
-  .post(protect, upload.single('photo'), createTeacher);
+  .post(protect, adminOnly, upload.single('photo'), createTeacher);
 
 router.route('/:id')
   .get(getTeacherById)
-  .put(protect, upload.single('photo'), updateTeacher)
-  .delete(protect, deleteTeacher);
+  .put(protect, adminOnly, upload.single('photo'), updateTeacher)
+  .delete(protect, adminOnly, deleteTeacher);
 
 module.exports = router;

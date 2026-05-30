@@ -8,18 +8,18 @@ const {
   getAllResults,
   deleteResult
 } = require('../controllers/resultController');
-const { protect } = require('../middleware/authMiddleware');
+const { protect, adminOnly } = require('../middleware/authMiddleware');
 
 router.get('/search', searchResult);
 router.get('/summary', getResultsSummary);
 
 router.route('/')
   .get(protect, getAllResults)
-  .post(protect, createResult);
+  .post(protect, adminOnly, createResult);
 
 router.route('/:id')
-  .delete(protect, deleteResult);
+  .delete(protect, adminOnly, deleteResult);
 
-router.post('/bulk', protect, bulkUploadResults);
+router.post('/bulk', protect, adminOnly, bulkUploadResults);
 
 module.exports = router;

@@ -5,14 +5,14 @@ const {
   createGalleryItem,
   deleteGalleryItem
 } = require('../controllers/galleryController');
-const { protect } = require('../middleware/authMiddleware');
+const { protect, adminOnly } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
 router.route('/')
   .get(getGalleryItems)
-  .post(protect, upload.single('image'), createGalleryItem);
+  .post(protect, adminOnly, upload.single('image'), createGalleryItem);
 
 router.route('/:id')
-  .delete(protect, deleteGalleryItem);
+  .delete(protect, adminOnly, deleteGalleryItem);
 
 module.exports = router;

@@ -103,6 +103,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       let jwtToken = localStorage.getItem('adminToken');
       let adminUser = localStorage.getItem('adminUser');
+      let adminRole = localStorage.getItem('adminRole');
 
       if (!jwtToken) {
         window.location.href = 'admin.html';
@@ -110,6 +111,44 @@
       }
 
       document.getElementById('admin-username').textContent = adminUser;
+
+      // Update sidebar role badge & apply viewer restrictions
+      const roleBadge = document.querySelector('.db-user-info span');
+      if (roleBadge) {
+        if (adminRole === 'viewer') {
+          roleBadge.textContent = 'পরিদর্শক (রিড-অনলি)';
+          roleBadge.style.color = '#7f8c8d';
+          roleBadge.style.background = '#eaeded';
+        } else {
+          roleBadge.textContent = 'সুপার এডমিন';
+          roleBadge.style.color = '#1c69b5';
+          roleBadge.style.background = '#e6f9fd';
+        }
+      }
+
+      if (adminRole === 'viewer') {
+        const style = document.createElement('style');
+        style.innerHTML = `
+          form, 
+          #add-notice-form, 
+          #add-teacher-form, 
+          #add-result-form, 
+          #bulk-result-form, 
+          #add-gallery-form,
+          .btn-delete, 
+          button[onclick*="delete"], 
+          button[onclick*="approve"], 
+          button[onclick*="reject"], 
+          button[onclick*="markMessageRead"],
+          .btn-save-settings,
+          #school-settings-form button[type="submit"],
+          input[type="file"],
+          .upload-card {
+            display: none !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
       
       // Load initial page data & badges
       updateSidebarBadges();
@@ -130,6 +169,7 @@
           if (result.isConfirmed) {
             localStorage.removeItem('adminToken');
             localStorage.removeItem('adminUser');
+            localStorage.removeItem('adminRole');
             window.location.href = 'admin.html';
           }
         });

@@ -31,10 +31,18 @@ const seedData = async () => {
     // 1. Seed Admin User
     const adminUser = await User.create({
       username: 'admin',
-      password: 'password123', // Will be hashed via pre-save hook
+      password: 'password123',
       role: 'admin'
     });
     console.log(`Admin User seeded! Username: "admin" | Password: "password123"`);
+
+    // 1.1 Seed Viewer User (Read-Only)
+    const viewerUser = await User.create({
+      username: 'user',
+      password: 'pass123',
+      role: 'viewer'
+    });
+    console.log(`Viewer User seeded! Username: "user" | Password: "pass123"`);
 
     // 2. Seed Mock Notices (From notices.html)
     console.log('Seeding mock notices...');

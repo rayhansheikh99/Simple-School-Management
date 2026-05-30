@@ -6,7 +6,7 @@ const {
   updateRegistrationStatus,
   deleteRegistration
 } = require('../controllers/registrationController');
-const { protect } = require('../middleware/authMiddleware');
+const { protect, adminOnly } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
 // Public: Submit registration with optional photo upload
@@ -16,7 +16,7 @@ router.route('/')
 
 // Admin: Update status or delete
 router.route('/:id')
-  .put(protect, updateRegistrationStatus)
-  .delete(protect, deleteRegistration);
+  .put(protect, adminOnly, updateRegistrationStatus)
+  .delete(protect, adminOnly, deleteRegistration);
 
 module.exports = router;
