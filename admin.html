@@ -5,168 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>প্রশাসনিক ড্যাশবোর্ড | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    /* Premium Dashboard Specific Styles */
-    body {
-      background: #f4f7f6;
-    }
-    .admin-wrapper {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    
-    /* Login Glassmorphism */
-    .login-container {
-      max-width: 450px;
-      margin: 100px auto;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      overflow: hidden;
-      transition: all 0.3s;
-    }
-    .login-header {
-      background: linear-gradient(135deg, #1c69b5, #0077b6);
-      color: #fff;
-      padding: 30px;
-      text-align: center;
-    }
-    .login-header h2 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-    .login-form {
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    /* Dashboard Layout */
-    .dashboard-grid {
-      display: none; /* Shown after auth */
-      grid-template-columns: 260px 1fr;
-      gap: 30px;
-      margin-top: 20px;
-    }
-    .db-sidebar {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      padding: 24px 16px;
-      height: fit-content;
-    }
-    .db-user-info {
-      text-align: center;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #eee;
-    }
-    .db-menu-btn {
-      width: 100%;
-      text-align: left;
-      padding: 12px 16px;
-      border: none;
-      background: none;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #555;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: all 0.3s;
-      margin-bottom: 8px;
-    }
-    .db-menu-btn:hover, .db-menu-btn.active {
-      background: #e6f9fd;
-      color: #1c69b5;
-    }
-    .db-content {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      padding: 30px;
-    }
-    .db-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid #f4f7f6;
-    }
-    .db-title {
-      font-size: 1.4rem;
-      color: var(--color-primary);
-      margin: 0;
-    }
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-    }
-
-    /* Forms in Dashboard */
-    .db-form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-    .db-form-full {
-      grid-column: 1 / -1;
-    }
-
-    /* List grids inside Dashboard */
-    .manager-list {
-      margin-top: 30px;
-      border-top: 1px solid #eee;
-      padding-top: 20px;
-    }
-    .manager-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 20px;
-      background: #fdfefe;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      transition: all 0.3s;
-    }
-    .manager-item:hover {
-      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-      border-color: #1c69b5;
-    }
-    .manager-item__title {
-      font-weight: bold;
-      color: #333;
-    }
-    .manager-item__meta {
-      font-size: 0.8rem;
-      color: #777;
-      margin-top: 4px;
-    }
-    .btn-delete {
-      background: #e74c3c;
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      transition: background 0.3s;
-    }
-    .btn-delete:hover {
-      background: #c0392b;
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
@@ -224,7 +64,14 @@
           <button class="db-menu-btn" data-tab="gallery-tab">📸 ফটো গ্যালারি আপলোড</button>
           <button class="db-menu-btn" data-tab="messages-tab">✉️ যোগাযোগের বার্তা (${toBengaliNumerals(0)})</button>
         </nav>
-        <button id="logout-btn" class="btn btn--secondary" style="width: 100%; margin-top: 40px; justify-content: center;">🚪 লগআউট</button>
+        <button id="logout-btn" class="btn btn-logout">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; display: inline-block; vertical-align: middle;">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          লগআউট
+        </button>
       </aside>
 
       <!-- Main Panel Work Area -->
@@ -257,8 +104,8 @@
                 <textarea id="notice-content" class="form-input" style="height: 120px;" placeholder="নোটিশের বিস্তারিত অংশ এখানে লিখুন..." required></textarea>
               </div>
               <div class="form-group db-form-full">
-                <label for="notice-pdf">সংযুক্তি ফাইল (PDF URL - ঐচ্ছিক)</label>
-                <input type="text" id="notice-pdf" class="form-input" placeholder="যেমন: uploads/notice_2026.pdf">
+                <label for="notice-pdf">সংযুক্তি ফাইল আপলোড (PDF / ছবি - ঐচ্ছিক)</label>
+                <input type="file" id="notice-pdf" accept=".pdf,image/*" class="form-input" style="padding: 6px;">
               </div>
             </div>
             <button type="submit" class="btn btn--primary">📢 নোটিশ পাবলিশ করুন</button>
@@ -486,7 +333,7 @@
         const password = document.getElementById('password').value;
 
         try {
-          const response = await fetch('http://localhost:5000/api/auth/login', {
+          const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
@@ -498,13 +345,30 @@
             localStorage.setItem('adminUser', data.user.username);
             jwtToken = data.token;
             adminUser = data.user.username;
-            showDashboard();
+            
+            Swal.fire({
+              icon: 'success',
+              title: 'লগইন সফল!',
+              text: 'প্রশাসনিক ড্যাশবোর্ডে আপনাকে স্বাগতম।',
+              timer: 1500,
+              showConfirmButton: false
+            }).then(() => {
+              showDashboard();
+            });
           } else {
-            alert('ত্রুটি: ' + data.message);
+            Swal.fire({
+              icon: 'error',
+              title: 'লগইন ব্যর্থ',
+              text: data.message
+            });
           }
         } catch (error) {
           console.error(error);
-          alert('সার্ভার সংযোগে ত্রুটি। দয়া করে নিশ্চিত করুন যে ব্যাকএন্ড সার্ভিসটি চালু আছে।');
+          Swal.fire({
+            icon: 'error',
+            title: 'সার্ভার সংযোগে ত্রুটি',
+            text: 'দয়া করে নিশ্চিত করুন যে ব্যাকএন্ড সার্ভিসটি চালু আছে।'
+          });
         }
       });
 
@@ -535,9 +399,22 @@
 
       // 3. Logout trigger
       document.getElementById('logout-btn').addEventListener('click', () => {
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('adminUser');
-        window.location.reload();
+        Swal.fire({
+          title: 'লগআউট করতে চান?',
+          text: "আপনি ড্যাশবোর্ড সেশনটি বন্ধ করতে যাচ্ছেন।",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'হ্যাঁ, লগআউট করুন',
+          cancelButtonText: 'বাতিল'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            window.location.reload();
+          }
+        });
       });
 
       // ============================================================
@@ -551,28 +428,58 @@
         const title = document.getElementById('notice-title').value;
         const category = document.getElementById('notice-category').value;
         const content = document.getElementById('notice-content').value;
-        const pdfUrl = document.getElementById('notice-pdf').value;
+        const fileInput = document.getElementById('notice-pdf');
+
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('category', category);
+        formData.append('content', content);
+        if (fileInput.files[0]) {
+          formData.append('pdf', fileInput.files[0]);
+        }
 
         try {
-          const response = await fetch('http://localhost:5000/api/notices', {
+          // Show Loading
+          Swal.fire({
+            title: 'সংরক্ষণ করা হচ্ছে...',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
+          const response = await fetch(`${API_BASE_URL}/notices`, {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
               'Authorization': `Bearer ${jwtToken}`
             },
-            body: JSON.stringify({ title, category, content, pdfUrl })
+            body: formData
           });
           const data = await response.json();
 
           if (data.success) {
-            alert('নোটিশটি সফলভাবে প্রকাশ করা হয়েছে!');
+            Swal.fire({
+              icon: 'success',
+              title: 'সফল!',
+              text: 'নোটিশটি সফলভাবে প্রকাশ করা হয়েছে।',
+              timer: 2000
+            });
             addNoticeForm.reset();
             loadAdminNotices();
           } else {
-            alert('ত্রুটি: ' + data.message);
+            Swal.fire({
+              icon: 'error',
+              title: 'ত্রুটি',
+              text: data.message
+            });
           }
         } catch (error) {
           console.error(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'সংযোগ ত্রুটি',
+            text: 'নোটিশ প্রকাশ করতে সমস্যা হয়েছে।'
+          });
         }
       });
 
@@ -591,7 +498,10 @@
             <div class="manager-item">
               <div>
                 <div class="manager-item__title">${notice.title}</div>
-                <div class="manager-item__meta">📅 ${formatBengaliDate(notice.date)} | বিভাগ: ${notice.category}</div>
+                <div class="manager-item__meta">
+                  📅 ${formatBengaliDate(notice.date)} | বিভাগ: ${notice.category}
+                  ${notice.pdfUrl ? `| <a href="${getMediaUrl(notice.pdfUrl)}" target="_blank" style="color: #1c69b5; font-weight: bold; margin-left: 5px;">📎 ফাইল দেখুন</a>` : ''}
+                </div>
               </div>
               <button class="btn-delete" onclick="deleteNoticeItem('${notice._id}')">🗑️ মুছুন</button>
             </div>
@@ -601,20 +511,43 @@
       }
 
       window.deleteNoticeItem = async (id) => {
-        if (!confirm('আপনি কি নিশ্চিত যে এই নোটিশটি ডিলিট করতে চান?')) return;
-        try {
-          const response = await fetch(`http://localhost:5000/api/notices/${id}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${jwtToken}` }
-          });
-          const data = await response.json();
-          if (data.success) {
-            alert('নোটিশটি সফলভাবে মুছে ফেলা হয়েছে!');
-            loadAdminNotices();
+        Swal.fire({
+          title: 'আপনি কি নিশ্চিত?',
+          text: "এই নোটিশটি স্থায়ীভাবে মুছে ফেলা হবে!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#e74c3c',
+          cancelButtonColor: '#aaa',
+          confirmButtonText: 'হ্যাঁ, ডিলিট করুন!',
+          cancelButtonText: 'বাতিল'
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const response = await fetch(`${API_BASE_URL}/notices/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${jwtToken}` }
+              });
+              const data = await response.json();
+              if (data.success) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'সফল!',
+                  text: 'নোটিশটি সফলভাবে মুছে ফেলা হয়েছে।',
+                  timer: 1500,
+                  showConfirmButton: false
+                });
+                loadAdminNotices();
+              }
+            } catch (error) {
+              console.error(error);
+              Swal.fire({
+                icon: 'error',
+                title: 'ত্রুটি',
+                text: 'মুছে ফেলার প্রসেসটি ব্যর্থ হয়েছে।'
+              });
+            }
           }
-        } catch (error) {
-          console.error(error);
-        }
+        });
       };
 
       // ============================================================
@@ -645,7 +578,15 @@
         }
 
         try {
-          const response = await fetch('http://localhost:5000/api/teachers', {
+          Swal.fire({
+            title: 'যুক্ত করা হচ্ছে...',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
+          const response = await fetch(`${API_BASE_URL}/teachers`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${jwtToken}` },
             body: formData
@@ -653,14 +594,28 @@
           const data = await response.json();
 
           if (data.success) {
-            alert('শিক্ষক ডাটাবেজে সফলভাবে যুক্ত করা হয়েছে!');
+            Swal.fire({
+              icon: 'success',
+              title: 'সফল!',
+              text: 'শিক্ষক ডাটাবেজে সফলভাবে যুক্ত করা হয়েছে।',
+              timer: 2000
+            });
             addTeacherForm.reset();
             loadAdminTeachers();
           } else {
-            alert('ত্রুটি: ' + data.message);
+            Swal.fire({
+              icon: 'error',
+              title: 'ত্রুটি',
+              text: data.message
+            });
           }
         } catch (error) {
           console.error(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'সংযোগ ত্রুটি',
+            text: 'শিক্ষক যুক্ত করতে সমস্যা হয়েছে।'
+          });
         }
       });
 
@@ -692,20 +647,43 @@
       }
 
       window.deleteTeacherItem = async (id) => {
-        if (!confirm('আপনি কি নিশ্চিত যে এই শিক্ষক রেকর্ডটি মুছে ফেলতে চান?')) return;
-        try {
-          const response = await fetch(`http://localhost:5000/api/teachers/${id}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${jwtToken}` }
-          });
-          const data = await response.json();
-          if (data.success) {
-            alert('রেকর্ডটি সফলভাবে মুছে ফেলা হয়েছে!');
-            loadAdminTeachers();
+        Swal.fire({
+          title: 'মুছে ফেলতে চান?',
+          text: "এই শিক্ষক রেকর্ডটি স্থায়ীভাবে মুছে ফেলা হবে!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#e74c3c',
+          cancelButtonColor: '#aaa',
+          confirmButtonText: 'হ্যাঁ, মুছুন!',
+          cancelButtonText: 'বাতিল'
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const response = await fetch(`${API_BASE_URL}/teachers/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${jwtToken}` }
+              });
+              const data = await response.json();
+              if (data.success) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'সফল!',
+                  text: 'রেকর্ডটি সফলভাবে মুছে ফেলা হয়েছে।',
+                  timer: 1500,
+                  showConfirmButton: false
+                });
+                loadAdminTeachers();
+              }
+            } catch (error) {
+              console.error(error);
+              Swal.fire({
+                icon: 'error',
+                title: 'ত্রুটি',
+                text: 'রেকর্ড ডিলিট করতে সমস্যা হয়েছে।'
+              });
+            }
           }
-        } catch (error) {
-          console.error(error);
-        }
+        });
       };
 
       // ============================================================
@@ -741,7 +719,7 @@
         const gpa = document.getElementById('res-gpa').value;
 
         try {
-          const response = await fetch('http://localhost:5000/api/results', {
+          const response = await fetch(`${API_BASE_URL}/results`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -752,13 +730,27 @@
           const data = await response.json();
 
           if (data.success) {
-            alert('ফলাফল সফলভাবে ডাটাবেজে সংরক্ষণ করা হয়েছে!');
+            Swal.fire({
+              icon: 'success',
+              title: 'ফলাফল সংরক্ষিত!',
+              text: 'ফলাফল সফলভাবে ডাটাবেজে সংরক্ষণ করা হয়েছে।',
+              timer: 2000
+            });
             addResultForm.reset();
           } else {
-            alert('ত্রুটি: ' + data.message);
+            Swal.fire({
+              icon: 'error',
+              title: 'সংরক্ষণ ব্যর্থ',
+              text: data.message
+            });
           }
         } catch (error) {
           console.error(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'সংযোগ ত্রুটি',
+            text: 'সার্ভার সংযোগ ব্যাহত হয়েছে।'
+          });
         }
       });
 
@@ -768,7 +760,16 @@
 
         try {
           const parsed = JSON.parse(jsonText);
-          const response = await fetch('http://localhost:5000/api/results/bulk', {
+          
+          Swal.fire({
+            title: 'বাল্ক প্রসেস চলছে...',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
+          const response = await fetch(`${API_BASE_URL}/results/bulk`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -779,13 +780,29 @@
           const data = await response.json();
 
           if (data.success) {
-            alert(`বাল্ক আপলোড সম্পন্ন! ম্যাচিং: ${data.details.matchedCount}, পরিবর্তন: ${data.details.modifiedCount}, নতুন: ${data.details.upsertedCount}`);
+            Swal.fire({
+              icon: 'success',
+              title: 'বাল্ক আপলোড সম্পন্ন!',
+              html: `<div style="text-align: left; padding-left: 20px;">
+                • ম্যাচিং রেকর্ড: <b>${data.details.matchedCount}টি</b><br>
+                • সংশোধিত রেকর্ড: <b>${data.details.modifiedCount}টি</b><br>
+                • নতুন যুক্ত রেকর্ড: <b>${data.details.upsertedCount}টি</b>
+              </div>`
+            });
             bulkResultForm.reset();
           } else {
-            alert('ত্রুটি: ' + data.message);
+            Swal.fire({
+              icon: 'error',
+              title: 'আপলোড ব্যর্থ',
+              text: data.message
+            });
           }
         } catch (error) {
-          alert('ভুল JSON ফরম্যাট! অনুগ্রহ করে নিশ্চিত হোন যে আপনার কপি করা টেক্সটটি স্ট্যান্ডার্ড JSON তালিকা।');
+          Swal.fire({
+            icon: 'error',
+            title: 'ভুল ফরম্যাট',
+            text: 'ভুল JSON ফরম্যাট! অনুগ্রহ করে নিশ্চিত হোন যে আপনার কপি করা টেক্সটটি স্ট্যান্ডার্ড JSON তালিকা।'
+          });
         }
       });
 
@@ -800,7 +817,11 @@
         const fileInput = document.getElementById('gal-image');
 
         if (!fileInput.files[0]) {
-          alert('অনুগ্রহ করে একটি ছবি ফাইল নির্বাচন করুন।');
+          Swal.fire({
+            icon: 'warning',
+            title: 'ছবি ফাইল প্রয়োজন',
+            text: 'অনুগ্রহ করে একটি ছবি ফাইল নির্বাচন করুন।'
+          });
           return;
         }
 
@@ -810,7 +831,15 @@
         formData.append('image', fileInput.files[0]);
 
         try {
-          const response = await fetch('http://localhost:5000/api/gallery', {
+          Swal.fire({
+            title: 'আপলোড করা হচ্ছে...',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
+          const response = await fetch(`${API_BASE_URL}/gallery`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${jwtToken}` },
             body: formData
@@ -818,13 +847,27 @@
           const data = await response.json();
 
           if (data.success) {
-            alert('ছবিটি গ্যালারিতে সফলভাবে আপলোড করা হয়েছে!');
+            Swal.fire({
+              icon: 'success',
+              title: 'আপলোড সম্পন্ন!',
+              text: 'ছবিটি গ্যালারিতে সফলভাবে আপলোড করা হয়েছে।',
+              timer: 2000
+            });
             addGalleryForm.reset();
           } else {
-            alert('ত্রুটি: ' + data.message);
+            Swal.fire({
+              icon: 'error',
+              title: 'আপলোড ব্যর্থ',
+              text: data.message
+            });
           }
         } catch (error) {
           console.error(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'সংযোগ ত্রুটি',
+            text: 'ছবিটি আপলোড করা সম্ভব হয়নি।'
+          });
         }
       });
 
@@ -836,7 +879,7 @@
       async function loadInboxMessages() {
         if (!jwtToken) return;
         try {
-          const response = await fetch('http://localhost:5000/api/contact/messages', {
+          const response = await fetch(`${API_BASE_URL}/contact/messages`, {
             headers: { 'Authorization': `Bearer ${jwtToken}` }
           });
           const data = await response.json();
@@ -890,7 +933,7 @@
 
       window.markMessageRead = async (id) => {
         try {
-          const response = await fetch(`http://localhost:5000/api/contact/messages/${id}`, {
+          const response = await fetch(`${API_BASE_URL}/contact/messages/${id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',

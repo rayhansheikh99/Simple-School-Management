@@ -3,8 +3,8 @@
    Frontend Client API Connector
    ============================================================ */
 
-const API_BASE_URL = 'http://localhost:5000/api';
-const UPLOADS_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://simple-school-management.onrender.com/api';
+const UPLOADS_BASE_URL = 'https://simple-school-management.onrender.com';
 
 // Helper: Translate digits to Bengali numerals
 function toBengaliNumerals(num) {

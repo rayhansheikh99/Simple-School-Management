@@ -3,6 +3,14 @@
    Main JavaScript
    ============================================================ */
 
+// Dynamically load SweetAlert2 from CDN if not already present
+if (typeof Swal === 'undefined') {
+  const SwalScript = document.createElement('script');
+  SwalScript.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+  SwalScript.async = true;
+  document.head.appendChild(SwalScript);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
   // ============================================================
@@ -250,7 +258,17 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       if (valid) {
-        alert('আপনার বার্তা সফলভাবে পাঠানো হয়েছে! ধন্যবাদ।');
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({
+            icon: 'success',
+            title: 'বার্তা পাঠানো হয়েছে!',
+            text: 'আপনার বার্তা সফলভাবে পাঠানো হয়েছে! ধন্যবাদ।',
+            confirmButtonText: 'ঠিক আছে',
+            confirmButtonColor: '#1c69b5'
+          });
+        } else {
+          alert('আপনার বার্তা সফলভাবে পাঠানো হয়েছে! ধন্যবাদ।');
+        }
         this.reset();
       }
     });

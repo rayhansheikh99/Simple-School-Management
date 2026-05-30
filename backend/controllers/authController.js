@@ -15,8 +15,9 @@ const loginUser = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Check for user
-    const user = await User.findOne({ username }).select('+password');
+    // Normalizing username to lowercase for case-insensitive authentication (e.g. Admin, admin, ADMIN)
+    const normalizedUsername = username ? username.trim().toLowerCase() : '';
+    const user = await User.findOne({ username: normalizedUsername }).select('+password');
 
     if (user && (await user.matchPassword(password))) {
       res.json({

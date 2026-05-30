@@ -64,12 +64,12 @@ document.addEventListener('DOMContentLoaded', async () => {
           const catDetails = categoryMapping[notice.category] || { label: 'একাডেমিক', badgeClass: 'notice-item__badge--academic' };
           
           eventHTML += `
-            <div class="notice-item animate-on-scroll visible" id="event-${notice._id}" style="opacity: 1; transform: translateY(0);">
+            <div class="notice-item animate-on-scroll visible" id="event-${notice._id}" style="opacity: 1; transform: translateY(0); cursor: pointer;" onclick="window.location.href='notices.html#notice-${notice._id}'">
               <div class="notice-item__date-box">
                 <span class="notice-item__day">${day}</span>
                 <span class="notice-item__month">${monthYear}</span>
               </div>
-              <div class="notice-item__content">
+              <div class="notice-item__content" style="flex: 1;">
                 <h3>${notice.title}</h3>
                 <p>${notice.content.substring(0, 60)}...</p>
               </div>
