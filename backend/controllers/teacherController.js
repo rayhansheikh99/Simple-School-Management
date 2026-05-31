@@ -42,12 +42,12 @@ const getTeacherById = async (req, res) => {
 // @access  Private/Admin
 const createTeacher = async (req, res) => {
   try {
-    const { name, designation, subject, qualifications, type, order } = req.body;
+    const { name, phone, subject, qualifications, type, order } = req.body;
 
-    if (!name || !designation || !subject) {
+    if (!name || !phone || !subject) {
       return res.status(400).json({ 
         success: false, 
-        message: 'Please provide teacher name, designation, and subject' 
+        message: 'Please provide teacher name, phone number, and subject' 
       });
     }
 
@@ -60,7 +60,7 @@ const createTeacher = async (req, res) => {
 
     const teacher = await Teacher.create({
       name,
-      designation,
+      phone,
       subject,
       qualifications: qualifications || '',
       type: type || 'assistant',

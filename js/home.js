@@ -91,6 +91,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       const homeTeachers = teachers.slice(0, 5);
       let teachersHTML = '';
       
+      const typeMapping = {
+        head: 'প্রধান শিক্ষক',
+        assistant: 'সহকারী শিক্ষক',
+        staff: 'স্টাফ'
+      };
+
       homeTeachers.forEach((teacher, index) => {
         teachersHTML += `
           <div class="teacher-card animate-on-scroll delay-${(index % 4) + 1} visible" id="teacher-${teacher._id}" style="opacity: 1; transform: translateY(0);">
@@ -99,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
             <div class="teacher-card__info">
               <div class="teacher-card__name">${teacher.name}</div>
-              <div class="teacher-card__designation">${teacher.designation}</div>
+              <div class="teacher-card__designation">${typeMapping[teacher.type] || 'সহকারী শিক্ষক'} | 📱 ${teacher.phone}</div>
               <span class="teacher-card__subject">${teacher.subject}</span>
             </div>
           </div>

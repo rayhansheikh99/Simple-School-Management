@@ -6,9 +6,9 @@ const TeacherSchema = new mongoose.Schema({
     required: [true, 'Please add teacher name'],
     trim: true,
   },
-  designation: {
+  phone: {
     type: String,
-    required: [true, 'Please add designation'],
+    required: [true, 'Please add phone number'],
     trim: true,
   },
   subject: {

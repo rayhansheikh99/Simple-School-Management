@@ -104,7 +104,7 @@ const seedData = async () => {
     const mockTeachers = [
       {
         name: 'জনাব মোঃ দেলোয়ার হোসেন',
-        designation: 'প্রধান শিক্ষক',
+        phone: '01712-345678',
         subject: 'প্রশাসন',
         qualifications: 'বি.এ. (সম্মান), এম.এ., বি.এড',
         photo: 'assets/images/headteacher_photo.png',
@@ -113,7 +113,7 @@ const seedData = async () => {
       },
       {
         name: 'জনাব মোঃ রফিকুল ইসলাম',
-        designation: 'সহকারী প্রধান শিক্ষক',
+        phone: '01712-345679',
         subject: 'গণিত',
         qualifications: 'বি.এসসি (গণিত), এম.এসসি, বি.এড',
         photo: 'assets/images/chairman_photo.png',
@@ -122,7 +122,7 @@ const seedData = async () => {
       },
       {
         name: 'উম্মে হাবিবা',
-        designation: 'সহকারী শিক্ষক',
+        phone: '01712-345680',
         subject: 'বাংলা',
         qualifications: 'বি.এ. (বাংলা), এম.এ.',
         photo: 'assets/images/teachers_grid.png',
@@ -131,7 +131,7 @@ const seedData = async () => {
       },
       {
         name: 'জনাব নাহিদ হাসান',
-        designation: 'সহকারী শিক্ষক',
+        phone: '01712-345681',
         subject: 'ইংরেজি',
         qualifications: 'বি.এ. (ইংরেজি), এম.এ.',
         photo: 'assets/images/headteacher_photo.png',
@@ -140,7 +140,7 @@ const seedData = async () => {
       },
       {
         name: 'জনাব শাহ আলম',
-        designation: 'সহকারী শিক্ষক',
+        phone: '01712-345682',
         subject: 'পদার্থবিজ্ঞান',
         qualifications: 'বি.এসসি (পদার্থ), এম.এসসি',
         photo: 'assets/images/chairman_photo.png',
@@ -149,7 +149,7 @@ const seedData = async () => {
       },
       {
         name: 'জনাব আব্দুল করিম',
-        designation: 'সহকারী শিক্ষক',
+        phone: '01712-345683',
         subject: 'রসায়ন',
         qualifications: 'বি.এসসি (রসায়ন), এম.এসসি',
         photo: 'assets/images/teachers_grid.png',
@@ -158,7 +158,7 @@ const seedData = async () => {
       },
       {
         name: 'ফাতেমা বেগম',
-        designation: 'সহকারী শিক্ষক',
+        phone: '01712-345684',
         subject: 'জীববিজ্ঞান',
         qualifications: 'বি.এসসি (উদ্ভিদবিজ্ঞান), এম.এসসি',
         photo: 'assets/images/headteacher_photo.png',
@@ -167,7 +167,7 @@ const seedData = async () => {
       },
       {
         name: 'জনাব মিজানুর রহমান',
-        designation: 'সহকারী শিক্ষক',
+        phone: '01712-345685',
         subject: 'ইতিহাস',
         qualifications: 'বি.এ. (ইতিহাস), এম.এ.',
         photo: 'assets/images/chairman_photo.png',
@@ -176,7 +176,7 @@ const seedData = async () => {
       },
       {
         name: 'নাসরিন আক্তার',
-        designation: 'সহকারী শিক্ষক',
+        phone: '01712-345686',
         subject: 'ভূগোল',
         qualifications: 'বি.এস.এস (ভূগোল), এম.এস.এস',
         photo: 'assets/images/teachers_grid.png',
@@ -185,7 +185,7 @@ const seedData = async () => {
       },
       {
         name: 'জনাব হাসান মাহমুদ',
-        designation: 'সহকারী শিক্ষক',
+        phone: '01712-345687',
         subject: 'তথ্য ও যোগাযোগ প্রযুক্তি',
         qualifications: 'বি.এসসি (সিএসই)',
         photo: 'assets/images/headteacher_photo.png',
@@ -194,7 +194,7 @@ const seedData = async () => {
       },
       {
         name: 'সেলিনা পারভীন',
-        designation: 'সহকারী শিক্ষক',
+        phone: '01712-345688',
         subject: 'ইসলাম শিক্ষা',
         qualifications: 'বি.এ. (ইসলামিক স্টাডিজ), এম.এ.',
         photo: 'assets/images/chairman_photo.png',
@@ -205,19 +205,49 @@ const seedData = async () => {
     await Teacher.insertMany(mockTeachers);
     console.log('Teachers seeded!');
 
-    // 4. Seed Academic Results (From results.html class 10 science)
+    // 4. Seed Academic Results (Notice-like structure with class attachments)
     console.log('Seeding mock results...');
     const mockResults = [
-      { studentName: 'মোঃ আরিফুল ইসলাম', roll: 101, class: '10', section: 'A', department: 'science', examType: 'half-yearly', year: 2026, totalMarks: 952, grade: 'A+', gpa: 5.00 },
-      { studentName: 'ফাতিমা আক্তার', roll: 102, class: '10', section: 'A', department: 'science', examType: 'half-yearly', year: 2026, totalMarks: 938, grade: 'A+', gpa: 5.00 },
-      { studentName: 'মোঃ সাকিব হাসান', roll: 103, class: '10', section: 'A', department: 'science', examType: 'half-yearly', year: 2026, totalMarks: 915, grade: 'A+', gpa: 5.00 },
-      { studentName: 'নুসরাত জাহান', roll: 104, class: '10', section: 'A', department: 'science', examType: 'half-yearly', year: 2026, totalMarks: 889, grade: 'A', gpa: 4.50 },
-      { studentName: 'মোঃ তানভীর আহমেদ', roll: 105, class: '10', section: 'A', department: 'science', examType: 'half-yearly', year: 2026, totalMarks: 875, grade: 'A', gpa: 4.36 },
-      { studentName: 'সুমাইয়া ইসলাম', roll: 106, class: '10', section: 'A', department: 'science', examType: 'half-yearly', year: 2026, totalMarks: 860, grade: 'A', gpa: 4.21 },
-      { studentName: 'মোঃ রাকিবুল হাসান', roll: 107, class: '10', section: 'A', department: 'science', examType: 'half-yearly', year: 2026, totalMarks: 842, grade: 'A', gpa: 4.10 },
-      { studentName: 'আয়েশা সিদ্দিকা', roll: 108, class: '10', section: 'A', department: 'science', examType: 'half-yearly', year: 2026, totalMarks: 820, grade: 'A-', gpa: 3.85 },
-      { studentName: 'মোঃ ইমরান হোসেন', roll: 109, class: '10', section: 'A', department: 'science', examType: 'half-yearly', year: 2026, totalMarks: 805, grade: 'A-', gpa: 3.72 },
-      { studentName: 'রুমানা আফরিন', roll: 110, class: '10', section: 'A', department: 'science', examType: 'half-yearly', year: 2026, totalMarks: 790, grade: 'A-', gpa: 3.60 }
+      {
+        title: '১০ম শ্রেণির বার্ষিক পরীক্ষার ফলাফল প্রকাশ - ২০২৬',
+        content: '১০ম শ্রেণির বার্ষিক পরীক্ষার চূড়ান্ত ফলাফল প্রকাশ করা হয়েছে। নিচে সংযুক্ত পিডিএফ ফাইলে বিস্তারিত মেরিট লিস্ট এবং গ্রেডশিট দেওয়া হলো।',
+        class: '10',
+        year: 2026,
+        pdfUrl: '',
+        date: new Date('2026-05-29')
+      },
+      {
+        title: '৯ম শ্রেণির নির্বাচনী পরীক্ষার ফলাফল প্রকাশ - ২০২৬',
+        content: '৯ম শ্রেণির নির্বাচনী বা টেস্ট পরীক্ষার চূড়ান্ত ফলাফল প্রকাশ করা হয়েছে। সকল উত্তীর্ণ শিক্ষার্থীদের ১০ম শ্রেণিতে ভর্তির কার্যক্রম শুরু করার নির্দেশ দেওয়া গেল।',
+        class: '9',
+        year: 2026,
+        pdfUrl: '',
+        date: new Date('2026-05-28')
+      },
+      {
+        title: '৮ম শ্রেণির অর্ধবার্ষিক পরীক্ষার ফলাফল - ২০২৬',
+        content: '৮ম শ্রেণির অর্ধবার্ষিক পরীক্ষার ফলাফল প্রকাশিত হয়েছে। সকল শিক্ষার্থীদের অভিভাবক স্বাক্ষর সহ প্রগ্রেসিভ রিপোর্ট আগামী সপ্তাহে সংগ্রহ করতে বলা হচ্ছে।',
+        class: '8',
+        year: 2026,
+        pdfUrl: '',
+        date: new Date('2026-05-24')
+      },
+      {
+        title: '৭ম শ্রেণির মূল্যায়ন পরীক্ষার ফলাফল প্রকাশ - ২০২৬',
+        content: '৭ম শ্রেণির প্রথম সামষ্টিক মূল্যায়নের ফলাফল এবং পারফরম্যান্স ইন্ডিকেটর (PI) শীট প্রকাশ করা হলো।',
+        class: '7',
+        year: 2026,
+        pdfUrl: '',
+        date: new Date('2026-05-20')
+      },
+      {
+        title: '৬ষ্ঠ শ্রেণির অর্ধবার্ষিক মূল্যায়নের ফলাফল - ২০২৬',
+        content: 'নতুন শিক্ষাক্রম অনুযায়ী ৬ষ্ঠ শ্রেণির অর্ধবার্ষিক সামষ্টিক মূল্যায়নের রিপোর্ট কার্ড প্রকাশ করা হয়েছে।',
+        class: '6',
+        year: 2026,
+        pdfUrl: '',
+        date: new Date('2026-05-15')
+      }
     ];
     await Result.insertMany(mockResults);
     console.log('Results seeded!');

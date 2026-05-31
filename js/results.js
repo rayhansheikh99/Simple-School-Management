@@ -1,246 +1,248 @@
 /* ============================================================
    ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়
-   Dynamic Results Query & Statistics Loader
+   Dynamic Results Notice Board Loader
    ============================================================ */
 
-document.addEventListener('DOMContentLoaded', () => {
-  const searchForm = document.getElementById('result-search-form');
-  const resultTableWrapper = document.getElementById('result-table');
-  const detailedResultsHeader = document.getElementById('detailed-results');
+document.addEventListener('DOMContentLoaded', async () => {
+  const resultListContainer = document.querySelector('.result-list');
+  const filterButtons = document.querySelectorAll('#results-filter .filter-btn');
 
-  if (!searchForm || !resultTableWrapper) return;
+  if (!resultListContainer) return;
 
-  const departmentTranslations = {
-    science: 'বিজ্ঞান',
-    humanities: 'মানবিক',
-    commerce: 'ব্যবসায় শিক্ষা',
-    none: 'সাধারণ'
+  const classMapping = {
+    all: { label: 'সকল শ্রেণি', badgeClass: 'notice-item__badge--academic' },
+    '6': { label: '৬ষ্ঠ শ্রেণি', badgeClass: 'notice-item__badge--exam' },
+    '7': { label: '৭ম শ্রেণি', badgeClass: 'notice-item__badge--event' },
+    '8': { label: '৮ম শ্রেণি', badgeClass: 'notice-item__badge--academic' },
+    '9': { label: '৯ম শ্রেণি', badgeClass: 'notice-item__badge--admin' },
+    '10': { label: '১০ম শ্রেণি', badgeClass: 'notice-item__badge--exam' }
   };
 
-  const examTypeTranslations = {
-    'half-yearly': 'অর্ধ-বার্ষিক',
-    'annual': 'বার্ষিক',
-    'ssc': 'এসএসসি'
-  };
+  // Create Modal Element dynamically in the DOM
+  const modalHtml = `
+    <div class="notice-modal" id="result-details-modal">
+      <div class="notice-modal-container">
+        <button class="notice-modal__close" id="close-result-modal">&times;</button>
+        <div class="notice-modal__header">
+          <div class="notice-modal__badge-row">
+            <span class="notice-item__badge notice-item__badge--academic" id="modal-class-badge">১০ম শ্রেণি</span>
+          </div>
+          <h2 class="notice-modal__title" id="modal-title">ফলাফল নোটিশ</h2>
+          <div class="notice-modal__meta" id="modal-meta">📅 ২৬ মে ২০২৬ | পরীক্ষার বছর: ২০২৬</div>
+        </div>
+        <div class="notice-modal__body">
+          <div class="notice-modal__content-text" id="modal-content">ফলাফল বিবরণ</div>
+          <div class="notice-modal__attachment" id="modal-attachment-section" style="display: none;">
+            <h4 class="notice-modal__attachment-title">📎 সংযুক্তি ফাইল (PDF / ছবি)</h4>
+            <div class="notice-modal__iframe-wrapper">
+              <iframe class="notice-modal__pdf-iframe" id="modal-pdf-viewer" src=""></iframe>
+            </div>
+            <a href="" class="btn btn--primary" id="modal-download-btn" target="_blank" style="justify-content: center; width: 100%;">📥 ফলাফল ডাউনলোড করুন</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
 
-  // Class translations for header
-  const classTranslations = {
-    'all': 'সকল শ্রেণি',
-    '6': 'ষষ্ঠ শ্রেণি',
-    '7': 'সপ্তম শ্রেণি',
-    '8': 'অষ্টম শ্রেণি',
-    '9': 'নবম শ্রেণি',
-    '10': 'দশম শ্রেণি'
-  };
+  const resultModal = document.getElementById('result-details-modal');
+  const modalClose = document.getElementById('close-result-modal');
+  const modalClassBadge = document.getElementById('modal-class-badge');
+  const modalTitle = document.getElementById('modal-title');
+  const modalMeta = document.getElementById('modal-meta');
+  const modalContent = document.getElementById('modal-content');
+  const attachmentSection = document.getElementById('modal-attachment-section');
+  const pdfViewer = document.getElementById('modal-pdf-viewer');
+  const downloadBtn = document.getElementById('modal-download-btn');
 
-  let currentSelectedClass = 'all';
-
-  // Function to render results list dynamically
-  async function renderPublicResults(className = 'all') {
-    if (detailedResultsHeader) {
-      const headerText = classTranslations[className] || 'সকল শ্রেণি';
-      detailedResultsHeader.querySelector('.section-header__text').textContent = 
-        className === 'all' ? 'সকল শ্রেণির পরীক্ষার ফলাফল সারসংক্ষেপ' : `${headerText}র পরীক্ষার ফলাফল`;
+  function showResultModal(resultItem) {
+    const classDetails = classMapping[resultItem.class] || { label: `${resultItem.class}ম শ্রেণি`, badgeClass: 'notice-item__badge--academic' };
+    
+    // Set text contents
+    modalTitle.textContent = resultItem.title;
+    modalContent.textContent = resultItem.content;
+    
+    const formattedDate = formatBengaliDate(resultItem.date);
+    const formattedYear = toBengaliNumerals(resultItem.year);
+    modalMeta.textContent = `📅 ${formattedDate} | পরীক্ষার বছর: ${formattedYear}`;
+    
+    // Set class badge
+    modalClassBadge.textContent = classDetails.label;
+    modalClassBadge.className = `notice-item__badge ${classDetails.badgeClass}`;
+    
+    // Handle attachment
+    if (resultItem.pdfUrl) {
+      const mediaUrl = getMediaUrl(resultItem.pdfUrl);
+      pdfViewer.src = mediaUrl;
+      downloadBtn.href = mediaUrl;
+      attachmentSection.style.display = 'block';
+    } else {
+      pdfViewer.src = '';
+      attachmentSection.style.display = 'none';
     }
+    
+    // Open Modal
+    resultModal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Lock background scroll
+  }
 
-    resultTableWrapper.innerHTML = `
-      <div style="text-align: center; padding: 40px 0; color: #555; background: #fff; border-radius: 8px; border: 1px solid #eee;">
+  function closeResultModal() {
+    resultModal.classList.remove('active');
+    document.body.style.overflow = '';
+    // Clear pdf viewer source to stop downloading
+    pdfViewer.src = '';
+  }
+
+  modalClose.addEventListener('click', closeResultModal);
+  resultModal.addEventListener('click', (e) => {
+    if (e.target === resultModal) {
+      closeResultModal();
+    }
+  });
+
+  // Keep all fetched results in global list for quick lookups
+  let allFetchedResults = [];
+
+  // Function to render results list
+  async function renderResults(className = 'all', targetResultId = null) {
+    // Show Loading Skeleton / Indicator
+    resultListContainer.innerHTML = `
+      <div style="text-align: center; padding: 40px 0; color: #555; width: 100%;">
         <div class="loader-spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid var(--color-primary, #1c69b5); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 15px;"></div>
         <p>ফলাফল লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...</p>
       </div>
     `;
 
+    // Fetch results from backend
     const results = await fetchPublicResults(className);
+    allFetchedResults = results;
 
     if (results.length === 0) {
-      resultTableWrapper.innerHTML = `
-        <table class="result-table">
-          <thead>
-            <tr>
-              <th>ক্রমিক</th>
-              <th>শিক্ষার্থীর নাম</th>
-              <th>রোল নং</th>
-              <th>মোট নম্বর</th>
-              <th>গ্রেড</th>
-              <th>জিপিএ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="6" style="padding: 20px; text-align: center; color: #e74c3c; font-weight: bold;">
-                কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      resultListContainer.innerHTML = `
+        <div style="text-align: center; padding: 50px 0; color: #e74c3c; width: 100%; border: 1px dashed #ccc; border-radius: 8px; background: #fff;">
+          <h3>📭 কোন ফলাফল নোটিশ পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি</h3>
+          <p>Results not found or not yet published</p>
+        </div>
       `;
       return;
     }
 
-    let tbodyHTML = '';
-    results.forEach((item, index) => {
-      tbodyHTML += `
-        <tr>
-          <td>${toBengaliNumerals(index + 1)}</td>
-          <td>${item.studentName}</td>
-          <td>${toBengaliNumerals(item.roll)}</td>
-          <td>${toBengaliNumerals(item.totalMarks)}</td>
-          <td><span class="grade-badge grade-badge--${item.grade.toLowerCase().replace('+', '-plus').replace('-', '-minus')}">${item.grade}</span></td>
-          <td>${toBengaliNumerals(item.gpa.toFixed(2))}</td>
-        </tr>
+    // Build results list items HTML
+    let resultsHTML = '';
+    results.forEach(res => {
+      const resDate = new Date(res.date);
+      const day = toBengaliNumerals(resDate.getDate());
+      
+      const months = ['জানু', 'ফেব্রু', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টে', 'অক্টো', 'নভে', 'ডিসে'];
+      const monthYear = `${months[resDate.getMonth()]} ${toBengaliNumerals(resDate.getFullYear().toString().substring(2))}`;
+
+      const classDetails = classMapping[res.class] || { label: `${res.class}ম শ্রেণি`, badgeClass: 'notice-item__badge--academic' };
+      const classLabel = classDetails.label;
+      const classBadge = classDetails.badgeClass;
+
+      // Action buttons
+      const actionButtons = `
+        <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="btn btn--primary btn--sm btn-view-result" data-id="${res._id}">👁️ বিস্তারিত দেখুন</button>
+          ${res.pdfUrl ? `<a href="${getMediaUrl(res.pdfUrl)}" class="btn btn--secondary btn--sm" target="_blank">📥 ডাউনলোড (PDF)</a>` : ''}
+        </div>
+      `;
+
+      resultsHTML += `
+        <div class="notice-item animate-on-scroll visible" id="result-${res._id}" style="opacity: 1; transform: translateY(0); cursor: pointer;">
+          <div class="notice-item__date-box">
+            <span class="notice-item__day">${day}</span>
+            <span class="notice-item__month">${monthYear}</span>
+          </div>
+
+          <div class="notice-item__content" style="flex: 1;">
+            <h3>${res.title}</h3>
+            <p>${res.content.substring(0, 150)}${res.content.length > 150 ? '...' : ''}</p>
+            ${actionButtons}
+          </div>
+          <span class="notice-item__badge ${classBadge}">${classLabel}</span>
+        </div>
       `;
     });
 
-    resultTableWrapper.innerHTML = `
-      <table class="result-table">
-        <thead>
-          <tr>
-            <th>ক্রমিক</th>
-            <th>শিক্ষার্থীদের নাম</th>
-            <th>রোল নং</th>
-            <th>মোট নম্বর</th>
-            <th>গ্রেড</th>
-            <th>জিপিএ</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${tbodyHTML}
-        </tbody>
-      </table>
-    `;
+    resultListContainer.innerHTML = resultsHTML;
+
+    // Attach click listeners to result cards to open modal
+    const resultItems = resultListContainer.querySelectorAll('.notice-item');
+    resultItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        // Prevent opening if clicking on an anchor tag or button
+        if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+          return;
+        }
+        const resId = item.getAttribute('id').replace('result-', '');
+        const selectedRes = allFetchedResults.find(r => r._id === resId);
+        if (selectedRes) {
+          showResultModal(selectedRes);
+        }
+      });
+    });
+
+    // Attach click listeners to specific View buttons
+    const viewButtons = resultListContainer.querySelectorAll('.btn-view-result');
+    viewButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const resId = btn.getAttribute('data-id');
+        const selectedRes = allFetchedResults.find(r => r._id === resId);
+        if (selectedRes) {
+          showResultModal(selectedRes);
+        }
+      });
+    });
+
+    // Trigger target result modal if matched from hash on direct navigate
+    if (targetResultId) {
+      const selectedRes = results.find(r => r._id === targetResultId);
+      if (selectedRes) {
+        showResultModal(selectedRes);
+      }
+    }
   }
 
-  // Load All Results by default
-  renderPublicResults('all');
+  // Handle initial page load with potential hash routing
+  let initialResultId = null;
+  const hash = window.location.hash;
+  if (hash && hash.startsWith('#result-')) {
+    initialResultId = hash.replace('#result-', '');
+  }
 
-  // Bind Class Filters Click Handler
-  const filterButtons = document.querySelectorAll('#results-filter .filter-btn');
+  // Load all results on initial page render
+  await renderResults('all', initialResultId);
+
+  // Add click listeners to class filter buttons
   filterButtons.forEach(btn => {
-    btn.addEventListener('click', async () => {
+    btn.addEventListener('click', async (e) => {
+      // Toggle active classes
       filterButtons.forEach(b => b.classList.remove('filter-btn--active'));
       btn.classList.add('filter-btn--active');
 
       const id = btn.getAttribute('id');
       const className = id.replace('rf-', ''); // e.g. "rf-6" -> "6"
-      currentSelectedClass = className;
-      await renderPublicResults(className);
+      await renderResults(className);
     });
   });
-
-  searchForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const className = document.getElementById('search-class').value;
-    const examType = document.getElementById('search-exam').value;
-    const year = document.getElementById('search-year').value;
-    const roll = document.getElementById('search-roll').value;
-
-    // Show Loading
-    resultTableWrapper.innerHTML = `
-      <div style="text-align: center; padding: 40px 0; color: #555; background: #fff; border-radius: 8px; border: 1px solid #eee;">
-        <div class="loader-spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid var(--color-primary, #1c69b5); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 15px;"></div>
-        <p>ফলাফল অনুসন্ধান করা হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...</p>
-      </div>
-    `;
-
-    // Query result from backend
-    const response = await queryStudentResult(roll, className, examType, year);
-
-    if (!response.success) {
-      // Show Error / Empty State
-      if (detailedResultsHeader) {
-        detailedResultsHeader.querySelector('.section-header__text').textContent = 'অনুসন্ধানের ফলাফল';
-      }
-      resultTableWrapper.innerHTML = `
-        <div style="text-align: center; padding: 50px 0; color: #e74c3c; border: 1px dashed #e74c3c; border-radius: 8px; background: #fff;">
-          <span style="font-size: 3rem;">⚠️</span>
-          <h3 style="margin-top: 15px; color: #c0392b;">ফলাফল পাওয়া যায়নি!</h3>
-          <p style="color: #666; margin-top: 8px; font-weight: bold;">কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>
-          <button id="btn-reset-results" class="btn btn--secondary" style="margin-top: 15px; padding: 8px 16px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px;">পূর্ববর্তী তালিকায় ফিরে যান</button>
-        </div>
-      `;
-
-      document.getElementById('btn-reset-results').addEventListener('click', () => {
-        resetToStatic();
-      });
-      return;
-    }
-
-    const studentResult = response.data;
-
-    // Update Header Text to represent Student Report Card
-    if (detailedResultsHeader) {
-      detailedResultsHeader.querySelector('.section-header__text').textContent = 
-        `ব্যক্তিগত নম্বরপত্র: ${studentResult.studentName} (রোল: ${toBengaliNumerals(studentResult.roll)})`;
-    }
-
-    const departmentText = departmentTranslations[studentResult.department] || 'সাধারণ';
-    const examText = examTypeTranslations[studentResult.examType] || studentResult.examType;
-
-    // Build Premium Dynamic Report Card view instead of a generic table list
-    resultTableWrapper.innerHTML = `
-      <div class="grade-sheet-container" style="background: #fff; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 4px solid var(--color-primary, #1c69b5); overflow: hidden; max-width: 650px; margin: 0 auto;">
-        
-        <!-- Header Info -->
-        <div style="padding: 24px 30px; background: linear-gradient(to right, #f8faff, #edf3fc); border-bottom: 1px solid #e2eaf8; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-          <div>
-            <span style="font-size: 0.85rem; color: #777; text-transform: uppercase; font-weight: bold;">শিক্ষার্থীর নাম</span>
-            <h4 style="margin: 4px 0 0; color: var(--color-primary, #1c69b5); font-size: 1.25rem;">${studentResult.studentName}</h4>
-          </div>
-          <div style="text-align: right;">
-            <span style="font-size: 0.85rem; color: #777; text-transform: uppercase; font-weight: bold;">রোল নম্বর</span>
-            <h4 style="margin: 4px 0 0; color: #333; font-size: 1.2rem;">${toBengaliNumerals(studentResult.roll)}</h4>
-          </div>
-          <div>
-            <span style="font-size: 0.85rem; color: #777; text-transform: uppercase; font-weight: bold;">শ্রেণি ও বিভাগ</span>
-            <p style="margin: 4px 0 0; font-weight: 600; color: #555;">${toBengaliNumerals(studentResult.class)}ম শ্রেণি (${departmentText})</p>
-          </div>
-          <div style="text-align: right;">
-            <span style="font-size: 0.85rem; color: #777; text-transform: uppercase; font-weight: bold;">পরীক্ষার ধরন ও বছর</span>
-            <p style="margin: 4px 0 0; font-weight: 600; color: #555;">${examText} পরীক্ষা - ${toBengaliNumerals(studentResult.year)}</p>
-          </div>
-        </div>
-
-        <!-- Grade Badges Grid -->
-        <div style="padding: 30px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; text-align: center;">
-          <div style="padding: 20px; background: #fdfefe; border: 1px solid #eee; border-radius: 6px;">
-            <span style="font-size: 0.8rem; color: #888;">মোট প্রাপ্ত নম্বর</span>
-            <h2 style="margin: 8px 0 0; color: var(--color-primary, #1c69b5);">${toBengaliNumerals(studentResult.totalMarks)}</h2>
-          </div>
-          <div style="padding: 20px; background: #fdfefe; border: 1px solid #eee; border-radius: 6px;">
-            <span style="font-size: 0.8rem; color: #888;">লেটার গ্রেড</span>
-            <h2 style="margin: 8px 0 0; color: #2ecc71;">${studentResult.grade}</h2>
-          </div>
-          <div style="padding: 20px; background: #fdfefe; border: 1px solid #eee; border-radius: 6px;">
-            <span style="font-size: 0.8rem; color: #888;">জিপিএ (GPA)</span>
-            <h2 style="margin: 8px 0 0; color: #e67e22;">${toBengaliNumerals(studentResult.gpa.toFixed(2))}</h2>
-          </div>
-        </div>
-
-        <!-- Reset Button -->
-        <div style="padding: 20px; text-align: center; background: #f9f9f9; border-top: 1px solid #eee;">
-          <button id="btn-reset-results" class="btn btn--outline" style="padding: 10px 20px; cursor: pointer; font-weight: bold;">← অন্য ফলাফল খুঁজুন</button>
-        </div>
-      </div>
-    `;
-
-    document.getElementById('btn-reset-results').addEventListener('click', () => {
-      resetToStatic();
-    });
-  });
-
-  function resetToStatic() {
-    searchForm.reset();
-    renderPublicResults(currentSelectedClass);
-  }
 });
 
 // CSS Injection for dynamic loading spinner
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-`;
-document.head.appendChild(style);
+if (!document.getElementById('results-custom-spinner-css')) {
+  const style = document.createElement('style');
+  style.id = 'results-custom-spinner-css';
+  style.textContent = `
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .btn--sm {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      border-radius: 4px;
+      display: inline-block;
+    }
+  `;
+  document.head.appendChild(style);
+}

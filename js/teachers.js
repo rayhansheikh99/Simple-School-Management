@@ -37,6 +37,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const headteachers = teachers.filter(t => t.type === 'head');
   const assistants = teachers.filter(t => t.type === 'assistant');
 
+  const typeMapping = {
+    head: 'প্রধান শিক্ষক',
+    assistant: 'সহকারী শিক্ষক',
+    staff: 'স্টাফ'
+  };
+
   // Render Headteacher
   if (headteachers.length > 0) {
     let htHTML = '';
@@ -48,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
           <div class="teacher-card__info">
             <div class="teacher-card__name">${ht.name}</div>
-            <div class="teacher-card__designation">${ht.designation}</div>
+            <div class="teacher-card__designation">${typeMapping[ht.type] || 'প্রধান শিক্ষক'} | 📱 ${ht.phone}</div>
             <span class="teacher-card__subject">${ht.qualifications || ht.subject}</span>
           </div>
         </div>
@@ -70,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
           <div class="teacher-card__info">
             <div class="teacher-card__name">${ast.name}</div>
-            <div class="teacher-card__designation">${ast.designation}</div>
+            <div class="teacher-card__designation">${typeMapping[ast.type] || 'সহকারী শিক্ষক'} | 📱 ${ast.phone}</div>
             <span class="teacher-card__subject">${ast.subject}</span>
           </div>
         </div>

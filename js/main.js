@@ -381,8 +381,16 @@ async function applyDynamicSchoolSettings() {
 
     // 3. Update Hero Banner Image
     const heroImage = document.querySelector('.hero__image');
-    if (heroImage && settings.bannerUrl) {
-      heroImage.src = getLogoUrl(settings.bannerUrl, 'assets/images/hero_banner.png');
+    if (heroImage) {
+      heroImage.addEventListener('error', function () {
+        this.src = 'assets/images/hero_banner.png';
+      });
+
+      if (settings.bannerUrl) {
+        heroImage.src = getLogoUrl(settings.bannerUrl, 'assets/images/hero_banner.png');
+      } else {
+        heroImage.src = 'assets/images/hero_banner.png';
+      }
     }
 
     // 4. Update Footer About Column

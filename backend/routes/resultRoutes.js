@@ -10,6 +10,7 @@ const {
   deleteResult
 } = require('../controllers/resultController');
 const { protect, adminOnly } = require('../middleware/authMiddleware');
+const upload = require('../middleware/uploadMiddleware');
 
 router.get('/search', searchResult);
 router.get('/summary', getResultsSummary);
@@ -17,7 +18,7 @@ router.get('/public', getPublicResults);
 
 router.route('/')
   .get(protect, getAllResults)
-  .post(protect, adminOnly, createResult);
+  .post(protect, adminOnly, upload.single('pdf'), createResult);
 
 router.route('/:id')
   .delete(protect, adminOnly, deleteResult);
