@@ -183,29 +183,6 @@
           <form id="school-settings-form">
             <div class="settings-grid">
               
-              <!-- Bengali School Name -->
-              <div class="settings-group">
-                <label for="schoolName">বিদ্যালয়ের নাম (বাংলা) <span style="color: red;">*</span></label>
-                <input type="text" id="schoolName" name="schoolName" class="settings-input" placeholder="যেমন: ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়" required>
-              </div>
-
-              <!-- English School Name -->
-              <div class="settings-group">
-                <label for="schoolNameEnglish">বিদ্যালয়ের নাম (ইংরেজি) <span style="color: red;">*</span></label>
-                <input type="text" id="schoolNameEnglish" name="schoolNameEnglish" class="settings-input" placeholder="যেমন: Demo Govt. Model Pilot High School" required>
-              </div>
-
-              <!-- Established Year -->
-              <div class="settings-group">
-                <label for="establishedYear">প্রতিষ্ঠার বছর <span style="color: red;">*</span></label>
-                <input type="text" id="establishedYear" name="establishedYear" class="settings-input" placeholder="যেমন: ১৯৪৮" required>
-              </div>
-
-              <!-- Address -->
-              <div class="settings-group">
-                <label for="address">বিদ্যালয়ের ঠিকানা <span style="color: red;">*</span></label>
-                <input type="text" id="address" name="address" class="settings-input" placeholder="যেমন: মডেল টাউন, ঢাকা - ১২১৬" required>
-              </div>
 
               <!-- Phone Number -->
               <div class="settings-group">
@@ -229,49 +206,6 @@
               <div class="settings-group">
                 <label for="youtubeLink">ইউটিউব চ্যানেল লিংক</label>
                 <input type="url" id="youtubeLink" name="youtubeLink" class="settings-input" placeholder="যেমন: https://youtube.com/yourchannel">
-              </div>
-
-              <!-- About Text -->
-              <div class="settings-group settings-full">
-                <label for="aboutText">বিদ্যালয় পরিচিতি সংক্ষেপ</label>
-                <textarea id="aboutText" name="aboutText" rows="4" class="settings-input" style="resize: vertical; font-family: inherit;" placeholder="বিদ্যালয়ের ইতিহাস ও গৌরবময় ভূমিকা সংক্ষেপে বর্ণনা করুন..."></textarea>
-              </div>
-
-            </div>
-
-            <!-- Upload Fields -->
-            <div class="db-header" style="margin-top: 40px; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-              <h3 style="margin: 0; color: #1c69b5; font-size: 1.2rem;">🖼️ ব্র্যান্ডিং লোগো ও ব্যানার</h3>
-            </div>
-
-            <div class="file-upload-container">
-              
-              <!-- Logo Upload Card -->
-              <div class="settings-group">
-                <label>বিদ্যালয়ের লোগো</label>
-                <div class="upload-card" id="logo-dropzone" onclick="document.getElementById('logo-input').click()">
-                  <img id="logo-preview" src="" alt="লোগো প্রিভিউ" style="display: none;">
-                  <div class="upload-placeholder" id="logo-placeholder">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                    <span class="upload-placeholder-title">লোগো নির্বাচন করুন</span>
-                    <span class="upload-placeholder-desc">ক্লিক করুন অথবা ফাইল ড্র্যাগ করুন (PNG/JPG)</span>
-                  </div>
-                  <input type="file" id="logo-input" name="logo" accept="image/*" style="display: none;">
-                </div>
-              </div>
-
-              <!-- Banner Upload Card -->
-              <div class="settings-group">
-                <label>ক্যাম্পাস ব্যানার (হোমপেজ ব্যাকগ্রাউন্ড)</label>
-                <div class="upload-card" id="banner-dropzone" onclick="document.getElementById('banner-input').click()">
-                  <img id="banner-preview" src="" alt="ব্যানার প্রিভিউ" style="display: none;">
-                  <div class="upload-placeholder" id="banner-placeholder">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                    <span class="upload-placeholder-title">ব্যানার নির্বাচন করুন</span>
-                    <span class="upload-placeholder-desc">ক্লিক করুন অথবা ফাইল ড্র্যাগ করুন (1920x600 সাজেস্টেড)</span>
-                  </div>
-                  <input type="file" id="banner-input" name="banner" accept="image/*" style="display: none;">
-                </div>
               </div>
 
             </div>
@@ -411,26 +345,11 @@
         Swal.close();
 
         if (data) {
-          document.getElementById('schoolName').value = data.schoolName || '';
-          document.getElementById('schoolNameEnglish').value = data.schoolNameEnglish || '';
-          document.getElementById('establishedYear').value = data.establishedYear || '';
-          document.getElementById('address').value = data.address || '';
           document.getElementById('phone').value = data.phone || '';
           document.getElementById('email').value = data.email || '';
           document.getElementById('facebookLink').value = data.facebookLink || '';
           document.getElementById('youtubeLink').value = data.youtubeLink || '';
-          document.getElementById('aboutText').value = data.aboutText || '';
 
-          if (data.logoUrl) {
-            document.getElementById('logo-preview').src = getLogoUrl(data.logoUrl);
-            document.getElementById('logo-preview').style.display = 'block';
-            document.getElementById('logo-placeholder').style.display = 'none';
-          }
-          if (data.bannerUrl) {
-            document.getElementById('banner-preview').src = getLogoUrl(data.bannerUrl, 'assets/images/hero_banner.png');
-            document.getElementById('banner-preview').style.display = 'block';
-            document.getElementById('banner-placeholder').style.display = 'none';
-          }
         } else {
           Swal.fire({
             icon: 'warning',
@@ -440,63 +359,7 @@
         }
       }
 
-      // Live image preview generators
-      setupImagePreview('logo-input', 'logo-preview', 'logo-placeholder');
-      setupImagePreview('banner-input', 'banner-preview', 'banner-placeholder');
 
-      function setupImagePreview(inputId, previewId, placeholderId) {
-        const fileInput = document.getElementById(inputId);
-        const previewImg = document.getElementById(previewId);
-        const placeholderDiv = document.getElementById(placeholderId);
-
-        fileInput.addEventListener('change', function() {
-          const file = this.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-              previewImg.src = e.target.result;
-              previewImg.style.display = 'block';
-              placeholderDiv.style.display = 'none';
-            }
-            reader.readAsDataURL(file);
-          }
-        });
-      }
-
-      // Dropzone drag-and-drop triggers
-      setupDragAndDrop('logo-dropzone', 'logo-input');
-      setupDragAndDrop('banner-dropzone', 'banner-input');
-
-      function setupDragAndDrop(dropzoneId, inputId) {
-        const dropzone = document.getElementById(dropzoneId);
-        const input = document.getElementById(inputId);
-
-        ['dragenter', 'dragover'].forEach(eventName => {
-          dropzone.addEventListener(eventName, (e) => {
-            e.preventDefault();
-            dropzone.style.borderColor = '#1c69b5';
-            dropzone.style.background = '#f4f9fc';
-          }, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-          dropzone.addEventListener(eventName, (e) => {
-            e.preventDefault();
-            dropzone.style.borderColor = '#ccd3db';
-            dropzone.style.background = '#fbfcfd';
-          }, false);
-        });
-
-        dropzone.addEventListener('drop', (e) => {
-          const dt = e.dataTransfer;
-          const files = dt.files;
-          if (files.length) {
-            input.files = files;
-            // trigger change event to render preview
-            input.dispatchEvent(new Event('change'));
-          }
-        }, false);
-      }
 
       // Form submission handler
       const form = document.getElementById('school-settings-form');
@@ -504,25 +367,11 @@
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('schoolName', document.getElementById('schoolName').value.trim());
-        formData.append('schoolNameEnglish', document.getElementById('schoolNameEnglish').value.trim());
-        formData.append('establishedYear', document.getElementById('establishedYear').value.trim());
-        formData.append('address', document.getElementById('address').value.trim());
         formData.append('phone', document.getElementById('phone').value.trim());
         formData.append('email', document.getElementById('email').value.trim());
         formData.append('facebookLink', document.getElementById('facebookLink').value.trim());
         formData.append('youtubeLink', document.getElementById('youtubeLink').value.trim());
-        formData.append('aboutText', document.getElementById('aboutText').value.trim());
 
-        const logoFile = document.getElementById('logo-input').files[0];
-        if (logoFile) {
-          formData.append('logo', logoFile);
-        }
-
-        const bannerFile = document.getElementById('banner-input').files[0];
-        if (bannerFile) {
-          formData.append('banner', bannerFile);
-        }
 
         Swal.fire({
           title: 'আপডেট সংরক্ষণ করা হচ্ছে...',

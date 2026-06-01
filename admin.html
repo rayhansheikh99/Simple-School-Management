@@ -15,6 +15,10 @@
   <header class="top-bar" id="top-bar">
     <div class="container">
       <div class="top-bar__left">
+        <!-- Hamburger button (mobile only) -->
+        <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" aria-label="মেনু খুলুন">
+          <span></span><span></span><span></span>
+        </button>
         <img src="assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
         <div class="top-bar__info">
           <a href="index.html" style="color:inherit;"><h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1></a>
@@ -26,6 +30,9 @@
       </div>
     </div>
   </header>
+
+  <!-- Sidebar overlay backdrop (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <div class="admin-wrapper">
 
@@ -156,17 +163,17 @@
           </div>
 
           <!-- Bottom Grid for Quick Actions and Activity Logs -->
-          <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 30px; margin-top: 30px; flex-wrap: wrap;">
+          <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 30px; margin-top: 30px;" class="overview-bottom-grid">
             
             <!-- Quick Actions Hub -->
             <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
               <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 1.15rem; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; display: flex; align-items: center; gap: 8px;">⚡ কুইক অ্যাকশন হাব</h3>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                <button class="db-action-btn" onclick="switchToTab('notices-tab')">📢 নোটিশ লিখুন</button>
-                <button class="db-action-btn" onclick="switchToTab('teachers-tab')">👨‍🏫 শিক্ষক যুক্ত করুন</button>
-                <button class="db-action-btn" onclick="switchToTab('results-tab')">📊 ফলাফল এন্ট্রি</button>
-                <button class="db-action-btn" onclick="switchToTab('gallery-tab')">📸 ফটো আপলোড</button>
-                <button class="db-action-btn" onclick="switchToTab('registrations-tab')" style="grid-column: 1 / -1;">📝 ভর্তি আবেদনসমূহ পরিচালনা</button>
+                <button class="db-action-btn" onclick="switchToTab('notices-tab')"><span style="font-size:1.4rem;">📢</span><span>নোটিশ লিখুন</span></button>
+                <button class="db-action-btn" onclick="switchToTab('teachers-tab')"><span style="font-size:1.4rem;">👨‍🏫</span><span>শিক্ষক যুক্ত করুন</span></button>
+                <button class="db-action-btn" onclick="switchToTab('results-tab')"><span style="font-size:1.4rem;">📊</span><span>ফলাফল এন্ট্রি</span></button>
+                <button class="db-action-btn" onclick="switchToTab('gallery-tab')"><span style="font-size:1.4rem;">📸</span><span>ফটো আপলোড</span></button>
+                <button class="db-action-btn" onclick="switchToTab('registrations-tab')" style="grid-column: 1 / -1;"><span style="font-size:1.4rem;">📝</span><span>ভর্তি আবেদনসমূহ পরিচালনা</span></button>
               </div>
             </div>
 
@@ -198,7 +205,7 @@
 
       // Check current auth status
       if (jwtToken) {
-        showDashboard();
+        showDashboard(false);
       }
 
       // Login form submit handler
@@ -231,15 +238,8 @@
             adminUser = data.user.username;
             adminRole = data.user.role;
             
-            Swal.fire({
-              icon: 'success',
-              title: 'লগইন সফল!',
-              text: 'প্রশাসনিক ড্যাশবোর্ডে আপনাকে স্বাগতম।',
-              timer: 1500,
-              showConfirmButton: false
-            }).then(() => {
-              showDashboard();
-            });
+            // Immediately transition to dashboard and show the cute preloader
+            showDashboard(true);
           } else {
             Swal.fire({ icon: 'error', title: 'লগইন ব্যর্থ', text: data.message });
             submitBtn.disabled = false;
@@ -257,7 +257,13 @@
         }
       });
 
-      function showDashboard() {
+      function showDashboard(isJustLoggedIn = false) {
+        let hideFn = null;
+        if (isJustLoggedIn && typeof window.triggerAdminPreloader === 'function') {
+          sessionStorage.setItem('adminLoaded', 'true');
+          hideFn = window.triggerAdminPreloader();
+        }
+
         loginContainer.style.display = 'none';
         dashboardGrid.style.display = 'grid';
         document.getElementById('admin-username').textContent = adminUser;
@@ -275,7 +281,22 @@
           }
         }
 
-        loadDashboardOverview();
+        loadDashboardOverview().finally(() => {
+          if (hideFn) {
+            hideFn(() => {
+              // Show beautiful success toast after the preloader finishes fading out
+              Swal.fire({
+                icon: 'success',
+                title: 'লগইন সফল!',
+                text: 'প্রশাসনিক ড্যাশবোর্ডে আপনাকে স্বাগতম।',
+                timer: 2500,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+              });
+            });
+          }
+        });
       }
 
       // Logout handler
@@ -454,5 +475,6 @@
 
     });
   </script>
+  <script src="js/admin-sidebar.js"></script>
 </body>
 </html>

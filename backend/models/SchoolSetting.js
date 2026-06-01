@@ -37,7 +37,7 @@ const SchoolSettingSchema = new mongoose.Schema({
   },
   bannerUrl: {
     type: String,
-    default: 'assets/images/hero_bg.jpg'
+    default: 'assets/images/hero_banner.png'
   },
   facebookLink: {
     type: String,

@@ -17,7 +17,7 @@ const getSettings = async (req, res) => {
         phone: '০১৭০০-০০০০০০',
         email: 'info@demoschool.edu.bd',
         logoUrl: 'assets/images/school_logo.png',
-        bannerUrl: 'assets/images/hero_bg.jpg',
+        bannerUrl: 'assets/images/hero_banner.png',
         facebookLink: 'https://facebook.com',
         youtubeLink: 'https://youtube.com',
         aboutText: 'ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয় অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৪৮ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'

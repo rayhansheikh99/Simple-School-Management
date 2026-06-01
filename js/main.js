@@ -14,6 +14,54 @@ if (typeof Swal === 'undefined') {
 document.addEventListener('DOMContentLoaded', function () {
 
   // ============================================================
+  // CUTE PRELOADER INJECTION & FADE-OUT (MIN 3 SEC - SESSION INITIAL LOAD ONLY)
+  // ============================================================
+  const hasLoadedThisSession = sessionStorage.getItem('websiteLoaded');
+
+  if (!hasLoadedThisSession) {
+    sessionStorage.setItem('websiteLoaded', 'true');
+    const preloaderStartTime = Date.now();
+    const preloaderDiv = document.createElement('div');
+    preloaderDiv.id = 'preloader';
+    preloaderDiv.innerHTML = `
+      <div class="preloader-bg-blob preloader-bg-blob--1"></div>
+      <div class="preloader-bg-blob preloader-bg-blob--2"></div>
+      <div class="preloader-content">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <div class="book-loader">
+            <div class="book-loader__spine"></div>
+            <div class="book-loader__page book-loader__page--left"></div>
+            <div class="book-loader__page book-loader__page--right"></div>
+            <div class="book-loader__page book-loader__page--flip"></div>
+          </div>
+          <p class="preloader-subtitle">
+            <span class="preloader-dots"><span></span><span></span><span></span></span>
+          </p>
+        </div>
+      </div>
+    `;
+    document.body.prepend(preloaderDiv);
+
+    const hidePreloader = () => {
+      const elapsed = Date.now() - preloaderStartTime;
+      const delay = Math.max(3000 - elapsed, 0);
+
+      setTimeout(() => {
+        preloaderDiv.classList.add('fade-out');
+        setTimeout(() => {
+          preloaderDiv.remove();
+        }, 500);
+      }, delay);
+    };
+
+    if (document.readyState === 'complete') {
+      hidePreloader();
+    } else {
+      window.addEventListener('load', hidePreloader);
+    }
+  }
+
+  // ============================================================
   // Mobile Navigation Toggle
   // ============================================================
   const navToggle = document.querySelector('.nav-toggle');
@@ -348,58 +396,9 @@ async function applyDynamicSchoolSettings() {
     const settings = await fetchSettings();
     if (!settings) return;
 
-    // 1. Update document title
-    if (settings.schoolName) {
-      document.title = document.title.replaceAll('ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়', settings.schoolName);
-    }
 
-    // 2. Update top bar elements
-    const topBarTitle = document.querySelector('.top-bar__title');
-    if (topBarTitle && settings.schoolName) {
-      topBarTitle.textContent = settings.schoolName;
-    }
 
-    const topBarSubtitle = document.querySelector('.top-bar__subtitle');
-    if (topBarSubtitle && settings.schoolNameEnglish) {
-      if (topBarSubtitle.textContent.includes('|')) {
-        const parts = topBarSubtitle.textContent.split('|');
-        topBarSubtitle.textContent = `${settings.schoolNameEnglish} | ${parts[1].trim()}`;
-      } else {
-        topBarSubtitle.textContent = settings.schoolNameEnglish;
-      }
-    }
-
-    const topBarLogo = document.querySelector('.top-bar__logo');
-    if (topBarLogo && settings.logoUrl) {
-      topBarLogo.src = getLogoUrl(settings.logoUrl);
-    }
-
-    const topBarBadge = document.querySelector('.top-bar__badge--gold');
-    if (topBarBadge && settings.establishedYear) {
-      topBarBadge.textContent = `📅 স্থাপিত: ${toBengaliNumerals(settings.establishedYear)} খ্রি.`;
-    }
-
-    // 3. Update Hero Banner Image
-    const heroImage = document.querySelector('.hero__image');
-    if (heroImage) {
-      heroImage.addEventListener('error', function () {
-        this.src = 'assets/images/hero_banner.png';
-      });
-
-      if (settings.bannerUrl) {
-        heroImage.src = getLogoUrl(settings.bannerUrl, 'assets/images/hero_banner.png');
-      } else {
-        heroImage.src = 'assets/images/hero_banner.png';
-      }
-    }
-
-    // 4. Update Footer About Column
-    const footerAboutText = document.querySelector('#footer-about .footer-col__text');
-    if (footerAboutText && settings.aboutText) {
-      footerAboutText.textContent = settings.aboutText;
-    }
-
-    // 5. Update Footer Contact Column
+    // 3. Update Footer Contact Column
     const footerContact = document.getElementById('footer-contact');
     if (footerContact) {
       const contactDivs = footerContact.querySelectorAll('.footer-contact');
@@ -419,7 +418,7 @@ async function applyDynamicSchoolSettings() {
       }
     }
 
-    // 6. Update Footer Social Links
+    // 4. Update Footer Social Links
     const socialFb = document.getElementById('social-fb');
     if (socialFb && settings.facebookLink) {
       socialFb.href = settings.facebookLink;
@@ -428,22 +427,6 @@ async function applyDynamicSchoolSettings() {
     if (socialYt && settings.youtubeLink) {
       socialYt.href = settings.youtubeLink;
     }
-
-    // 7. Update Copyright Text in footer
-    const footerBottomContainer = document.querySelector('.footer-bottom .container');
-    if (footerBottomContainer && settings.schoolName) {
-      footerBottomContainer.innerHTML = footerBottomContainer.innerHTML.replaceAll(
-        'ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়',
-        settings.schoolName
-      );
-    }
-
-    // 8. Replace dynamic table values on index page if there is an info card
-    document.querySelectorAll('td').forEach(td => {
-      if (td.textContent.trim() === 'ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়') {
-        td.textContent = settings.schoolName;
-      }
-    });
 
   } catch (error) {
     console.error('Error applying dynamic school settings:', error);

@@ -3,12 +3,71 @@
    Frontend Client API Connector
    ============================================================ */
 
-const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+// ============================================================
+// ADMIN PANEL CUTE PRELOADER INJECTION & FADE-OUT (MIN 3 SEC - SESSION INITIAL LOAD ONLY)
+// ============================================================
+window.triggerAdminPreloader = () => {
+  if (document.getElementById('preloader')) return null;
+
+  const preloaderStartTime = Date.now();
+  const preloaderDiv = document.createElement('div');
+  preloaderDiv.id = 'preloader';
+  preloaderDiv.innerHTML = `
+    <div class="preloader-bg-blob preloader-bg-blob--1"></div>
+    <div class="preloader-bg-blob preloader-bg-blob--2"></div>
+    <div class="preloader-content">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div class="book-loader">
+          <div class="book-loader__spine"></div>
+          <div class="book-loader__page book-loader__page--left"></div>
+          <div class="book-loader__page book-loader__page--right"></div>
+          <div class="book-loader__page book-loader__page--flip"></div>
+        </div>
+        <p class="preloader-subtitle">
+          <span class="preloader-dots"><span></span><span></span><span></span></span>
+        </p>
+      </div>
+    </div>
+  `;
+  document.body.prepend(preloaderDiv);
+
+  const hidePreloader = (onComplete) => {
+    const elapsed = Date.now() - preloaderStartTime;
+    const delay = Math.max(3000 - elapsed, 0);
+
+    setTimeout(() => {
+      preloaderDiv.classList.add('fade-out');
+      setTimeout(() => {
+        preloaderDiv.remove();
+        if (typeof onComplete === 'function') {
+          onComplete();
+        }
+      }, 500);
+    }, delay);
+  };
+
+  return hidePreloader;
+};
+
+
+const API_BASE_URL = (
+  window.location.hostname === 'localhost' || 
+  window.location.hostname === '127.0.0.1' || 
+  window.location.hostname === '' || 
+  window.location.protocol === 'file:'
+)
   ? 'http://localhost:5000/api'
   : 'https://simple-school-management.onrender.com/api';
-const UPLOADS_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+
+const UPLOADS_BASE_URL = (
+  window.location.hostname === 'localhost' || 
+  window.location.hostname === '127.0.0.1' || 
+  window.location.hostname === '' || 
+  window.location.protocol === 'file:'
+)
   ? 'http://localhost:5000'
   : 'https://simple-school-management.onrender.com';
+
 
 // Helper: Translate digits to Bengali numerals
 function toBengaliNumerals(num) {
@@ -219,6 +278,7 @@ async function updateSettings(formData, token) {
 // Helper: Resolve logo/banner image paths safely with specific fallbacks
 function getLogoUrl(logoPath, fallback = 'assets/images/school_logo.png') {
   if (!logoPath) return fallback;
+  if (logoPath.includes('hero_bg.jpg')) return 'assets/images/hero_banner.png';
   if (logoPath.startsWith('http://') || logoPath.startsWith('https://') || logoPath.startsWith('assets/')) {
     return logoPath;
   }
