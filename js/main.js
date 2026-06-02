@@ -124,7 +124,36 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ============================================================
-  // Back to Top Button
+  // Reusable Premium Scroll Easing Function (Ease-In-Out Cubic)
+  // ============================================================
+  function smoothScrollTo(targetY, duration = 800) {
+    const startY = window.scrollY || window.pageYOffset;
+    const distance = targetY - startY;
+    let startTime = null;
+
+    // Cubic Easing Function: easeInOutCubic
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function animation(currentTime) {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const easedProgress = easeInOutCubic(progress);
+
+      window.scrollTo(0, startY + distance * easedProgress);
+
+      if (timeElapsed < duration) {
+        requestAnimationFrame(animation);
+      }
+    }
+
+    requestAnimationFrame(animation);
+  }
+
+  // ============================================================
+  // Back to Top Button with Custom Scroll Easing
   // ============================================================
   const backToTop = document.querySelector('.back-to-top');
 
@@ -138,10 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     backToTop.addEventListener('click', function () {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+      smoothScrollTo(0, 800); // 800ms animation using custom Cubic Easing
     });
   }
 
@@ -255,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ============================================================
-  // Smooth scroll for anchor links
+  // Smooth scroll for anchor links with Custom Easing
   // ============================================================
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
@@ -264,10 +290,14 @@ document.addEventListener('DOMContentLoaded', function () {
       var targetEl = document.querySelector(targetId);
       if (targetEl) {
         e.preventDefault();
-        targetEl.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
+        
+        // Calculate offset position to account for the sticky main menu
+        const navHeader = document.querySelector('.main-nav');
+        const headerOffset = navHeader ? navHeader.offsetHeight : 60;
+        const elementPosition = targetEl.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+        smoothScrollTo(offsetPosition, 900); // 900ms duration with custom Cubic Easing
       }
     });
   });
@@ -385,6 +415,74 @@ document.addEventListener('DOMContentLoaded', function () {
   applyDynamicSchoolSettings();
 
 });
+
+// ============================================================
+// Ease Scroll (Vanilla JS) — Fixed for modern browsers
+// ============================================================
+(function () {
+  // Skip on touch/mobile devices
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+
+  var goUp = true;
+  var end = null;
+  var interval = null;
+
+  function getScrollTop() {
+    return window.scrollY || window.pageYOffset;
+  }
+
+  function getScrollHeight() {
+    return document.documentElement.scrollHeight;
+  }
+
+  function getWindowHeight() {
+    return window.innerHeight;
+  }
+
+  function handle(delta) {
+    var animationInterval = 16;
+    var scrollSpeed = 10;
+
+    if (end == null) {
+      end = getScrollTop();
+    }
+    end -= 40 * delta;
+    goUp = delta > 0;
+
+    if (interval == null) {
+      interval = setInterval(function () {
+        var scrollTop = getScrollTop();
+        var step = Math.round((end - scrollTop) / scrollSpeed);
+        if (
+          scrollTop <= 0 ||
+          scrollTop >= getScrollHeight() - getWindowHeight() ||
+          (goUp && step > -1) ||
+          (!goUp && step < 1)
+        ) {
+          clearInterval(interval);
+          interval = null;
+          end = null;
+        }
+        window.scrollTo(0, scrollTop + step);
+      }, animationInterval);
+    }
+  }
+
+  // Modern 'wheel' event — works in Chrome, Edge, Firefox, Safari
+  window.addEventListener('wheel', function (event) {
+    // Don't intercept if modals/lightbox are open
+    if (document.body.style.overflow === 'hidden') return;
+
+    // Don't intercept if Ctrl held (browser zoom)
+    if (event.ctrlKey) return;
+
+    // Use modern deltaY property
+    var delta = -event.deltaY / 40;
+
+    handle(delta);
+    event.preventDefault();
+  }, { passive: false });
+})();
 
 // ============================================================
 // Apply Dynamic School Settings globally from DB
