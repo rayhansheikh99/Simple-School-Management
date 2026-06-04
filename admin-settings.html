@@ -131,6 +131,10 @@
   <header class="top-bar" id="top-bar">
     <div class="container">
       <div class="top-bar__left">
+        <!-- Hamburger button (mobile only) -->
+        <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" aria-label="মেনু খুলুন">
+          <span></span><span></span><span></span>
+        </button>
         <img src="assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
         <div class="top-bar__info">
           <a href="index.html" style="color:inherit;"><h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1></a>
@@ -142,6 +146,9 @@
       </div>
     </div>
   </header>
+
+  <!-- Sidebar overlay backdrop (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <div class="admin-wrapper">
     <div class="dashboard-grid" id="dashboard-grid" style="display: grid;">
@@ -404,5 +411,6 @@
 
     });
   </script>
+  <script src="js/admin-sidebar.js"></script>
 </body>
 </html>
