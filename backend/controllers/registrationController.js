@@ -59,7 +59,10 @@ const getRegistrations = async (req, res) => {
       filter.status = status;
     }
 
-    const registrations = await StudentRegistration.find(filter).sort({ submittedAt: -1 });
+    const registrations = await StudentRegistration.findAll({
+      where: filter,
+      order: [['submittedAt', 'DESC']]
+    });
 
     res.json({
       success: true,
@@ -85,17 +88,13 @@ const updateRegistrationStatus = async (req, res) => {
   }
 
   try {
-    let registration = await StudentRegistration.findById(req.params.id);
+    const registration = await StudentRegistration.findByPk(req.params.id);
 
     if (!registration) {
       return res.status(404).json({ success: false, message: 'আবেদনটি খুঁজে পাওয়া যায়নি।' });
     }
 
-    registration = await StudentRegistration.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true, runValidators: true }
-    );
+    await registration.update({ status });
 
     res.json({ success: true, data: registration });
   } catch (error) {
@@ -108,13 +107,13 @@ const updateRegistrationStatus = async (req, res) => {
 // @access  Private/Admin
 const deleteRegistration = async (req, res) => {
   try {
-    const registration = await StudentRegistration.findById(req.params.id);
+    const registration = await StudentRegistration.findByPk(req.params.id);
 
     if (!registration) {
       return res.status(404).json({ success: false, message: 'আবেদনটি খুঁজে পাওয়া যায়নি।' });
     }
 
-    await StudentRegistration.findByIdAndDelete(req.params.id);
+    await registration.destroy();
 
     res.json({ success: true, message: 'আবেদনটি সফলভাবে মুছে ফেলা হয়েছে।' });
   } catch (error) {

@@ -66,11 +66,12 @@ const updateSettings = async (req, res) => {
     }
 
     // Save or update the single settings document in the database
-    const settings = await SchoolSetting.findOneAndUpdate(
-      {},
-      updateData,
-      { upsert: true, new: true, runValidators: true }
-    );
+    let settings = await SchoolSetting.findOne({});
+    if (settings) {
+      await settings.update(updateData);
+    } else {
+      settings = await SchoolSetting.create(updateData);
+    }
 
     res.json({
       success: true,

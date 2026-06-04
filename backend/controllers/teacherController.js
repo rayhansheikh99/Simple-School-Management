@@ -8,7 +8,12 @@ const path = require('path');
 const getTeachers = async (req, res) => {
   try {
     // Sort teachers: head first, then assistants, then staff. Within that, sort by custom order field.
-    const teachers = await Teacher.find({}).sort({ type: 1, order: 1 });
+    const teachers = await Teacher.findAll({
+      order: [
+        ['type', 'ASC'],
+        ['order', 'ASC']
+      ]
+    });
 
     res.json({
       success: true,
@@ -25,7 +30,7 @@ const getTeachers = async (req, res) => {
 // @access  Public
 const getTeacherById = async (req, res) => {
   try {
-    const teacher = await Teacher.findById(req.params.id);
+    const teacher = await Teacher.findByPk(req.params.id);
 
     if (!teacher) {
       return res.status(404).json({ success: false, message: 'Teacher not found' });
@@ -79,7 +84,7 @@ const createTeacher = async (req, res) => {
 // @access  Private/Admin
 const updateTeacher = async (req, res) => {
   try {
-    let teacher = await Teacher.findById(req.params.id);
+    const teacher = await Teacher.findByPk(req.params.id);
 
     if (!teacher) {
       return res.status(404).json({ success: false, message: 'Teacher not found' });
@@ -103,10 +108,7 @@ const updateTeacher = async (req, res) => {
       updateFields.order = parseInt(updateFields.order, 10);
     }
 
-    teacher = await Teacher.findByIdAndUpdate(req.params.id, updateFields, {
-      new: true,
-      runValidators: true
-    });
+    await teacher.update(updateFields);
 
     res.json({ success: true, data: teacher });
   } catch (error) {
@@ -119,7 +121,7 @@ const updateTeacher = async (req, res) => {
 // @access  Private/Admin
 const deleteTeacher = async (req, res) => {
   try {
-    const teacher = await Teacher.findById(req.params.id);
+    const teacher = await Teacher.findByPk(req.params.id);
 
     if (!teacher) {
       return res.status(404).json({ success: false, message: 'Teacher not found' });
@@ -133,7 +135,7 @@ const deleteTeacher = async (req, res) => {
       }
     }
 
-    await Teacher.findByIdAndDelete(req.params.id);
+    await teacher.destroy();
 
     res.json({ success: true, message: 'Teacher removed successfully' });
   } catch (error) {

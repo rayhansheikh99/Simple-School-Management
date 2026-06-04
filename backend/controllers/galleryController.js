@@ -12,7 +12,10 @@ const getGalleryItems = async (req, res) => {
       filter.category = req.query.category;
     }
 
-    const items = await GalleryItem.find(filter).sort({ date: -1 });
+    const items = await GalleryItem.findAll({
+      where: filter,
+      order: [['date', 'DESC']]
+    });
 
     res.json({
       success: true,
@@ -53,7 +56,7 @@ const createGalleryItem = async (req, res) => {
 // @access  Private/Admin
 const deleteGalleryItem = async (req, res) => {
   try {
-    const item = await GalleryItem.findById(req.params.id);
+    const item = await GalleryItem.findByPk(req.params.id);
 
     if (!item) {
       return res.status(404).json({ success: false, message: 'Gallery item not found' });
@@ -67,7 +70,7 @@ const deleteGalleryItem = async (req, res) => {
       }
     }
 
-    await GalleryItem.findByIdAndDelete(req.params.id);
+    await item.destroy();
 
     res.json({ success: true, message: 'Gallery item deleted successfully' });
   } catch (error) {

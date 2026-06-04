@@ -1,28 +1,44 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db').sequelize;
 
-const NoticeSchema = new mongoose.Schema({
+const Notice = sequelize.define('Notice', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   title: {
-    type: String,
-    required: [true, 'Please add a notice title'],
-    trim: true,
+    type: DataTypes.STRING,
+    allowNull: false,
+    set(value) {
+      this.setDataValue('title', value ? value.trim() : '');
+    }
   },
   content: {
-    type: String,
-    required: [true, 'Please add notice content'],
+    type: DataTypes.TEXT,
+    allowNull: false
   },
   category: {
-    type: String,
-    enum: ['academic', 'exam', 'event', 'admin'],
-    default: 'academic',
+    type: DataTypes.STRING,
+    defaultValue: 'academic',
+    validate: {
+      isIn: [['academic', 'exam', 'event', 'admin']]
+    }
   },
   pdfUrl: {
-    type: String,
-    default: '',
+    type: DataTypes.STRING,
+    defaultValue: ''
   },
   date: {
-    type: Date,
-    default: Date.now,
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   }
 });
 
-module.exports = mongoose.model('Notice', NoticeSchema);
+Notice.prototype.toJSON = function () {
+  const values = Object.assign({}, this.get());
+  values._id = values.id ? values.id.toString() : null;
+  return values;
+};
+
+module.exports = Notice;

@@ -1,41 +1,58 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db').sequelize;
 
-const ContactMessageSchema = new mongoose.Schema({
+const ContactMessage = sequelize.define('ContactMessage', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   name: {
-    type: String,
-    required: [true, 'Please add name'],
-    trim: true,
+    type: DataTypes.STRING,
+    allowNull: false,
+    set(value) {
+      this.setDataValue('name', value ? value.trim() : '');
+    }
   },
   email: {
-    type: String,
-    required: [true, 'Please add email address'],
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Please add a valid email',
-    ],
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      isEmail: true
+    }
   },
   phone: {
-    type: String,
-    default: '',
+    type: DataTypes.STRING,
+    defaultValue: ''
   },
   subject: {
-    type: String,
-    default: 'General Inquiry',
-    trim: true,
+    type: DataTypes.STRING,
+    defaultValue: 'General Inquiry',
+    set(value) {
+      this.setDataValue('subject', value ? value.trim() : 'General Inquiry');
+    }
   },
   message: {
-    type: String,
-    required: [true, 'Please add a message'],
+    type: DataTypes.TEXT,
+    allowNull: false
   },
   date: {
-    type: Date,
-    default: Date.now,
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   },
   status: {
-    type: String,
-    enum: ['unread', 'read', 'archived'],
-    default: 'unread',
+    type: DataTypes.STRING,
+    defaultValue: 'unread',
+    validate: {
+      isIn: [['unread', 'read', 'archived']]
+    }
   }
 });
 
-module.exports = mongoose.model('ContactMessage', ContactMessageSchema);
+ContactMessage.prototype.toJSON = function () {
+  const values = Object.assign({}, this.get());
+  values._id = values.id ? values.id.toString() : null;
+  return values;
+};
+
+module.exports = ContactMessage;

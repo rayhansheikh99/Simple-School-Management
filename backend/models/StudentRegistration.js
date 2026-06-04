@@ -1,68 +1,100 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db').sequelize;
 
-const StudentRegistrationSchema = new mongoose.Schema({
+const StudentRegistration = sequelize.define('StudentRegistration', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   studentName: {
-    type: String,
-    required: [true, 'শিক্ষার্থীর নাম আবশ্যক'],
-    trim: true,
+    type: DataTypes.STRING,
+    allowNull: false,
+    set(value) {
+      this.setDataValue('studentName', value ? value.trim() : '');
+    }
   },
   fatherName: {
-    type: String,
-    required: [true, 'পিতার নাম আবশ্যক'],
-    trim: true,
+    type: DataTypes.STRING,
+    allowNull: false,
+    set(value) {
+      this.setDataValue('fatherName', value ? value.trim() : '');
+    }
   },
   motherName: {
-    type: String,
-    required: [true, 'মাতার নাম আবশ্যক'],
-    trim: true,
+    type: DataTypes.STRING,
+    allowNull: false,
+    set(value) {
+      this.setDataValue('motherName', value ? value.trim() : '');
+    }
   },
   dateOfBirth: {
-    type: Date,
-    required: [true, 'জন্ম তারিখ আবশ্যক'],
+    type: DataTypes.DATE,
+    allowNull: false
   },
   gender: {
-    type: String,
-    enum: ['male', 'female'],
-    required: [true, 'লিঙ্গ নির্বাচন আবশ্যক'],
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      isIn: [['male', 'female']]
+    }
   },
   desiredClass: {
-    type: String,
-    enum: ['6', '7', '8', '9', '10'],
-    required: [true, 'ভর্তি ইচ্ছুক শ্রেণি নির্বাচন আবশ্যক'],
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      isIn: [['6', '7', '8', '9', '10']]
+    }
   },
   phone: {
-    type: String,
-    required: [true, 'অভিভাবকের মোবাইল নম্বর আবশ্যক'],
-    trim: true,
+    type: DataTypes.STRING,
+    allowNull: false,
+    set(value) {
+      this.setDataValue('phone', value ? value.trim() : '');
+    }
   },
   email: {
-    type: String,
-    default: '',
-    trim: true,
+    type: DataTypes.STRING,
+    defaultValue: '',
+    set(value) {
+      this.setDataValue('email', value ? value.trim() : '');
+    }
   },
   address: {
-    type: String,
-    required: [true, 'বর্তমান ঠিকানা আবশ্যক'],
-    trim: true,
+    type: DataTypes.STRING,
+    allowNull: false,
+    set(value) {
+      this.setDataValue('address', value ? value.trim() : '');
+    }
   },
   previousSchool: {
-    type: String,
-    default: '',
-    trim: true,
+    type: DataTypes.STRING,
+    defaultValue: '',
+    set(value) {
+      this.setDataValue('previousSchool', value ? value.trim() : '');
+    }
   },
   photo: {
-    type: String,
-    default: '',
+    type: DataTypes.STRING,
+    defaultValue: ''
   },
   status: {
-    type: String,
-    enum: ['pending', 'approved', 'rejected'],
-    default: 'pending',
+    type: DataTypes.STRING,
+    defaultValue: 'pending',
+    validate: {
+      isIn: [['pending', 'approved', 'rejected']]
+    }
   },
   submittedAt: {
-    type: Date,
-    default: Date.now,
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   }
 });
 
-module.exports = mongoose.model('StudentRegistration', StudentRegistrationSchema);
+StudentRegistration.prototype.toJSON = function () {
+  const values = Object.assign({}, this.get());
+  values._id = values.id ? values.id.toString() : null;
+  return values;
+};
+
+module.exports = StudentRegistration;

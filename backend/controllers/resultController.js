@@ -32,7 +32,10 @@ const getPublicResults = async (req, res) => {
     if (className && className !== 'all') {
       filter.class = className;
     }
-    const results = await Result.find(filter).sort({ date: -1 });
+    const results = await Result.findAll({
+      where: filter,
+      order: [['date', 'DESC']]
+    });
     res.json({ success: true, count: results.length, data: results });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -81,7 +84,9 @@ const bulkUploadResults = async (req, res) => {
 // @access  Private/Admin
 const getAllResults = async (req, res) => {
   try {
-    const results = await Result.find({}).sort({ date: -1 });
+    const results = await Result.findAll({
+      order: [['date', 'DESC']]
+    });
     res.json({ success: true, count: results.length, data: results });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -93,7 +98,7 @@ const getAllResults = async (req, res) => {
 // @access  Private/Admin
 const deleteResult = async (req, res) => {
   try {
-    const result = await Result.findById(req.params.id);
+    const result = await Result.findByPk(req.params.id);
     if (!result) {
       return res.status(404).json({ success: false, message: 'ফলাফল নোটিশটি খুঁজে পাওয়া যায়নি।' });
     }
@@ -106,7 +111,7 @@ const deleteResult = async (req, res) => {
       }
     }
 
-    await Result.findByIdAndDelete(req.params.id);
+    await result.destroy();
 
     res.json({ success: true, message: 'ফলাফল নোটিশটি সফলভাবে মুছে ফেলা হয়েছে।' });
   } catch (error) {

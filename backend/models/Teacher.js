@@ -1,38 +1,58 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db').sequelize;
 
-const TeacherSchema = new mongoose.Schema({
+const Teacher = sequelize.define('Teacher', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   name: {
-    type: String,
-    required: [true, 'Please add teacher name'],
-    trim: true,
+    type: DataTypes.STRING,
+    allowNull: false,
+    set(value) {
+      this.setDataValue('name', value ? value.trim() : '');
+    }
   },
   phone: {
-    type: String,
-    required: [true, 'Please add phone number'],
-    trim: true,
+    type: DataTypes.STRING,
+    allowNull: false,
+    set(value) {
+      this.setDataValue('phone', value ? value.trim() : '');
+    }
   },
   subject: {
-    type: String,
-    required: [true, 'Please add subject taught'],
-    trim: true,
+    type: DataTypes.STRING,
+    allowNull: false,
+    set(value) {
+      this.setDataValue('subject', value ? value.trim() : '');
+    }
   },
   qualifications: {
-    type: String,
-    default: '',
+    type: DataTypes.STRING,
+    defaultValue: ''
   },
   photo: {
-    type: String,
-    default: 'assets/images/default_teacher.png',
+    type: DataTypes.STRING,
+    defaultValue: 'assets/images/default_teacher.png'
   },
   type: {
-    type: String,
-    enum: ['head', 'assistant', 'staff'],
-    default: 'assistant',
+    type: DataTypes.STRING,
+    defaultValue: 'assistant',
+    validate: {
+      isIn: [['head', 'assistant', 'staff']]
+    }
   },
   order: {
-    type: Number,
-    default: 0,
+    type: DataTypes.INTEGER,
+    defaultValue: 0
   }
 });
 
-module.exports = mongoose.model('Teacher', TeacherSchema);
+Teacher.prototype.toJSON = function () {
+  const values = Object.assign({}, this.get());
+  values._id = values.id ? values.id.toString() : null;
+  return values;
+};
+
+module.exports = Teacher;

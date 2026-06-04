@@ -1,32 +1,46 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db').sequelize;
 
-const ResultSchema = new mongoose.Schema({
+const Result = sequelize.define('Result', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   title: {
-    type: String,
-    required: [true, 'Please add result title'],
-    trim: true,
+    type: DataTypes.STRING,
+    allowNull: false,
+    set(value) {
+      this.setDataValue('title', value ? value.trim() : '');
+    }
   },
   content: {
-    type: String,
-    required: [true, 'Please add result description'],
+    type: DataTypes.TEXT,
+    allowNull: false
   },
   class: {
-    type: String,
-    required: [true, 'Please specify class (e.g. 6, 7, 8, 9, 10, all)'],
-    default: 'all',
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'all'
   },
   year: {
-    type: Number,
-    required: [true, 'Please specify year'],
+    type: DataTypes.INTEGER,
+    allowNull: false
   },
   pdfUrl: {
-    type: String,
-    default: '',
+    type: DataTypes.STRING,
+    defaultValue: ''
   },
   date: {
-    type: Date,
-    default: Date.now,
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   }
 });
 
-module.exports = mongoose.model('Result', ResultSchema);
+Result.prototype.toJSON = function () {
+  const values = Object.assign({}, this.get());
+  values._id = values.id ? values.id.toString() : null;
+  return values;
+};
+
+module.exports = Result;

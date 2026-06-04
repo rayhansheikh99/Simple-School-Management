@@ -37,7 +37,9 @@ const submitInquiry = async (req, res) => {
 // @access  Private/Admin
 const getInquiries = async (req, res) => {
   try {
-    const inquiries = await ContactMessage.find({}).sort({ date: -1 });
+    const inquiries = await ContactMessage.findAll({
+      order: [['date', 'DESC']]
+    });
 
     res.json({
       success: true,
@@ -60,17 +62,13 @@ const updateInquiryStatus = async (req, res) => {
   }
 
   try {
-    let message = await ContactMessage.findById(req.params.id);
+    const message = await ContactMessage.findByPk(req.params.id);
 
     if (!message) {
       return res.status(404).json({ success: false, message: 'Message not found' });
     }
 
-    message = await ContactMessage.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true, runValidators: true }
-    );
+    await message.update({ status });
 
     res.json({ success: true, data: message });
   } catch (error) {
@@ -83,11 +81,11 @@ const updateInquiryStatus = async (req, res) => {
 // @access  Private/Admin
 const deleteInquiry = async (req, res) => {
   try {
-    const message = await ContactMessage.findById(req.params.id);
+    const message = await ContactMessage.findByPk(req.params.id);
     if (!message) {
       return res.status(404).json({ success: false, message: 'বার্তাটি খুঁজে পাওয়া যায়নি।' });
     }
-    await ContactMessage.findByIdAndDelete(req.params.id);
+    await message.destroy();
     res.json({ success: true, message: 'বার্তাটি সফলভাবে মুছে ফেলা হয়েছে।' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

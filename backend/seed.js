@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const connectDB = require('./config/db');
+const { sequelize } = require('./config/db');
 const dotenv = require('dotenv');
-const bcrypt = require('bcryptjs');
 
 // Load Models
 const User = require('./models/User');
@@ -14,19 +14,13 @@ dotenv.config();
 
 const seedData = async () => {
   try {
-    // Connect to database
-    console.log('Connecting to database for seeding...');
-    await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/demo_school');
-    console.log('Connected! Purging old data...');
-
-    // Clear old datasets
-    await User.deleteMany();
-    await Notice.deleteMany();
-    await Teacher.deleteMany();
-    await Result.deleteMany();
-    await GalleryItem.deleteMany();
-
-    console.log('Purge completed. Seeding default Admin user...');
+    // Connect and reset database
+    console.log('Connecting to database and recreating tables for seeding...');
+    await connectDB();
+    
+    console.log('Database connected successfully. Recreating tables...');
+    await sequelize.sync({ force: true });
+    console.log('Database tables cleared and recreated! Seeding data...');
 
     // 1. Seed Admin User
     const adminUser = await User.create({
@@ -44,7 +38,7 @@ const seedData = async () => {
     });
     console.log(`Viewer User seeded! Username: "user" | Password: "pass123"`);
 
-    // 2. Seed Mock Notices (From notices.html)
+    // 2. Seed Mock Notices
     console.log('Seeding mock notices...');
     const mockNotices = [
       {
@@ -96,10 +90,10 @@ const seedData = async () => {
         date: new Date('2026-04-25')
       }
     ];
-    await Notice.insertMany(mockNotices);
+    await Notice.bulkCreate(mockNotices);
     console.log('Notices seeded!');
 
-    // 3. Seed Teachers (From teachers.html & index.html)
+    // 3. Seed Teachers
     console.log('Seeding teachers list...');
     const mockTeachers = [
       {
@@ -202,10 +196,10 @@ const seedData = async () => {
         order: 11
       }
     ];
-    await Teacher.insertMany(mockTeachers);
+    await Teacher.bulkCreate(mockTeachers);
     console.log('Teachers seeded!');
 
-    // 4. Seed Academic Results (Notice-like structure with class attachments)
+    // 4. Seed Academic Results
     console.log('Seeding mock results...');
     const mockResults = [
       {
@@ -226,7 +220,7 @@ const seedData = async () => {
       },
       {
         title: '৮ম শ্রেণির অর্ধবার্ষিক পরীক্ষার ফলাফল - ২০২৬',
-        content: '৮ম শ্রেণির অর্ধবার্ষিক পরীক্ষার ফলাফল প্রকাশিত হয়েছে। সকল শিক্ষার্থীদের অভিভাবক স্বাক্ষর সহ প্রগ্রেসিভ রিপোর্ট আগামী সপ্তাহে সংগ্রহ করতে বলা হচ্ছে।',
+        content: '৮ম শ্রেণির অর্ধবার্ষিক পরীক্ষার ফলাফল প্রকাশিত হয়েছে। সকল শিক্ষার্থীদের অভিভাবক স্বাক্ষর সহ প্রগ্রেসি Progressive রিপোর্ট আগামী সপ্তাহে সংগ্রহ করতে বলা হচ্ছে।',
         class: '8',
         year: 2026,
         pdfUrl: '',
@@ -249,10 +243,10 @@ const seedData = async () => {
         date: new Date('2026-05-15')
       }
     ];
-    await Result.insertMany(mockResults);
+    await Result.bulkCreate(mockResults);
     console.log('Results seeded!');
 
-    // 5. Seed Gallery Items (From gallery.html & index.html)
+    // 5. Seed Gallery Items
     console.log('Seeding gallery media...');
     const mockGallery = [
       { title: 'বিদ্যালয় ভবন', image: 'assets/images/hero_banner.png', mediaType: 'image', category: 'campus' },
@@ -262,11 +256,11 @@ const seedData = async () => {
       { title: 'বিজ্ঞান মেলা ২০২৬', image: 'assets/images/gallery_events.png', mediaType: 'image', category: 'events' },
       { title: 'বার্ষিক ক্রীড়া প্রতিযোগিতা', image: 'assets/images/hero_banner.png', mediaType: 'image', category: 'sports' }
     ];
-    await GalleryItem.insertMany(mockGallery);
+    await GalleryItem.bulkCreate(mockGallery);
     console.log('Gallery seeded!');
 
     console.log('Seeding Database Completed Successfully!');
-    mongoose.connection.close();
+    await sequelize.close();
     process.exit(0);
   } catch (error) {
     console.error('Error seeding data: ', error);

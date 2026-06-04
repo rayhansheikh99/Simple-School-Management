@@ -14,15 +14,16 @@ const getNotices = async (req, res) => {
       queryObj.category = req.query.category;
     }
 
-    // Determine limit
-    let query = Notice.find(queryObj).sort({ date: -1 });
-    
+    const options = {
+      where: queryObj,
+      order: [['date', 'DESC']]
+    };
+
     if (req.query.limit) {
-      const limit = parseInt(req.query.limit, 10);
-      query = query.limit(limit);
+      options.limit = parseInt(req.query.limit, 10);
     }
 
-    const notices = await query;
+    const notices = await Notice.findAll(options);
 
     res.json({
       success: true,
@@ -39,7 +40,7 @@ const getNotices = async (req, res) => {
 // @access  Public
 const getNoticeById = async (req, res) => {
   try {
-    const notice = await Notice.findById(req.params.id);
+    const notice = await Notice.findByPk(req.params.id);
 
     if (!notice) {
       return res.status(404).json({ success: false, message: 'Notice not found' });
@@ -88,7 +89,7 @@ const createNotice = async (req, res) => {
 // @access  Private/Admin
 const updateNotice = async (req, res) => {
   try {
-    let notice = await Notice.findById(req.params.id);
+    const notice = await Notice.findByPk(req.params.id);
 
     if (!notice) {
       return res.status(404).json({ success: false, message: 'Notice not found' });
@@ -108,10 +109,7 @@ const updateNotice = async (req, res) => {
       updateFields.pdfUrl = `uploads/${req.file.filename}`;
     }
 
-    notice = await Notice.findByIdAndUpdate(req.params.id, updateFields, {
-      new: true,
-      runValidators: true
-    });
+    await notice.update(updateFields);
 
     res.json({ success: true, data: notice });
   } catch (error) {
@@ -124,7 +122,7 @@ const updateNotice = async (req, res) => {
 // @access  Private/Admin
 const deleteNotice = async (req, res) => {
   try {
-    const notice = await Notice.findById(req.params.id);
+    const notice = await Notice.findByPk(req.params.id);
 
     if (!notice) {
       return res.status(404).json({ success: false, message: 'Notice not found' });
@@ -138,7 +136,7 @@ const deleteNotice = async (req, res) => {
       }
     }
 
-    await Notice.findByIdAndDelete(req.params.id);
+    await notice.destroy();
 
     res.json({ success: true, message: 'Notice removed successfully' });
   } catch (error) {

@@ -15,16 +15,16 @@ const loginUser = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Normalizing username to lowercase for case-insensitive authentication (e.g. Admin, admin, ADMIN)
+    // Normalizing username to lowercase for case-insensitive authentication
     const normalizedUsername = username ? username.trim().toLowerCase() : '';
-    const user = await User.findOne({ username: normalizedUsername }).select('+password');
+    const user = await User.findOne({ where: { username: normalizedUsername } });
 
     if (user && (await user.matchPassword(password))) {
       res.json({
         success: true,
-        token: generateToken(user._id),
+        token: generateToken(user.id),
         user: {
-          id: user._id,
+          id: user.id,
           username: user.username,
           role: user.role
         }
@@ -45,7 +45,7 @@ const registerSeedUser = async (req, res) => {
 
   try {
     // Check if any user exists
-    const userCount = await User.countDocuments({});
+    const userCount = await User.count();
     if (userCount > 0) {
       return res.status(400).json({ 
         success: false, 
@@ -71,7 +71,7 @@ const registerSeedUser = async (req, res) => {
         success: true,
         message: 'Default admin user successfully registered!',
         user: {
-          id: user._id,
+          id: user.id,
           username: user.username,
           role: user.role
         }
