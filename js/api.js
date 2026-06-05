@@ -57,7 +57,7 @@ const API_BASE_URL = (
   window.location.protocol === 'file:'
 )
   ? 'http://localhost:5000/api'
-  : 'https://simple-school-management.onrender.com/api';
+  : 'https://edumanage.site/api';
 
 const UPLOADS_BASE_URL = (
   window.location.hostname === 'localhost' || 
@@ -66,7 +66,7 @@ const UPLOADS_BASE_URL = (
   window.location.protocol === 'file:'
 )
   ? 'http://localhost:5000'
-  : 'https://simple-school-management.onrender.com';
+  : 'https://edumanage.site/api';
 
 
 // Helper: Translate digits to Bengali numerals
