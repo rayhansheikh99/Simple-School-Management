@@ -239,9 +239,14 @@ async function deleteRegistrationById(id, token) {
 
 // Helper: Resolve image/photo paths safely
 function getMediaUrl(photoPath) {
-  if (!photoPath) return 'assets/images/default_teacher.png';
-  if (photoPath.startsWith('http://') || photoPath.startsWith('https://') || photoPath.startsWith('assets/')) {
+  const isAmin = window.location.pathname.includes('/admin/') || window.location.pathname.includes('\\admin\\') || window.location.pathname.endsWith('/admin') || window.location.pathname.split('/').pop() === 'admin' || window.location.pathname.split('\\').pop() === 'admin';
+  const prefix = isAmin ? '../' : '';
+  if (!photoPath) return prefix + 'assets/images/default_teacher.png';
+  if (photoPath.startsWith('http://') || photoPath.startsWith('https://')) {
     return photoPath;
+  }
+  if (photoPath.startsWith('assets/')) {
+    return prefix + photoPath;
   }
   return `${UPLOADS_BASE_URL}/${photoPath}`;
 }
@@ -277,10 +282,17 @@ async function updateSettings(formData, token) {
 
 // Helper: Resolve logo/banner image paths safely with specific fallbacks
 function getLogoUrl(logoPath, fallback = 'assets/images/school_logo.png') {
-  if (!logoPath) return fallback;
-  if (logoPath.includes('hero_bg.jpg')) return 'assets/images/hero_banner.png';
-  if (logoPath.startsWith('http://') || logoPath.startsWith('https://') || logoPath.startsWith('assets/')) {
+  const isAmin = window.location.pathname.includes('/admin/') || window.location.pathname.includes('\\admin\\') || window.location.pathname.endsWith('/admin') || window.location.pathname.split('/').pop() === 'admin' || window.location.pathname.split('\\').pop() === 'admin';
+  const prefix = isAmin ? '../' : '';
+  const adjustedFallback = fallback.startsWith('assets/') ? prefix + fallback : fallback;
+  
+  if (!logoPath) return adjustedFallback;
+  if (logoPath.includes('hero_bg.jpg')) return prefix + 'assets/images/hero_banner.png';
+  if (logoPath.startsWith('http://') || logoPath.startsWith('https://')) {
     return logoPath;
+  }
+  if (logoPath.startsWith('assets/')) {
+    return prefix + logoPath;
   }
   return `${UPLOADS_BASE_URL}/${logoPath}`;
 }

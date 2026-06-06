@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 1. Update Top Bar Links: Show Dashboard & Logout
     if (topBarLinks) {
       topBarLinks.innerHTML = `
-        <a href="admin.html" class="top-bar__link" id="login-link">🖥️ ড্যাশবোর্ড</a>
+        <a href="admin/index.html" class="top-bar__link" id="login-link">🖥️ ড্যাশবোর্ড</a>
         <a href="#" class="top-bar__link" id="header-logout-btn">🔓 লগআউট</a>
       `;
 
@@ -405,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function () {
       adminMenuItem.className = 'nav-menu__item';
       adminMenuItem.setAttribute('role', 'none');
       adminMenuItem.innerHTML = `
-        <a href="admin.html" class="nav-menu__link" role="menuitem" style="color: #e74c3c; font-weight: bold;">⚙️ এডমিন প্যানেল</a>
+        <a href="admin/index.html" class="nav-menu__link" role="menuitem" style="color: #e74c3c; font-weight: bold;">⚙️ এডমিন প্যানেল</a>
       `;
       mainNavMenu.appendChild(adminMenuItem);
     }

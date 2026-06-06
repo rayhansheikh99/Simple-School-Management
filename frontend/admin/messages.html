@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>যোগাযোগ বার্তা ইনবক্স | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
-  <link rel="icon" type="image/png" href="assets/images/favicon.png">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
 
@@ -19,14 +19,14 @@
         <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" aria-label="মেনু খুলুন">
           <span></span><span></span><span></span>
         </button>
-        <img src="assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
+        <img src="../assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
         <div class="top-bar__info">
-          <a href="index.html" style="color:inherit;"><h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1></a>
+          <a href="../index.html" style="color:inherit;"><h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1></a>
           <span class="top-bar__subtitle">প্রশাসনিক ড্যাশবোর্ড নিয়ন্ত্রণ কক্ষ</span>
         </div>
       </div>
       <div class="top-bar__right">
-        <a href="index.html" class="btn btn--secondary btn--sm">🏠 হোমপেজে ফিরুন</a>
+        <a href="../index.html" class="btn btn--secondary btn--sm">🏠 হোমপেজে ফিরুন</a>
       </div>
     </div>
   </header>
@@ -45,14 +45,14 @@
           <span style="font-size: 0.8rem; color: #1c69b5; font-weight: bold; background: #e6f9fd; padding: 2px 8px; border-radius: 20px; margin-top: 6px; display: inline-block;">সুপার এডমিন</span>
         </div>
         <nav>
-          <a href="admin.html" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
-          <a href="admin-notices.html" class="db-menu-btn" style="text-decoration: none;">📋 নোটিশবোর্ড পরিচালনা</a>
-          <a href="admin-teachers.html" class="db-menu-btn" style="text-decoration: none;">👨‍🏫 শিক্ষকবৃন্দ ডাটাবেজ</a>
-          <a href="admin-results.html" class="db-menu-btn" style="text-decoration: none;">📊 পরীক্ষার ফলাফল এন্ট্রি</a>
-          <a href="admin-gallery.html" class="db-menu-btn" style="text-decoration: none;">📸 ফটো গ্যালারি আপলোড</a>
-          <a href="admin-registrations.html" class="db-menu-btn" style="text-decoration: none;">📝 নিবন্ধন আবেদন (০)</a>
-          <a href="admin-messages.html" class="db-menu-btn active" style="text-decoration: none;">✉️ যোগাযোগের বার্তা (০)</a>
-          <a href="admin-settings.html" class="db-menu-btn" style="text-decoration: none;">⚙️ জেনারেল সেটিংস</a>
+          <a href="index.html" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
+          <a href="notices.html" class="db-menu-btn" style="text-decoration: none;">📋 নোটিশবোর্ড পরিচালনা</a>
+          <a href="teachers.html" class="db-menu-btn" style="text-decoration: none;">👨‍🏫 শিক্ষকবৃন্দ ডাটাবেজ</a>
+          <a href="results.html" class="db-menu-btn" style="text-decoration: none;">📊 পরীক্ষার ফলাফল এন্ট্রি</a>
+          <a href="gallery.html" class="db-menu-btn" style="text-decoration: none;">📸 ফটো গ্যালারি আপলোড</a>
+          <a href="registrations.html" class="db-menu-btn" style="text-decoration: none;">📝 নিবন্ধন আবেদন (০)</a>
+          <a href="messages.html" class="db-menu-btn active" style="text-decoration: none;">✉️ যোগাযোগের বার্তা (০)</a>
+          <a href="settings.html" class="db-menu-btn" style="text-decoration: none;">⚙️ জেনারেল সেটিংস</a>
         </nav>
         <button id="logout-btn" class="btn btn-logout">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; display: inline-block; vertical-align: middle;">
@@ -76,7 +76,7 @@
     </div>
   </div>
 
-  <script src="js/api.js"></script>
+  <script src="../js/api.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       let jwtToken = localStorage.getItem('adminToken');
@@ -84,7 +84,7 @@
       let adminRole = localStorage.getItem('adminRole');
 
       if (!jwtToken) {
-        window.location.href = 'admin.html';
+        window.location.href = 'index.html';
         return;
       }
 
@@ -148,7 +148,7 @@
             localStorage.removeItem('adminToken');
             localStorage.removeItem('adminUser');
             localStorage.removeItem('adminRole');
-            window.location.href = 'admin.html';
+            window.location.href = 'index.html';
           }
         });
       });
@@ -164,11 +164,11 @@
           const unreadMessages = contactData.success ? contactData.data.filter(m => m.status === 'unread').length : 0;
           const pendingRegs = registrationsData.success ? registrationsData.data.filter(r => r.status === 'pending').length : 0;
 
-          const inboxBtn = document.querySelector('a[href="admin-messages.html"]');
+          const inboxBtn = document.querySelector('a[href="messages.html"]');
           if (inboxBtn) {
             inboxBtn.innerHTML = `✉️ যোগাযোগের বার্তা (${toBengaliNumerals(unreadMessages)})`;
           }
-          const regBtn = document.querySelector('a[href="admin-registrations.html"]');
+          const regBtn = document.querySelector('a[href="registrations.html"]');
           if (regBtn) {
             regBtn.innerHTML = `📝 নিবন্ধন আবেদন (${toBengaliNumerals(pendingRegs)})`;
           }
@@ -193,7 +193,7 @@
             const count = data.data.filter(m => m.status === 'unread').length;
             
             // Update sidebar badge
-            const inboxBtn = document.querySelector('a[href="admin-messages.html"]');
+            const inboxBtn = document.querySelector('a[href="messages.html"]');
             if (inboxBtn) {
               inboxBtn.innerHTML = `✉️ যোগাযোগের বার্তা (${toBengaliNumerals(count)})`;
             }
@@ -297,6 +297,6 @@
 
     });
   </script>
-  <script src="js/admin-sidebar.js"></script>
+  <script src="../js/admin-sidebar.js"></script>
 </body>
 </html>
