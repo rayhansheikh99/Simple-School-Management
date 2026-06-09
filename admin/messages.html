@@ -2,9 +2,20 @@
 <html lang="bn">
 
 <head>
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('school-theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ফটো গ্যালারি পরিচালনা | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
+  <title>যোগাযোগ বার্তা ইনবক্স | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
   <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -51,14 +62,13 @@
             এডমিন</span>
         </div>
         <nav>
-          <a href="index.html" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
+          <a href="/" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
           <a href="notices.html" class="db-menu-btn" style="text-decoration: none;">📋 নোটিশবোর্ড পরিচালনা</a>
           <a href="teachers.html" class="db-menu-btn" style="text-decoration: none;">👨‍🏫 শিক্ষকবৃন্দ ডাটাবেজ</a>
           <a href="results.html" class="db-menu-btn" style="text-decoration: none;">📊 পরীক্ষার ফলাফল এন্ট্রি</a>
-          <a href="gallery.html" class="db-menu-btn active" style="text-decoration: none;">📸 ফটো গ্যালারি
-            আপলোড</a>
+          <a href="gallery.html" class="db-menu-btn" style="text-decoration: none;">📸 ফটো গ্যালারি আপলোড</a>
           <a href="registrations.html" class="db-menu-btn" style="text-decoration: none;">📝 নিবন্ধন আবেদন (০)</a>
-          <a href="messages.html" class="db-menu-btn" style="text-decoration: none;">✉️ যোগাযোগের বার্তা (০)</a>
+          <a href="messages.html" class="db-menu-btn active" style="text-decoration: none;">✉️ যোগাযোগের বার্তা (০)</a>
           <a href="settings.html" class="db-menu-btn" style="text-decoration: none;">⚙️ জেনারেল সেটিংস</a>
         </nav>
         <button id="logout-btn" class="btn btn-logout">
@@ -75,48 +85,11 @@
 
       <!-- Main Panel Work Area -->
       <main class="db-content">
-        <section id="gallery-tab" class="tab-content active">
+        <section id="messages-tab" class="tab-content active">
           <div class="db-header">
-            <h2 class="db-title">📸 ফটো গ্যালারি আপলোড প্যানেল</h2>
+            <h2 class="db-title">✉️ যোগাযোগ বক্স (অভিভাবক/শিক্ষার্থী জিজ্ঞাসা)</h2>
           </div>
-          <form id="add-gallery-form">
-            <div class="db-form-grid">
-              <div class="form-group">
-                <label for="gal-title">ছবির শিরোনাম *</label>
-                <input type="text" id="gal-title" class="form-input" placeholder="যেমন: বার্ষিক ক্রীড়া প্রতিযোগিতা ২০২৬"
-                  required>
-              </div>
-              <div class="form-group">
-                <label for="gal-category">ক্যাটাগরি *</label>
-                <select id="gal-category" class="form-input" required>
-                  <option value="campus">ক্যাম্পাস ও অবকাঠামো</option>
-                  <option value="sports">ক্রীড়া ও সংস্কৃতি</option>
-                  <option value="classroom">শ্রেণিকক্ষ ও পাঠদান</option>
-                  <option value="events">বিশেষ অনুষ্ঠানসমূহ</option>
-                </select>
-              </div>
-              <div class="form-group db-form-full">
-                <label for="gal-image">ছবি আপলোড *</label>
-                <input type="file" id="gal-image" accept="image/*" class="form-input" style="padding: 6px;" required>
-              </div>
-            </div>
-            <button type="submit" class="btn btn--primary">📸 গ্যালারিতে আপলোড করুন</button>
-          </form>
-
-          <!-- Gallery List [NEW] -->
-          <div class="manager-list" style="margin-top: 35px; border-top: 1px solid #eee; padding-top: 25px;">
-            <h3
-              style="margin-bottom: 15px; color: #333; display: flex; justify-content: space-between; align-items: center;">
-              <span>আপলোডকৃত ফটো গ্যালারি</span>
-              <span id="gallery-count-badge"
-                style="font-size: 0.8rem; background: #e6f9fd; color: #1c69b5; padding: 3px 10px; border-radius: 20px; font-weight: bold;">মোট:
-                ০ টি</span>
-            </h3>
-            <div id="admin-gallery-list"
-              style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
-              <!-- Dynamic cards populated by loadAdminGallery() -->
-            </div>
-          </div>
+          <div id="inbox-messages-list"></div>
         </section>
       </main>
     </div>
@@ -176,7 +149,7 @@
 
       // Load initial page data & badges
       updateSidebarBadges();
-      loadAdminGallery();
+      loadInboxMessages();
 
       // Logout handler
       document.getElementById('logout-btn').addEventListener('click', () => {
@@ -224,101 +197,90 @@
       }
 
       // ============================================================
-      // GALLERY API TRANSACTIONS
+      // CONTACT MESSAGES INBOX API TRANSACTIONS
       // ============================================================
-      const addGalleryForm = document.getElementById('add-gallery-form');
-      const adminGalleryList = document.getElementById('admin-gallery-list');
+      const inboxMessagesList = document.getElementById('inbox-messages-list');
 
-      addGalleryForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const title = document.getElementById('gal-title').value;
-        const category = document.getElementById('gal-category').value;
-        const fileInput = document.getElementById('gal-image');
-
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('category', category);
-        if (fileInput.files[0]) {
-          formData.append('image', fileInput.files[0]);
-        }
-
+      async function loadInboxMessages() {
         try {
-          Swal.fire({
-            title: 'ছবি আপলোড করা হচ্ছে...',
-            allowOutsideClick: false,
-            didOpen: () => Swal.showLoading()
-          });
-
-          const response = await fetch(`${API_BASE_URL}/gallery`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${jwtToken}` },
-            body: formData
+          const response = await fetch(`${API_BASE_URL}/contact/messages`, {
+            headers: { 'Authorization': `Bearer ${jwtToken}` }
           });
           const data = await response.json();
 
           if (data.success) {
-            Swal.fire({
-              icon: 'success',
-              title: 'আপলোড সম্পন্ন!',
-              text: 'ছবিটি গ্যালারিতে সফলভাবে আপলোড করা হয়েছে।',
-              timer: 2000,
-              showConfirmButton: false
+            const count = data.data.filter(m => m.status === 'unread').length;
+
+            // Update sidebar badge
+            const inboxBtn = document.querySelector('a[href="messages.html"]');
+            if (inboxBtn) {
+              inboxBtn.innerHTML = `✉️ যোগাযোগের বার্তা (${toBengaliNumerals(count)})`;
+            }
+
+            if (data.data.length === 0) {
+              inboxMessagesList.innerHTML = '<p style="color:#e74c3c; font-weight: bold; padding: 20px; text-align:center;">কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>';
+              return;
+            }
+
+            let inboxHTML = '';
+            data.data.forEach(m => {
+              const border = m.status === 'unread' ? 'border-left: 5px solid #1c69b5; background: #fbfdff;' : 'border-left: 5px solid #ccc;';
+              inboxHTML += `
+                <div class="manager-item" style="display: block; ${border} margin-bottom: 12px; padding: 20px; border-radius: 8px;">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                      <strong style="color: #333; font-size: 1.05rem;">${m.name}</strong> 
+                      <span style="color:#777; font-size:0.8rem;">(${m.email} | ${m.phone || 'ফোন নেই'})</span>
+                    </div>
+                    <div>
+                      <span style="font-size:0.8rem; color:#777;">${formatBengaliDate(m.date)}</span>
+                    </div>
+                  </div>
+                  <div style="font-weight: 600; color: #1c69b5; margin-bottom: 6px;">বিষয়: ${m.subject}</div>
+                  <p style="color: #555; background: #f9f9f9; padding: 12px; border-radius: 4px; font-size:0.9rem; line-height:1.5;">${m.message}</p>
+                  
+                  <div style="margin-top: 12px; display:flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                    ${m.status === 'unread'
+                  ? `<button class="btn btn--outline btn--sm" style="cursor:pointer;" onclick="markMessageRead('${m._id}')">👁️ পড়া হয়েছে চিহ্নিত করুন</button>`
+                  : `<span style="font-size:0.8rem; color:green; display:flex; align-items:center; margin-right: auto; font-weight: bold;">✓ পড়া হয়েছে</span>`
+                }
+                    <button class="btn-delete" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 6px; font-weight: 600; cursor: pointer;" onclick="deleteMessageItem('${m._id}')"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> মুছুন</button>
+                  </div>
+                </div>
+              `;
             });
-            addGalleryForm.reset();
-            loadAdminGallery();
-          } else {
-            Swal.fire({ icon: 'error', title: 'আপলোড ব্যর্থ', text: data.message });
+            inboxMessagesList.innerHTML = inboxHTML;
           }
         } catch (error) {
           console.error(error);
-          Swal.fire({ icon: 'error', title: 'সংযোগ ত্রুটি', text: 'ছবিটি আপলোড করা সম্ভব হয়নি।' });
+          inboxMessagesList.innerHTML = '<p style="color:red; text-align:center; padding:20px;">বার্তা লোড করতে ব্যর্থ হয়েছে।</p>';
         }
-      });
-
-      async function loadAdminGallery() {
-        const gallery = await fetchGalleryItems('all');
-        const badge = document.getElementById('gallery-count-badge');
-
-        badge.textContent = `মোট: ${toBengaliNumerals(gallery.length)} টি`;
-
-        if (gallery.length === 0) {
-          adminGalleryList.innerHTML = '<p style="color:#e74c3c; font-weight: bold; grid-column: 1/-1; text-align:center; padding:20px;">কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>';
-          return;
-        }
-
-        const categoryMap = {
-          campus: 'ক্যাম্পাস',
-          sports: 'ক্রীড়া',
-          classroom: 'শ্রেণিকক্ষ',
-          events: 'অনুষ্ঠান'
-        };
-
-        let galleryHTML = '';
-        gallery.forEach(item => {
-          galleryHTML += `
-            <div class="manager-item" style="display: block; margin-bottom: 0; padding: 12px; border-radius: 8px;">
-              <div style="position: relative; overflow: hidden; border-radius: 6px; margin-bottom: 8px; aspect-ratio: 16/9; background:#eee;">
-                <img src="${getMediaUrl(item.image)}" style="width: 100%; height: 100%; object-fit: cover;">
-                <span style="position: absolute; bottom: 6px; left: 6px; font-size: 0.7rem; font-weight: bold; background: rgba(0,0,0,0.7); color: #fff; padding: 2px 6px; border-radius: 4px;">
-                  ${categoryMap[item.category] || item.category}
-                </span>
-              </div>
-              <div style="font-weight: 700; font-size: 0.85rem; color: #333; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                ${item.title}
-              </div>
-              <div style="display:flex; justify-content: flex-end;">
-                <button class="btn-delete" style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer;" onclick="deleteGalleryItem('${item._id}')"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> মুছুন</button>
-              </div>
-            </div>
-          `;
-        });
-        adminGalleryList.innerHTML = galleryHTML;
       }
 
-      window.deleteGalleryItem = async (id) => {
+      window.markMessageRead = async (id) => {
+        try {
+          const response = await fetch(`${API_BASE_URL}/contact/messages/${id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${jwtToken}`
+            },
+            body: JSON.stringify({ status: 'read' })
+          });
+          const data = await response.json();
+          if (data.success) {
+            loadInboxMessages();
+            updateSidebarBadges();
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      window.deleteMessageItem = async (id) => {
         Swal.fire({
           title: 'মুছে ফেলতে চান?',
-          text: "এই ছবিটি ফটো গ্যালারি থেকে স্থায়ীভাবে মুছে ফেলা হবে!",
+          text: "এই বার্তা রেকর্ডটি স্থায়ীভাবে মুছে ফেলা হবে!",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#e74c3c',
@@ -328,7 +290,7 @@
         }).then(async (result) => {
           if (result.isConfirmed) {
             try {
-              const response = await fetch(`${API_BASE_URL}/gallery/${id}`, {
+              const response = await fetch(`${API_BASE_URL}/contact/messages/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${jwtToken}` }
               });
@@ -337,15 +299,16 @@
                 Swal.fire({
                   icon: 'success',
                   title: 'সফল!',
-                  text: 'ছবিটি সফলভাবে মুছে ফেলা হয়েছে।',
+                  text: 'বার্তাটি সফলভাবে মুছে ফেলা হয়েছে।',
                   timer: 1500,
                   showConfirmButton: false
                 });
-                loadAdminGallery();
+                loadInboxMessages();
+                updateSidebarBadges();
               }
             } catch (error) {
               console.error(error);
-              Swal.fire({ icon: 'error', title: 'ব্যর্থ', text: 'রেকর্ডটি মুছে ফেলা সম্ভব হয়নি।' });
+              Swal.fire({ icon: 'error', title: 'ব্যর্থ', text: 'মুছে ফেলা সম্ভব হয়নি।' });
             }
           }
         });

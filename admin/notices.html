@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('school-theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>নোটিশবোর্ড পরিচালনা | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
@@ -9,6 +21,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="../css/admin.css">
 </head>
+
 <body>
 
   <!-- TOP INFO BAR -->
@@ -21,7 +34,9 @@
         </button>
         <img src="../assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
         <div class="top-bar__info">
-          <a href="../index.html" style="color:inherit;"><h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1></a>
+          <a href="../index.html" style="color:inherit;">
+            <h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1>
+          </a>
           <span class="top-bar__subtitle">প্রশাসনিক ড্যাশবোর্ড নিয়ন্ত্রণ কক্ষ</span>
         </div>
       </div>
@@ -36,16 +51,18 @@
 
   <div class="admin-wrapper">
     <div class="dashboard-grid" id="dashboard-grid" style="display: grid;">
-      
+
       <!-- Side Navigation -->
       <aside class="db-sidebar">
         <div class="db-user-info">
           <div style="font-size: 3rem; margin-bottom: 8px;">👨‍💻</div>
           <h4 id="admin-username" style="color: #333; margin: 0;">স্কুল এডমিন</h4>
-          <span style="font-size: 0.8rem; color: #1c69b5; font-weight: bold; background: #e6f9fd; padding: 2px 8px; border-radius: 20px; margin-top: 6px; display: inline-block;">সুপার এডমিন</span>
+          <span
+            style="font-size: 0.8rem; color: #1c69b5; font-weight: bold; background: #e6f9fd; padding: 2px 8px; border-radius: 20px; margin-top: 6px; display: inline-block;">সুপার
+            এডমিন</span>
         </div>
         <nav>
-          <a href="index.html" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
+          <a href="/" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
           <a href="notices.html" class="db-menu-btn active" style="text-decoration: none;">📋 নোটিশবোর্ড পরিচালনা</a>
           <a href="teachers.html" class="db-menu-btn" style="text-decoration: none;">👨‍🏫 শিক্ষকবৃন্দ ডাটাবেজ</a>
           <a href="results.html" class="db-menu-btn" style="text-decoration: none;">📊 পরীক্ষার ফলাফল এন্ট্রি</a>
@@ -55,7 +72,9 @@
           <a href="settings.html" class="db-menu-btn" style="text-decoration: none;">⚙️ জেনারেল সেটিংস</a>
         </nav>
         <button id="logout-btn" class="btn btn-logout">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; display: inline-block; vertical-align: middle;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+            style="margin-right: 8px; display: inline-block; vertical-align: middle;">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
             <polyline points="16 17 21 12 16 7"></polyline>
             <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -74,7 +93,8 @@
             <div class="db-form-grid">
               <div class="form-group">
                 <label for="notice-title">নোটিশের শিরোনাম *</label>
-                <input type="text" id="notice-title" class="form-input" placeholder="যেমন: গ্রীষ্মকালীন ছুটির নোটিশ" required>
+                <input type="text" id="notice-title" class="form-input" placeholder="যেমন: গ্রীষ্মকালীন ছুটির নোটিশ"
+                  required>
               </div>
               <div class="form-group">
                 <label for="notice-category">ক্যাটাগরি *</label>
@@ -87,7 +107,8 @@
               </div>
               <div class="form-group db-form-full">
                 <label for="notice-content">বার্তার বিবরণ (বিস্তারিত) *</label>
-                <textarea id="notice-content" class="form-input" style="height: 120px;" placeholder="নোটিশের বিস্তারিত অংশ এখানে লিখুন..." required></textarea>
+                <textarea id="notice-content" class="form-input" style="height: 120px;"
+                  placeholder="নোটিশের বিস্তারিত অংশ এখানে লিখুন..." required></textarea>
               </div>
               <div class="form-group db-form-full">
                 <label for="notice-pdf">সংযুক্তি ফাইল আপলোড (PDF / ছবি - ঐচ্ছিক)</label>
@@ -157,7 +178,7 @@
         `;
         document.head.appendChild(style);
       }
-      
+
       // Load initial page data & badges
       updateSidebarBadges();
       loadAdminNotices();
@@ -190,7 +211,7 @@
             fetch(`${API_BASE_URL}/contact/messages`, { headers: { 'Authorization': `Bearer ${jwtToken}` } }).then(r => r.json()),
             fetch(`${API_BASE_URL}/registrations`, { headers: { 'Authorization': `Bearer ${jwtToken}` } }).then(r => r.json())
           ]);
-          
+
           const unreadMessages = contactData.success ? contactData.data.filter(m => m.status === 'unread').length : 0;
           const pendingRegs = registrationsData.success ? registrationsData.data.filter(r => r.status === 'pending').length : 0;
 
@@ -336,4 +357,5 @@
   </script>
   <script src="../js/admin-sidebar.js"></script>
 </body>
+
 </html>

@@ -14,6 +14,69 @@ if (typeof Swal === 'undefined') {
 document.addEventListener('DOMContentLoaded', function () {
 
   // ============================================================
+  // Premium Theme Switcher & Storage Integration
+  // ============================================================
+  function initThemeSwitcher() {
+    const topBarRight = document.querySelector('.top-bar__right');
+    if (!topBarRight) return;
+
+    const container = topBarRight;
+
+    // Remove existing theme switcher if any
+    const existingBtn = document.getElementById('theme-toggle-btn');
+    if (existingBtn) existingBtn.remove();
+
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'theme-toggle-btn';
+    toggleBtn.id = 'theme-toggle-btn';
+    toggleBtn.setAttribute('aria-label', 'থিম পরিবর্তন করুন');
+    toggleBtn.setAttribute('title', 'থিম পরিবর্তন করুন');
+    const getTheme = () => document.documentElement.getAttribute('data-theme') || 'light';
+    
+    // Set initial icon
+    toggleBtn.innerHTML = `<span class="theme-toggle-icon">${getTheme() === 'dark' ? '☀️' : '🌙'}</span>`;
+
+    // Append last so it appears at the far-right edge of the header
+    container.appendChild(toggleBtn);
+
+    toggleBtn.addEventListener('click', function () {
+      const activeTheme = getTheme();
+      const newTheme = activeTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.classList.add('theme-transition');
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('school-theme', newTheme);
+      
+      toggleBtn.innerHTML = `<span class="theme-toggle-icon">${newTheme === 'dark' ? '☀️' : '🌙'}</span>`;
+      
+      setTimeout(() => {
+        document.documentElement.classList.remove('theme-transition');
+      }, 500);
+    });
+
+    // Listen for system changes if user has no saved preference
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem('school-theme')) {
+        const newSystemTheme = e.matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', newSystemTheme);
+        toggleBtn.innerHTML = `<span class="theme-toggle-icon">${newSystemTheme === 'dark' ? '☀️' : '🌙'}</span>`;
+      }
+    });
+  }
+  initThemeSwitcher();
+
+  // Dynamic gradient orb injection in hero
+  const heroSection = document.getElementById('hero');
+  if (heroSection) {
+    const orb1 = document.createElement('div');
+    orb1.className = 'gradient-orb orb-primary';
+    const orb2 = document.createElement('div');
+    orb2.className = 'gradient-orb orb-secondary';
+    heroSection.insertBefore(orb1, heroSection.firstChild);
+    heroSection.insertBefore(orb2, heroSection.firstChild);
+  }
+
+  // ============================================================
   // CUTE PRELOADER INJECTION & FADE-OUT (MIN 3 SEC - SESSION INITIAL LOAD ONLY)
   // ============================================================
   const hasLoadedThisSession = sessionStorage.getItem('websiteLoaded');
@@ -409,6 +472,10 @@ document.addEventListener('DOMContentLoaded', function () {
       `;
       mainNavMenu.appendChild(adminMenuItem);
     }
+  } else {
+    // Not logged in — hide the login link entirely from the top bar
+    const loginLink = document.getElementById('login-link');
+    if (loginLink) loginLink.style.display = 'none';
   }
 
   // 3. Apply Dynamic School Settings

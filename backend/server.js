@@ -14,14 +14,26 @@ const app = express();
 
 // Enable CORS
 app.use(cors({
-  origin: [
-    'https://edumanage.site',
-    'http://edumanage.site',
-    'http://localhost:5000',
-    'http://localhost:5500',
-    'http://127.0.0.1:5500',
-    'http://localhost:3000'
-  ],
+  origin: (origin, callback) => {
+    // In development mode, allow any origin (including null for file://)
+    if (process.env.NODE_ENV !== 'production') {
+      callback(null, true);
+    } else {
+      const allowedOrigins = [
+        'https://edumanage.site',
+        'http://edumanage.site',
+        'http://localhost:5000',
+        'http://localhost:5500',
+        'http://127.0.0.1:5501',
+        'http://localhost:3000'
+      ];
+      if (!origin || allowedOrigins.includes(origin) || origin === 'null') {
+        callback(null, true);
+      } else {
+        callback(null, false);
+      }
+    }
+  },
   credentials: true
 }));
 
@@ -69,7 +81,7 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 30156;
-
+console.log('port:', PORT)
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
 });

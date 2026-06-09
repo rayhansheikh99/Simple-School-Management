@@ -5,12 +5,13 @@
 
 /* Premium Dashboard Specific Styles */
 body {
-  background-color: #f4f7f6;
+  background-color: var(--color-surface-base);
+  color: var(--color-text-primary);
 }
 
 .admin-wrapper {
   max-width: 1320px;
-  margin: 40px auto;
+  margin: 20px auto 40px auto;
   padding: 0 20px;
 }
 
@@ -18,10 +19,10 @@ body {
 .login-container {
   max-width: 450px;
   margin: 100px auto;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--color-surface-card);
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border);
   backdrop-filter: blur(10px);
   overflow: hidden;
   transition: all 0.3s;
@@ -46,44 +47,56 @@ body {
   gap: 20px;
 }
 
+/* Sticky Top Bar for Admin */
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-sm);
+}
+
 /* Dashboard Layout */
 .dashboard-grid {
   display: none;
   /* Shown after auth */
   grid-template-columns: 260px 1fr;
   gap: 30px;
-  margin-top: 20px;
+  margin-top: 0;
 }
 
 .db-sidebar {
-  background: #fff;
+  background: var(--color-surface-card);
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-md);
   padding: 24px 16px;
-  height: fit-content;
-  /* Thin 2px scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: #c5cdd6 transparent;
+  position: fixed;
+  top: 90px;
+  left: 20px;
+  width: 260px;
+  height: calc(100vh - 110px);
+  overflow-y: auto;
+  /* Hide scrollbar but keep scroll functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  border: 1px solid var(--color-border-light);
+  z-index: 100;
+}
+
+@media (min-width: 1320px) {
+  .db-sidebar {
+    left: calc((100vw - 1320px) / 2 + 20px);
+  }
 }
 
 .db-sidebar::-webkit-scrollbar {
-  width: 2px;
-}
-
-.db-sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.db-sidebar::-webkit-scrollbar-thumb {
-  background-color: #c5cdd6;
-  border-radius: 10px;
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .db-user-info {
   text-align: center;
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .db-menu-btn {
@@ -95,7 +108,7 @@ body {
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #555;
+  color: var(--color-text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -106,15 +119,19 @@ body {
 
 .db-menu-btn:hover,
 .db-menu-btn.active {
-  background: #e6f9fd;
-  color: #1c69b5;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
 }
 
 .db-content {
-  background: #fff;
+  background: var(--color-surface-card);
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border-light);
   padding: 30px;
+  color: var(--color-text-primary);
+  grid-column: 1 / -1;
+  margin-left: 290px;
 }
 
 .db-header {
@@ -123,7 +140,7 @@ body {
   align-items: center;
   margin-bottom: 30px;
   padding-bottom: 15px;
-  border-bottom: 2px solid #f4f7f6;
+  border-bottom: 2px solid var(--color-border-light);
 }
 
 .db-title {
@@ -155,7 +172,7 @@ body {
 /* List grids inside Dashboard */
 .manager-list {
   margin-top: 30px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--color-border);
   padding-top: 20px;
 }
 
@@ -164,26 +181,27 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 14px 20px;
-  background: #fdfefe;
-  border: 1px solid #eee;
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border-light);
   border-radius: 8px;
   margin-bottom: 10px;
   transition: all 0.3s;
+  color: var(--color-text-primary);
 }
 
 .manager-item:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-  border-color: #1c69b5;
+  box-shadow: var(--shadow-sm);
+  border-color: var(--color-primary);
 }
 
 .manager-item__title {
   font-weight: bold;
-  color: #333;
+  color: var(--color-text-primary);
 }
 
 .manager-item__meta {
   font-size: 0.8rem;
-  color: #777;
+  color: var(--color-text-secondary);
   margin-top: 4px;
 }
 
@@ -232,9 +250,9 @@ body {
   font-size: 0.82rem;
   line-height: 1.3;
   text-align: center;
-  border: 1px solid #e2e8f0;
-  background: #f8fafc;
-  color: #1c69b5;
+  border: 1px solid var(--color-border-light);
+  background: var(--color-surface-raised);
+  color: var(--color-primary);
   cursor: pointer;
   transition: all 0.2s;
   width: 100%;
@@ -247,11 +265,11 @@ body {
 }
 
 .db-action-btn:hover {
-  background: #1c69b5;
-  color: #fff;
-  border-color: #1c69b5;
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-color: var(--color-primary);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(28, 105, 181, 0.18);
+  box-shadow: var(--shadow-glow);
 }
 
 /* Stack the bottom overview grid on mobile */
@@ -335,6 +353,10 @@ body {
    MOBILE LAYOUT — keep sidebar fixed on left, content scrollable
    ============================================================ */
 @media (max-width: 768px) {
+  .top-bar {
+    position: relative !important;
+  }
+
   /* Prevent horizontal overflow on mobile body */
   body, html {
     overflow-x: hidden;
@@ -470,7 +492,7 @@ body {
     z-index: 1100;
     padding: 24px 16px;
     transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1);
-    background: #fff;
+    background: var(--color-surface-card);
   }
 
   /* Sidebar open state */
@@ -483,6 +505,8 @@ body {
     width: 100%;
     padding: 20px 15px;
     border-radius: 12px;
+    margin-left: 0 !important;
+    grid-column: auto !important;
   }
 
   /* Compact user info in sidebar */
@@ -631,5 +655,139 @@ body {
   .stats-grid {
     grid-template-columns: 1fr !important;
     gap: 15px !important;
+  }
+}
+
+/* ============================================================
+   DARK MODE OVERRIDES (OVERRIDING INLINE STYLES & GRADIENTS)
+   ============================================================ */
+[data-theme="dark"] {
+  /* Override inline text colors */
+  [style*="color: #333"],
+  [style*="color:#333"],
+  [style*="color: rgb(51, 51, 51)"] {
+    color: var(--color-text-primary) !important;
+  }
+
+  [style*="color: #555"],
+  [style*="color:#555"],
+  [style*="color: #666"],
+  [style*="color:#666"],
+  [style*="color: #777"],
+  [style*="color:#777"] {
+    color: var(--color-text-secondary) !important;
+  }
+
+  /* Override inline backgrounds */
+  [style*="background: #fff"],
+  [style*="background:#fff"],
+  [style*="background-color: #fff"],
+  [style*="background-color:#fff"],
+  [style*="background: #fdfdfd"],
+  [style*="background:#fdfdfd"],
+  [style*="background: rgb(255, 255, 255)"],
+  div[style*="background: #fdfefe"],
+  div[style*="background:#fdfefe"] {
+    background: var(--color-surface-card) !important;
+    background-color: var(--color-surface-card) !important;
+  }
+
+  /* Override inline borders */
+  [style*="border-bottom: 2px solid #f4f7f6"],
+  [style*="border-bottom:2px solid #f4f7f6"],
+  [style*="border-bottom: 2px solid #eee"],
+  [style*="border-bottom:2px solid #eee"] {
+    border-bottom: 2px solid var(--color-border-light) !important;
+  }
+
+  [style*="border: 1px solid #eee"],
+  [style*="border:1px solid #eee"],
+  [style*="border: 1px solid #f0f0f0"],
+  [style*="border:1px solid #f0f0f0"] {
+    border: 1px solid var(--color-border-light) !important;
+  }
+
+  /* Dashboard overview stats cards styling in Dark Mode */
+  .overview-card {
+    border-radius: 12px !important;
+    box-shadow: var(--shadow-md) !important;
+  }
+
+  /* Target specific overview cards via nth-child selectors and give them modern glowing mesh gradients in dark mode */
+  /* Card 1: Notices (Blue) */
+  .stats-grid > div:nth-child(1) {
+    background: linear-gradient(135deg, rgba(79, 143, 247, 0.12), rgba(79, 143, 247, 0.02)) !important;
+    border-color: rgba(79, 143, 247, 0.25) !important;
+  }
+  .stats-grid > div:nth-child(1):hover {
+    border-color: rgba(79, 143, 247, 0.65) !important;
+  }
+  .stats-grid > div:nth-child(1) h4 { color: #93c5fd !important; }
+  .stats-grid > div:nth-child(1) div { color: #3b82f6 !important; }
+
+  /* Card 2: Teachers (Green) */
+  .stats-grid > div:nth-child(2) {
+    background: linear-gradient(135deg, rgba(47, 176, 92, 0.12), rgba(47, 176, 92, 0.02)) !important;
+    border-color: rgba(47, 176, 92, 0.25) !important;
+  }
+  .stats-grid > div:nth-child(2):hover {
+    border-color: rgba(47, 176, 92, 0.65) !important;
+  }
+  .stats-grid > div:nth-child(2) h4 { color: #a7f3d0 !important; }
+  .stats-grid > div:nth-child(2) div { color: #2fb05c !important; }
+
+  /* Card 3: Results (Purple) */
+  .stats-grid > div:nth-child(3) {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(168, 85, 247, 0.02)) !important;
+    border-color: rgba(168, 85, 247, 0.25) !important;
+  }
+  .stats-grid > div:nth-child(3):hover {
+    border-color: rgba(168, 85, 247, 0.65) !important;
+  }
+  .stats-grid > div:nth-child(3) h4 { color: #e9d5ff !important; }
+  .stats-grid > div:nth-child(3) div { color: #a855f7 !important; }
+
+  /* Card 4: Gallery (Rose) */
+  .stats-grid > div:nth-child(4) {
+    background: linear-gradient(135deg, rgba(244, 63, 94, 0.12), rgba(244, 63, 94, 0.02)) !important;
+    border-color: rgba(244, 63, 94, 0.25) !important;
+  }
+  .stats-grid > div:nth-child(4):hover {
+    border-color: rgba(244, 63, 94, 0.65) !important;
+  }
+  .stats-grid > div:nth-child(4) h4 { color: #fecdd3 !important; }
+  .stats-grid > div:nth-child(4) div { color: #f43f5e !important; }
+
+  /* Card 5: Registrations (Amber) */
+  .stats-grid > div:nth-child(5) {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(245, 158, 11, 0.02)) !important;
+    border-color: rgba(245, 158, 11, 0.25) !important;
+  }
+  .stats-grid > div:nth-child(5):hover {
+    border-color: rgba(245, 158, 11, 0.65) !important;
+  }
+  .stats-grid > div:nth-child(5) h4 { color: #fde68a !important; }
+  .stats-grid > div:nth-child(5) div { color: #f59e0b !important; }
+
+  /* Card 6: Inbox (Teal) */
+  .stats-grid > div:nth-child(6) {
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.12), rgba(20, 184, 166, 0.02)) !important;
+    border-color: rgba(20, 184, 166, 0.25) !important;
+  }
+  .stats-grid > div:nth-child(6):hover {
+    border-color: rgba(20, 184, 166, 0.65) !important;
+  }
+  .stats-grid > div:nth-child(6) h4 { color: #99f6e4 !important; }
+  .stats-grid > div:nth-child(6) div { color: #2084a6 !important; }
+
+  /* Feed item detail colors */
+  .feed-item {
+    border-color: var(--color-border-light) !important;
+  }
+  .feed-item div[style*="color: #333"] {
+    color: var(--color-text-primary) !important;
+  }
+  .feed-item div[style*="color: #666"] {
+    color: var(--color-text-secondary) !important;
   }
 }
