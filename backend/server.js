@@ -56,6 +56,7 @@ mainRouter.use('/contact', require('./routes/contactRoutes'));
 mainRouter.use('/gallery', require('./routes/galleryRoutes'));
 mainRouter.use('/registrations', require('./routes/registrationRoutes'));
 mainRouter.use('/settings', require('./routes/settingRoutes'));
+mainRouter.use('/committee', require('./routes/committeeRoutes'));
 
 mainRouter.get('/', (req, res) => {
   res.json({

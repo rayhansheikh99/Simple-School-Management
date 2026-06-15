@@ -161,32 +161,8 @@
               <span class="section-header__text">ম্যানেজিং কমিটি</span>
             </div>
 
-            <div class="message-grid animate-on-scroll">
-              <div class="message-card" id="about-chairman-card">
-                <div class="message-card__header message-card__header--chairman">🏛️ সভাপতি</div>
-                <div class="message-card__body">
-                  <img src="assets/images/chairman_photo.png" alt="সভাপতির ছবি" class="message-card__photo">
-                  <div class="message-card__content">
-                    <div class="message-card__name">জনাব মোঃ আব্দুল করিম</div>
-                    <div class="message-card__designation">সভাপতি, ম্যানেজিং কমিটি</div>
-                    <p class="message-card__text">শিক্ষাই জাতির মেরুদণ্ড। প্রতিটি শিক্ষার্থীর মেধা বিকাশে আমরা নিরলস কাজ
-                      করে যাচ্ছি। আমাদের বিদ্যালয়কে দেশের সেরা প্রতিষ্ঠানে পরিণত করাই আমাদের স্বপ্ন।</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="message-card" id="about-headteacher-card">
-                <div class="message-card__header message-card__header--headteacher">👨‍🏫 প্রধান শিক্ষক</div>
-                <div class="message-card__body">
-                  <img src="assets/images/headteacher_photo.png" alt="প্রধান শিক্ষকের ছবি" class="message-card__photo">
-                  <div class="message-card__content">
-                    <div class="message-card__name">জনাব মোঃ দেলোয়ার হোসেন</div>
-                    <div class="message-card__designation">প্রধান শিক্ষক</div>
-                    <p class="message-card__text">আধুনিক পাঠদান পদ্ধতি, মানসম্মত শিক্ষা ও নৈতিক মূল্যবোধের সমন্বয়ে আমরা
-                      প্রতিটি শিক্ষার্থীকে ভবিষ্যতের জন্য প্রস্তুত করছি।</p>
-                  </div>
-                </div>
-              </div>
+            <div class="committee-table-wrapper animate-on-scroll" id="committee-container">
+              <!-- Dynamically populated from js/about.js -->
             </div>
 
           </div>
@@ -291,6 +267,8 @@
   </div>
 
   <button class="back-to-top" id="back-to-top" aria-label="উপরে যান">↑</button>
+  <script src="js/api.js"></script>
+  <script src="js/about.js"></script>
   <script src="js/main.js"></script>
 </body>
 

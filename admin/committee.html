@@ -15,7 +15,7 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>নোটিশবোর্ড পরিচালনা | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
+  <title>ম্যানেজিং কমিটি পরিচালনা | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
   <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -63,9 +63,9 @@
         </div>
         <nav>
           <a href="/" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
-          <a href="notices.html" class="db-menu-btn active" style="text-decoration: none;">📋 নোটিশবোর্ড পরিচালনা</a>
+          <a href="notices.html" class="db-menu-btn" style="text-decoration: none;">📋 নোটিশবোর্ড পরিচালনা</a>
           <a href="teachers.html" class="db-menu-btn" style="text-decoration: none;">👨‍🏫 শিক্ষকবৃন্দ ডাটাবেজ</a>
-          <a href="committee.html" class="db-menu-btn" style="text-decoration: none;">🏛️ ম্যানেজিং কমিটি</a>
+          <a href="committee.html" class="db-menu-btn active" style="text-decoration: none;">🏛️ ম্যানেজিং কমিটি</a>
           <a href="results.html" class="db-menu-btn" style="text-decoration: none;">📊 পরীক্ষার ফলাফল এন্ট্রি</a>
           <a href="gallery.html" class="db-menu-btn" style="text-decoration: none;">📸 ফটো গ্যালারি আপলোড</a>
           <a href="registrations.html" class="db-menu-btn" style="text-decoration: none;">📝 নিবন্ধন আবেদন (০)</a>
@@ -86,42 +86,41 @@
 
       <!-- Main Panel Work Area -->
       <main class="db-content">
-        <section id="notices-tab" class="tab-content active">
+        <section id="committee-tab" class="tab-content active">
           <div class="db-header">
-            <h2 class="db-title">📢 নতুন নোটিশ প্রকাশ করুন</h2>
+            <h2 class="db-title">🏛️ নতুন ম্যানেজিং কমিটি সদস্য যুক্ত করুন</h2>
           </div>
-          <form id="add-notice-form">
+          <form id="add-member-form">
             <div class="db-form-grid">
               <div class="form-group">
-                <label for="notice-title">নোটিশের শিরোনাম *</label>
-                <input type="text" id="notice-title" class="form-input" placeholder="যেমন: গ্রীষ্মকালীন ছুটির নোটিশ"
+                <label for="member-name">সদস্যের নাম *</label>
+                <input type="text" id="member-name" class="form-input" placeholder="যেমন: জনাব মোঃ আব্দুল করিম"
                   required>
               </div>
               <div class="form-group">
-                <label for="notice-category">ক্যাটাগরি *</label>
-                <select id="notice-category" class="form-input" required>
-                  <option value="academic">একাডেমিক</option>
-                  <option value="exam">পরীক্ষা</option>
-                  <option value="event">অনুষ্ঠান</option>
-                  <option value="admin">প্রশাসনিক</option>
-                </select>
+                <label for="member-header">ক্যাটাগরি *</label>
+                <input type="text" id="member-header" class="form-input" placeholder="যেমন: চেয়ারম্যান / দাতা / অভিভাবক / শিক্ষক প্রতিনিধি" required>
+              </div>
+              <div class="form-group">
+                <label for="member-designation">পদবী *</label>
+                <input type="text" id="member-designation" class="form-input" placeholder="যেমন: সভাপতি / সদস্য / সদস্য সচিব" required>
+              </div>
+
+              <div class="form-group">
+                <label for="member-order">সাজানোর ক্রম (Sort Order - ঐচ্ছিক)</label>
+                <input type="number" id="member-order" class="form-input" placeholder="যেমন: ১, ২, ৩" value="0">
               </div>
               <div class="form-group db-form-full">
-                <label for="notice-content">বার্তার বিবরণ (বিস্তারিত) *</label>
-                <textarea id="notice-content" class="form-input" style="height: 120px;"
-                  placeholder="নোটিশের বিস্তারিত অংশ এখানে লিখুন..." required></textarea>
-              </div>
-              <div class="form-group db-form-full">
-                <label for="notice-pdf">সংযুক্তি ফাইল আপলোড (PDF / ছবি - ঐচ্ছিক)</label>
-                <input type="file" id="notice-pdf" accept=".pdf,image/*" class="form-input" style="padding: 6px;">
+                <label for="member-photo">প্রোফাইল ছবি আপলোড (ঐচ্ছিক)</label>
+                <input type="file" id="member-photo" accept="image/*" class="form-input" style="padding: 6px;">
               </div>
             </div>
-            <button type="submit" class="btn btn--primary">📢 নোটিশ পাবলিশ করুন</button>
+            <button type="submit" class="btn btn--primary">🏛️ ডাটাবেজে যুক্ত করুন</button>
           </form>
 
           <div class="manager-list">
-            <h3 style="margin-bottom: 15px; color: #333;">পাবলিশকৃত নোটিশসমূহ</h3>
-            <div id="admin-notices-list"></div>
+            <h3 style="margin-bottom: 15px; color: #333;">নিবন্ধিত ম্যানেজিং কমিটি সদস্যবৃন্দ</h3>
+            <div id="admin-committee-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;"></div>
           </div>
         </section>
       </main>
@@ -160,20 +159,10 @@
         const style = document.createElement('style');
         style.innerHTML = `
           form, 
-          #add-notice-form, 
-          #add-teacher-form, 
-          #add-result-form, 
-          #bulk-result-form, 
-          #add-gallery-form,
+          #add-member-form, 
           .btn-delete, 
           button[onclick*="delete"], 
-          button[onclick*="approve"], 
-          button[onclick*="reject"], 
-          button[onclick*="markMessageRead"],
-          .btn-save-settings,
-          #school-settings-form button[type="submit"],
-          input[type="file"],
-          .upload-card {
+          input[type="file"] {
             display: none !important;
           }
         `;
@@ -182,7 +171,7 @@
 
       // Load initial page data & badges
       updateSidebarBadges();
-      loadAdminNotices();
+      loadAdminCommittee();
 
       // Logout handler
       document.getElementById('logout-btn').addEventListener('click', () => {
@@ -230,24 +219,27 @@
       }
 
       // ============================================================
-      // NOTICES API TRANSACTIONS
+      // COMMITTEE API TRANSACTIONS
       // ============================================================
-      const addNoticeForm = document.getElementById('add-notice-form');
-      const adminNoticesList = document.getElementById('admin-notices-list');
+      const addMemberForm = document.getElementById('add-member-form');
+      const adminCommitteeList = document.getElementById('admin-committee-list');
 
-      addNoticeForm.addEventListener('submit', async (e) => {
+      addMemberForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const title = document.getElementById('notice-title').value;
-        const category = document.getElementById('notice-category').value;
-        const content = document.getElementById('notice-content').value;
-        const fileInput = document.getElementById('notice-pdf');
+        const name = document.getElementById('member-name').value;
+        const header = document.getElementById('member-header').value;
+        const designation = document.getElementById('member-designation').value;
+        const order = document.getElementById('member-order').value;
+        const fileInput = document.getElementById('member-photo');
 
         const formData = new FormData();
-        formData.append('title', title);
-        formData.append('category', category);
-        formData.append('content', content);
+        formData.append('name', name);
+        formData.append('designation', designation);
+        formData.append('header', header);
+        formData.append('message', '');
+        formData.append('order', order);
         if (fileInput.files[0]) {
-          formData.append('pdf', fileInput.files[0]);
+          formData.append('photo', fileInput.files[0]);
         }
 
         try {
@@ -257,7 +249,7 @@
             didOpen: () => Swal.showLoading()
           });
 
-          const response = await fetch(`${API_BASE_URL}/notices`, {
+          const response = await fetch(`${API_BASE_URL}/committee`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${jwtToken}` },
             body: formData
@@ -268,60 +260,52 @@
             Swal.fire({
               icon: 'success',
               title: 'সফল!',
-              text: 'নোটিশটি সফলভাবে পাবলিশ করা হয়েছে।',
+              text: 'ম্যানেজিং কমিটির সদস্য ডাটাবেজে যুক্ত করা হয়েছে।',
               timer: 1500,
               showConfirmButton: false
             });
-            addNoticeForm.reset();
-            loadAdminNotices();
+            addMemberForm.reset();
+            loadAdminCommittee();
           } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'ব্যর্থ',
-              text: data.message
-            });
+            Swal.fire({ icon: 'error', title: 'ব্যর্থ', text: data.message });
           }
         } catch (error) {
           console.error(error);
-          Swal.fire({
-            icon: 'error',
-            title: 'সংযোগ ত্রুটি',
-            text: 'সার্ভারে নোটিশ পাঠানো সম্ভব হয়নি।'
-          });
+          Swal.fire({ icon: 'error', title: 'ত্রুটি', text: 'সদস্য যুক্ত করা সম্ভব হয়নি।' });
         }
       });
 
-      async function loadAdminNotices() {
-        const notices = await fetchNotices();
+      async function loadAdminCommittee() {
+        const members = await fetchCommitteeMembers();
 
-        if (notices.length === 0) {
-          adminNoticesList.innerHTML = '<p style="color:#e74c3c; font-weight: bold; padding: 10px;">কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>';
+        if (members.length === 0) {
+          adminCommitteeList.innerHTML = '<p style="color:#e74c3c; font-weight: bold; grid-column: 1/-1; padding: 10px;">কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>';
           return;
         }
 
-        let noticesHTML = '';
-        notices.forEach(notice => {
-          const categoryMap = { academic: 'একাডেমিক', exam: 'পরীক্ষা', event: 'অনুষ্ঠান', admin: 'প্রশাসনিক' };
-          noticesHTML += `
-            <div class="manager-item">
-              <div>
-                <div class="manager-item__title">${notice.title}</div>
-                <div class="manager-item__meta">
-                  ক্যাটাগরি: ${categoryMap[notice.category] || notice.category} | তারিখ: ${formatBengaliDate(notice.date)}
-                  ${notice.pdfUrl ? `| <a href="${getMediaUrl(notice.pdfUrl)}" target="_blank" style="color: #1c69b5; font-weight: bold; margin-left: 5px;">📎 ফাইল দেখুন</a>` : ''}
+        let membersHTML = '';
+
+        members.forEach(m => {
+          membersHTML += `
+            <div class="manager-item" style="margin-bottom: 0;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="${getMediaUrl(m.photo)}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 50%;" onerror="this.onerror=null; this.src='${getMediaUrl('assets/images/default_teacher.png')}';">
+                <div>
+                  <div class="manager-item__title">${m.name}</div>
+                  <div class="manager-item__meta">${m.header} | ${m.designation} | 🔢 ক্রম: ${toBengaliNumerals(m.order)}</div>
                 </div>
               </div>
-              <button class="btn-delete" onclick="deleteNoticeItem('${notice._id}')" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border-radius: 6px; cursor: pointer;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+              <button class="btn-delete" onclick="deleteCommitteeItem('${m._id}')" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border-radius: 6px; cursor: pointer;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
             </div>
           `;
         });
-        adminNoticesList.innerHTML = noticesHTML;
+        adminCommitteeList.innerHTML = membersHTML;
       }
 
-      window.deleteNoticeItem = async (id) => {
+      window.deleteCommitteeItem = async (id) => {
         Swal.fire({
           title: 'মুছে ফেলতে চান?',
-          text: "এই নোটিশটি স্থায়ীভাবে ডিলিট করা হবে!",
+          text: "এই সদস্যের রেকর্ডটি স্থায়ীভাবে মুছে ফেলা হবে!",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#e74c3c',
@@ -331,7 +315,7 @@
         }).then(async (result) => {
           if (result.isConfirmed) {
             try {
-              const response = await fetch(`${API_BASE_URL}/notices/${id}`, {
+              const response = await fetch(`${API_BASE_URL}/committee/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${jwtToken}` }
               });
@@ -344,7 +328,7 @@
                   timer: 1500,
                   showConfirmButton: false
                 });
-                loadAdminNotices();
+                loadAdminCommittee();
               }
             } catch (error) {
               console.error(error);

@@ -114,4 +114,57 @@ document.addEventListener('DOMContentLoaded', async () => {
       homeTeachersGrid.innerHTML = teachersHTML;
     }
   }
+
+  // Load Dynamic Committee Messages (Chairman & Head Teacher)
+  const homeMessagesContainer = document.getElementById('home-messages-container');
+  if (homeMessagesContainer) {
+    const members = await fetchCommitteeMembers();
+    // Filter members that have messages
+    const membersWithMessages = members.filter(m => m.message && m.message.trim() !== '');
+
+    if (membersWithMessages.length > 0) {
+      let messagesHTML = '';
+      membersWithMessages.forEach(member => {
+        let headerClass = 'message-card__header';
+        let headerWithEmoji = member.header;
+
+        if (member.header.includes('সভাপতি') || member.header.includes('Chairman') || member.header.includes('President') || member.header.includes('চেয়ারম্যান')) {
+          headerClass += ' message-card__header--chairman';
+          if (!headerWithEmoji.startsWith('🏛️')) {
+            headerWithEmoji = '🏛️ ' + headerWithEmoji;
+          }
+        } else if (member.header.includes('প্রধান শিক্ষক') || member.header.includes('সদস্য সচিব') || member.header.includes('Head')) {
+          headerClass += ' message-card__header--headteacher';
+          if (!headerWithEmoji.startsWith('👨‍🏫')) {
+            headerWithEmoji = '👨‍🏫 ' + headerWithEmoji;
+          }
+        } else {
+          headerClass += ' message-card__header--chairman';
+          if (!headerWithEmoji.startsWith('👤')) {
+            headerWithEmoji = '👤 ' + headerWithEmoji;
+          }
+        }
+
+        messagesHTML += `
+          <div class="message-card animate-on-scroll visible" id="member-${member._id}" style="opacity: 1; transform: translateY(0);">
+            <div class="${headerClass}">
+              ${headerWithEmoji}
+            </div>
+            <div class="message-card__body">
+              <img src="${getMediaUrl(member.photo)}" alt="${member.name}" class="message-card__photo" onerror="this.onerror=null; this.src='${getMediaUrl('assets/images/default_teacher.png')}';">
+              <div class="message-card__content">
+                <div class="message-card__name">${member.name}</div>
+                <div class="message-card__designation">${member.designation}</div>
+                <p class="message-card__text">${member.message}</p>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      homeMessagesContainer.innerHTML = messagesHTML;
+    } else {
+      homeMessagesContainer.innerHTML = '';
+      homeMessagesContainer.style.display = 'none';
+    }
+  }
 });

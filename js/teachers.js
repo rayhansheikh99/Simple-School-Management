@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       htHTML += `
         <div class="teacher-card animate-on-scroll visible" id="teacher-${ht._id}" style="opacity: 1; transform: translateY(0);">
           <div class="teacher-card__photo-wrapper">
-            <img src="${getMediaUrl(ht.photo)}" alt="${ht.name}" class="teacher-card__photo">
+            <img src="${getMediaUrl(ht.photo)}" alt="${ht.name}" class="teacher-card__photo" onerror="this.onerror=null; this.src='${getMediaUrl('assets/images/default_teacher.png')}';">
           </div>
           <div class="teacher-card__info">
             <div class="teacher-card__name">${ht.name}</div>
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       astHTML += `
         <div class="teacher-card animate-on-scroll delay-${(index % 4) + 1} visible" id="teacher-${ast._id}" style="opacity: 1; transform: translateY(0);">
           <div class="teacher-card__photo-wrapper">
-            <img src="${getMediaUrl(ast.photo)}" alt="${ast.name}" class="teacher-card__photo">
+            <img src="${getMediaUrl(ast.photo)}" alt="${ast.name}" class="teacher-card__photo" onerror="this.onerror=null; this.src='${getMediaUrl('assets/images/default_teacher.png')}';">
           </div>
           <div class="teacher-card__info">
             <div class="teacher-card__name">${ast.name}</div>

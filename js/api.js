@@ -120,6 +120,18 @@ async function fetchTeachers() {
   }
 }
 
+// 2.1 Fetch committee members list
+async function fetchCommitteeMembers() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/committee`);
+    const result = await response.json();
+    return result.success ? result.data : [];
+  } catch (error) {
+    console.error('Error fetching committee members:', error);
+    return [];
+  }
+}
+
 // 3. Search Result
 async function queryStudentResult(roll, className, examType, year) {
   try {

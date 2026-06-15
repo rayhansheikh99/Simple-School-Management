@@ -8,6 +8,7 @@ const Notice = require('./models/Notice');
 const Teacher = require('./models/Teacher');
 const Result = require('./models/Result');
 const GalleryItem = require('./models/GalleryItem');
+const CommitteeMember = require('./models/CommitteeMember');
 
 // Load config
 dotenv.config();
@@ -258,6 +259,61 @@ const seedData = async () => {
     ];
     await GalleryItem.bulkCreate(mockGallery);
     console.log('Gallery seeded!');
+
+    // 6. Seed Committee Members
+    console.log('Seeding committee members...');
+    const mockCommittee = [
+      {
+        name: 'রফিকুল ইসলাম',
+        designation: 'সভাপতি',
+        header: 'চেয়ারম্যান',
+        message: 'শিক্ষাই জাতির মেরুদণ্ড। প্রতিটি শিক্ষার্থীর মেধা বিকাশে আমরা নিরলস কাজ করে যাচ্ছি। আমাদের বিদ্যালয়কে দেশের সেরা প্রতিষ্ঠানে পরিণত করাই আমাদের স্বপ্ন।',
+        photo: 'assets/images/default_teacher.png',
+        order: 1
+      },
+      {
+        name: 'শাহাদাত চৌধুরী',
+        designation: 'সদস্য',
+        header: 'দাতা',
+        message: '',
+        photo: 'assets/images/default_teacher.png',
+        order: 2
+      },
+      {
+        name: 'হায়দার খোন্দকার',
+        designation: 'সদস্য',
+        header: 'অভিভাবক',
+        message: '',
+        photo: 'assets/images/default_teacher.png',
+        order: 3
+      },
+      {
+        name: 'মো: নুরুল আলম',
+        designation: 'সদস্য',
+        header: 'অভিভাবক',
+        message: '',
+        photo: 'assets/images/default_teacher.png',
+        order: 4
+      },
+      {
+        name: 'মো: আনোয়ার',
+        designation: 'সদস্য',
+        header: 'অভিভাবক',
+        message: '',
+        photo: 'assets/images/default_teacher.png',
+        order: 5
+      },
+      {
+        name: 'সাদিয়া ইসলাম',
+        designation: 'সদস্য',
+        header: 'মহিলা অভিভাবক',
+        message: '',
+        photo: 'assets/images/default_teacher.png',
+        order: 6
+      }
+    ];
+    await CommitteeMember.bulkCreate(mockCommittee);
+    console.log('Committee members seeded!');
 
     console.log('Seeding Database Completed Successfully!');
     await sequelize.close();

@@ -66,6 +66,7 @@
           <a href="notices.html" class="db-menu-btn" style="text-decoration: none;">📋 নোটিশবোর্ড পরিচালনা</a>
           <a href="teachers.html" class="db-menu-btn active" style="text-decoration: none;">👨‍🏫 শিক্ষকবৃন্দ
             ডাটাবেজ</a>
+          <a href="committee.html" class="db-menu-btn" style="text-decoration: none;">🏛️ ম্যানেজিং কমিটি</a>
           <a href="results.html" class="db-menu-btn" style="text-decoration: none;">📊 পরীক্ষার ফলাফল এন্ট্রি</a>
           <a href="gallery.html" class="db-menu-btn" style="text-decoration: none;">📸 ফটো গ্যালারি আপলোড</a>
           <a href="registrations.html" class="db-menu-btn" style="text-decoration: none;">📝 নিবন্ধন আবেদন (০)</a>
@@ -318,8 +319,8 @@
         teachers.forEach(t => {
           teachersHTML += `
             <div class="manager-item" style="margin-bottom: 0;">
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <img src="${getMediaUrl(t.photo)}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 50%;">
+               <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="${getMediaUrl(t.photo)}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 50%;" onerror="this.onerror=null; this.src='${getMediaUrl('assets/images/default_teacher.png')}';">
                 <div>
                   <div class="manager-item__title">${t.name}</div>
                   <div class="manager-item__meta">${typeMapping[t.type] || 'সহকারী শিক্ষক'} | 📱 ${t.phone} | ${t.subject}</div>

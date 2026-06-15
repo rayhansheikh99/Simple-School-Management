@@ -2685,3 +2685,102 @@ h6 {
   0%, 80%, 100% { transform: scale(0.3); opacity: 0.3; }
   40% { transform: scale(1); opacity: 1; }
 }
+
+/* ============================================================
+   MANAGING COMMITTEE TABLE
+   ============================================================ */
+.committee-table-wrapper {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
+  margin-bottom: 30px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.committee-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-bangla);
+  text-align: center;
+}
+
+.committee-table thead {
+  background-color: #dbeafe; /* Soft blue background */
+}
+
+.committee-table th {
+  padding: 16px 20px;
+  color: #1e3a8a; /* Deep navy text */
+  font-weight: 700;
+  font-size: var(--font-size-base);
+  border-bottom: 2px solid #bfdbfe;
+  text-align: center;
+}
+
+.committee-table td {
+  padding: 14px 20px;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border-light);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.committee-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Align first column (Name with image) left-aligned for a premium dashboard look */
+.committee-table th:first-child {
+  text-align: left;
+  padding-left: 36px;
+}
+
+.committee-table td:first-child {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.committee-table__member {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: flex-start;
+  padding-left: 16px;
+}
+
+.committee-table__avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform var(--motion-fast, 300ms) var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.committee-table tbody tr:hover .committee-table__avatar {
+  transform: scale(1.1);
+}
+
+.committee-table__name {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* Vertical lines as in the user's reference image */
+.committee-table th:not(:last-child),
+.committee-table td:not(:last-child) {
+  border-right: 1px solid #dee2e6;
+}
+
+.committee-table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+.committee-table tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}

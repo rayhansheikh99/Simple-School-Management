@@ -41,6 +41,7 @@ const connectDB = async () => {
     require('../models/SchoolSetting');
     require('../models/StudentRegistration');
     require('../models/Teacher');
+    require('../models/CommitteeMember');
 
     // Create Tables if Not Exists
     await sequelize.sync({ alter: true });
