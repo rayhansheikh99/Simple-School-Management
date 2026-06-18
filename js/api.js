@@ -3,51 +3,6 @@
    Frontend Client API Connector
    ============================================================ */
 
-// ============================================================
-// ADMIN PANEL CUTE PRELOADER INJECTION & FADE-OUT (MIN 3 SEC - SESSION INITIAL LOAD ONLY)
-// ============================================================
-window.triggerAdminPreloader = () => {
-  if (document.getElementById('preloader')) return null;
-
-  const preloaderStartTime = Date.now();
-  const preloaderDiv = document.createElement('div');
-  preloaderDiv.id = 'preloader';
-  preloaderDiv.innerHTML = `
-    <div class="preloader-bg-blob preloader-bg-blob--1"></div>
-    <div class="preloader-bg-blob preloader-bg-blob--2"></div>
-    <div class="preloader-content">
-      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <div class="book-loader">
-          <div class="book-loader__spine"></div>
-          <div class="book-loader__page book-loader__page--left"></div>
-          <div class="book-loader__page book-loader__page--right"></div>
-          <div class="book-loader__page book-loader__page--flip"></div>
-        </div>
-        <p class="preloader-subtitle">
-          <span class="preloader-dots"><span></span><span></span><span></span></span>
-        </p>
-      </div>
-    </div>
-  `;
-  document.body.prepend(preloaderDiv);
-
-  const hidePreloader = (onComplete) => {
-    const elapsed = Date.now() - preloaderStartTime;
-    const delay = Math.max(3000 - elapsed, 0);
-
-    setTimeout(() => {
-      preloaderDiv.classList.add('fade-out');
-      setTimeout(() => {
-        preloaderDiv.remove();
-        if (typeof onComplete === 'function') {
-          onComplete();
-        }
-      }, 500);
-    }, delay);
-  };
-
-  return hidePreloader;
-};
 
 
 const API_BASE_URL = (

@@ -329,12 +329,6 @@
       });
 
       function showDashboard(isJustLoggedIn = false) {
-        let hideFn = null;
-        if (isJustLoggedIn && typeof window.triggerAdminPreloader === 'function') {
-          sessionStorage.setItem('adminLoaded', 'true');
-          hideFn = window.triggerAdminPreloader();
-        }
-
         document.documentElement.classList.add('admin-logged-in');
         document.documentElement.classList.remove('admin-logged-out');
         loginContainer.style.display = 'none';
@@ -354,22 +348,19 @@
           }
         }
 
-        loadDashboardOverview().finally(() => {
-          if (hideFn) {
-            hideFn(() => {
-              // Show beautiful success toast after the preloader finishes fading out
-              Swal.fire({
-                icon: 'success',
-                title: 'লগইন সফল!',
-                text: 'প্রশাসনিক ড্যাশবোর্ডে আপনাকে স্বাগতম।',
-                timer: 2500,
-                showConfirmButton: false,
-                toast: true,
-                position: 'top-end'
-              });
-            });
-          }
-        });
+        loadDashboardOverview();
+
+        if (isJustLoggedIn) {
+          Swal.fire({
+            icon: 'success',
+            title: 'লগইন সফল!',
+            text: 'প্রশাসনিক ড্যাশবোর্ডে আপনাকে স্বাগতম।',
+            timer: 2500,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end'
+          });
+        }
       }
 
       // Logout handler
