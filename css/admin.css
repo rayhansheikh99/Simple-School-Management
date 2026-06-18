@@ -1,5 +1,5 @@
 /* ============================================================
-   ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়
+   ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ
    Admin Dashboard Styles
    ============================================================ */
 
@@ -55,10 +55,24 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
+/* Prevent login/dashboard UI flashing on load */
+#login-container, #dashboard-grid {
+  display: none;
+}
+.admin-logged-out #login-container {
+  display: block;
+}
+.admin-logged-in #dashboard-grid {
+  display: grid;
+}
+@media (max-width: 768px) {
+  .admin-logged-in #dashboard-grid {
+    display: block !important;
+  }
+}
+
 /* Dashboard Layout */
 .dashboard-grid {
-  display: none;
-  /* Shown after auth */
   grid-template-columns: 260px 1fr;
   gap: 30px;
   margin-top: 0;

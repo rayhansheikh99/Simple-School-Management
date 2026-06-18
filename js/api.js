@@ -1,5 +1,5 @@
 /* ============================================================
-   ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়
+   ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ
    Frontend Client API Connector
    ============================================================ */
 
@@ -51,22 +51,22 @@ window.triggerAdminPreloader = () => {
 
 
 const API_BASE_URL = (
-  window.location.hostname === 'localhost' || 
-  window.location.hostname === '127.0.0.1' || 
-  window.location.hostname === '' || 
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1' ||
+  window.location.hostname === '' ||
   window.location.protocol === 'file:'
 )
   ? 'http://localhost:5000/api'
-  : 'https://edumanage.site/api';
+  : 'https://bloomingflowerinternationalcollege.edu.bd/api';
 
 const UPLOADS_BASE_URL = (
-  window.location.hostname === 'localhost' || 
-  window.location.hostname === '127.0.0.1' || 
-  window.location.hostname === '' || 
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1' ||
+  window.location.hostname === '' ||
   window.location.protocol === 'file:'
 )
   ? 'http://localhost:5000'
-  : 'https://edumanage.site/api';
+  : 'https://bloomingflowerinternationalcollege.edu.bd';
 
 
 // Helper: Translate digits to Bengali numerals
@@ -98,7 +98,7 @@ async function fetchNotices(category = 'all', limit = null) {
   try {
     let url = `${API_BASE_URL}/notices?category=${category}`;
     if (limit) url += `&limit=${limit}`;
-    
+
     const response = await fetch(url);
     const result = await response.json();
     return result.success ? result.data : [];
@@ -129,6 +129,18 @@ async function fetchCommitteeMembers() {
   } catch (error) {
     console.error('Error fetching committee members:', error);
     return [];
+  }
+}
+
+// 2.2 Fetch a single committee member by ID
+async function fetchCommitteeMemberById(id) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/committee/${id}`);
+    const result = await response.json();
+    return result.success ? result.data : null;
+  } catch (error) {
+    console.error('Error fetching committee member by ID:', error);
+    return null;
   }
 }
 
@@ -297,7 +309,7 @@ function getLogoUrl(logoPath, fallback = 'assets/images/school_logo.png') {
   const isAmin = window.location.pathname.includes('/admin/') || window.location.pathname.includes('\\admin\\') || window.location.pathname.endsWith('/admin') || window.location.pathname.split('/').pop() === 'admin' || window.location.pathname.split('\\').pop() === 'admin';
   const prefix = isAmin ? '../' : '';
   const adjustedFallback = fallback.startsWith('assets/') ? prefix + fallback : fallback;
-  
+
   if (!logoPath) return adjustedFallback;
   if (logoPath.includes('hero_bg.jpg')) return prefix + 'assets/images/hero_banner.png';
   if (logoPath.startsWith('http://') || logoPath.startsWith('https://')) {

@@ -2,7 +2,10 @@ const dotenv = require('dotenv');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
+const sanitizeInput = require('./middleware/sanitizeMiddleware');
 
 // Load environment variables
 dotenv.config();
@@ -12,6 +15,12 @@ connectDB();
 
 const app = express();
 
+// Secure HTTP headers with helmet
+app.use(helmet({
+  contentSecurityPolicy: false, // Disabled temporarily to prevent blocking public CDNs used by the frontend
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
 // Enable CORS
 app.use(cors({
   origin: (origin, callback) => {
@@ -20,8 +29,8 @@ app.use(cors({
       callback(null, true);
     } else {
       const allowedOrigins = [
-        'https://edumanage.site',
-        'http://edumanage.site',
+        'https://bloomingflowerinternationalcollege.edu.bd',
+        'http://bloomingflowerinternationalcollege.edu.bd',
         'http://localhost:5000',
         'http://localhost:5500',
         'http://127.0.0.1:5501',
@@ -45,14 +54,43 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Global Input Sanitization Middleware to prevent stored XSS
+app.use(sanitizeInput);
+
+// Global General Rate Limiting
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 500, // Limit each IP to 500 requests per 15 minutes
+  message: { success: false, message: 'Too many requests from this IP, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+app.use(globalLimiter);
+
 // 🛠️ UNIVERSAL ROUTER: Webuzo-র ডবল বা সিঙ্গেল পাথ জট খোলার জন্য বিশেষ ট্রিক
 const mainRouter = express.Router();
 
-mainRouter.use('/auth', require('./routes/authRoutes'));
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 15, // Max 15 login attempts per 15 mins
+  message: { success: false, message: 'Too many login attempts. Please try again after 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+const formLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10, // Max 10 form submissions per 15 mins
+  message: { success: false, message: 'Too many form submissions. Please try again after 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+mainRouter.use('/auth', loginLimiter, require('./routes/authRoutes'));
 mainRouter.use('/notices', require('./routes/noticeRoutes'));
 mainRouter.use('/teachers', require('./routes/teacherRoutes'));
 mainRouter.use('/results', require('./routes/resultRoutes'));
-mainRouter.use('/contact', require('./routes/contactRoutes'));
+mainRouter.use('/contact', formLimiter, require('./routes/contactRoutes'));
 mainRouter.use('/gallery', require('./routes/galleryRoutes'));
 mainRouter.use('/registrations', require('./routes/registrationRoutes'));
 mainRouter.use('/settings', require('./routes/settingRoutes'));
@@ -60,7 +98,7 @@ mainRouter.use('/committee', require('./routes/committeeRoutes'));
 
 mainRouter.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to the Demo Govt. Model Pilot High School API!',
+    message: 'Welcome to the Blooming Flower International College API!',
     status: 'online',
     version: '1.0.0'
   });

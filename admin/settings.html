@@ -5,17 +5,21 @@
   <script>
     (function () {
       const savedTheme = localStorage.getItem('school-theme');
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+      if (savedTheme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
+      }
+
+      // Check auth token immediately to prevent dashboard flashing for unauthenticated users
+      if (!localStorage.getItem('adminToken')) {
+        window.location.href = 'index.html';
       }
     })();
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>জেনারেল সেটিংস | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
+  <title>General Settings | Blooming Flower International College</title>
   <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -207,14 +211,14 @@
         </button>
         <img src="../assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
         <div class="top-bar__info">
-          <a href="../index.html" style="color:inherit;">
-            <h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1>
+          <a href="/" style="color:inherit;">
+            <h1 class="top-bar__title">ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ</h1>
           </a>
           <span class="top-bar__subtitle">প্রশাসনিক ড্যাশবোর্ড নিয়ন্ত্রণ কক্ষ</span>
         </div>
       </div>
       <div class="top-bar__right">
-        <a href="../index.html" class="btn btn--secondary btn--sm">🏠 হোমপেজে ফিরুন</a>
+        <a href="/" class="btn btn--secondary btn--sm">🏠 হোমপেজে ফিরুন</a>
       </div>
     </div>
   </header>
@@ -235,7 +239,7 @@
             এডমিন</span>
         </div>
         <nav>
-          <a href="/" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
+          <a href="index.html" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
           <a href="notices.html" class="db-menu-btn" style="text-decoration: none;">📋 নোটিশবোর্ড পরিচালনা</a>
           <a href="teachers.html" class="db-menu-btn" style="text-decoration: none;">👨‍🏫 শিক্ষকবৃন্দ ডাটাবেজ</a>
           <a href="committee.html" class="db-menu-btn" style="text-decoration: none;">🏛️ ম্যানেজিং কমিটি</a>
@@ -268,18 +272,26 @@
             <div class="settings-grid">
 
 
+
+              <!-- Address -->
+              <div class="settings-group">
+                <label for="address">ঠিকানা <span style="color: red;">*</span></label>
+                <input type="text" id="address" name="address" class="settings-input" placeholder="যেমন: উত্তরা, ঢাকা"
+                  required>
+              </div>
+
               <!-- Phone Number -->
               <div class="settings-group">
                 <label for="phone">মোবাইল নম্বর <span style="color: red;">*</span></label>
-                <input type="text" id="phone" name="phone" class="settings-input" placeholder="যেমন: ০১৭০০-০০০০০০"
+                <input type="text" id="phone" name="phone" class="settings-input" placeholder="যেমন: ০১৭৩৬-১৫৩৪৪৩"
                   required>
               </div>
 
               <!-- Email Address -->
               <div class="settings-group">
                 <label for="email">ইমেইল ঠিকানা <span style="color: red;">*</span></label>
-                <input type="email" id="email" name="email" class="settings-input"
-                  placeholder="যেমন: info@demoschool.edu.bd" required>
+                <input type="text" id="email" name="email" class="settings-input"
+                  placeholder="যেমন: bloomingflowercollege2014@gmail.com, school@gmail.com" required>
               </div>
 
               <!-- Facebook Page Link -->
@@ -297,6 +309,15 @@
               </div>
 
             </div>
+
+            <!-- About Text (Full Width) -->
+            <div class="settings-group settings-full" style="margin-top: 15px;">
+              <label for="aboutText">আমাদের সম্পর্কে (সংক্ষিপ্ত বিবরণ)</label>
+              <textarea id="aboutText" name="aboutText" class="settings-input" rows="4"
+                placeholder="যেমন: ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান..."></textarea>
+            </div>
+
+
 
             <!-- Action button -->
             <button type="submit" class="btn-save-settings">
@@ -426,16 +447,19 @@
         }
       }
 
+
+
       // Fetch dynamic settings values from the server
       async function loadSchoolSettings() {
         const data = await fetchSettings();
 
         if (data) {
+          document.getElementById('address').value = data.address || '';
           document.getElementById('phone').value = data.phone || '';
           document.getElementById('email').value = data.email || '';
           document.getElementById('facebookLink').value = data.facebookLink || '';
           document.getElementById('youtubeLink').value = data.youtubeLink || '';
-
+          document.getElementById('aboutText').value = data.aboutText || '';
         } else {
           Swal.fire({
             icon: 'warning',
@@ -445,19 +469,21 @@
         }
       }
 
-
-
       // Form submission handler
       const form = document.getElementById('school-settings-form');
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
+        formData.append('schoolName', 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ');
+        formData.append('schoolNameEnglish', 'Blooming Flower International College');
+        formData.append('establishedYear', '১৯৯২');
+        formData.append('address', document.getElementById('address').value.trim());
         formData.append('phone', document.getElementById('phone').value.trim());
         formData.append('email', document.getElementById('email').value.trim());
         formData.append('facebookLink', document.getElementById('facebookLink').value.trim());
         formData.append('youtubeLink', document.getElementById('youtubeLink').value.trim());
-
+        formData.append('aboutText', document.getElementById('aboutText').value.trim());
 
         Swal.fire({
           title: 'আপডেট সংরক্ষণ করা হচ্ছে...',

@@ -6,7 +6,7 @@ const StudentRegistration = require('../models/StudentRegistration');
 const submitRegistration = async (req, res) => {
   const {
     studentName, fatherName, motherName, dateOfBirth,
-    gender, desiredClass, phone, email, address, previousSchool
+    gender, desiredClass, desiredGroup, phone, email, address, previousSchool
   } = req.body;
 
   // Validate required fields
@@ -25,6 +25,7 @@ const submitRegistration = async (req, res) => {
       dateOfBirth,
       gender,
       desiredClass,
+      desiredGroup: desiredGroup || '',
       phone,
       email: email || '',
       address,

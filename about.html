@@ -5,8 +5,7 @@
   <script>
     (function () {
       const savedTheme = localStorage.getItem('school-theme');
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+      if (savedTheme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
@@ -16,8 +15,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয় সম্পর্কে বিস্তারিত তথ্য - ইতিহাস, মিশন, ভিশন এবং ম্যানেজিং কমিটি।">
-  <title>আমাদের সম্পর্কে | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
+    content="ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ সম্পর্কে বিস্তারিত তথ্য - ইতিহাস, মিশন, ভিশন এবং ম্যানেজিং কমিটি।">
+  <title>About Us | Blooming Flower International College</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -33,13 +32,14 @@
           <img src="assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
           <div class="top-bar__info">
             <a href="/" style="color: inherit;">
-              <h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1>
+              <h1 class="top-bar__title">ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ</h1>
             </a>
-            <span class="top-bar__subtitle">চট্টগ্রাম, বাংলাদেশ | EIIN: ১০৪৫৬৭</span>
+            <span class="top-bar__subtitle">সেক্টর-১০, উত্তরা, ঢাকা | EIIN: ১৩৭৬৭৩ | মোশারফ স্কুল ওয়েলফেয়ার ট্রাস্টের অঙ্গ
+              প্রতিষ্ঠান</span>
           </div>
         </div>
         <div class="top-bar__right">
-          <span class="top-bar__badge top-bar__badge--gold">📅 স্থাপিত: ১৯৮৯ খ্রি.</span>
+          <span class="top-bar__badge top-bar__badge--gold">📅 স্থাপিত: ১৯৯২ খ্রি.</span>
           <div class="top-bar__links">
             <a href="admin/index.html" class="top-bar__link" id="login-link">🔑 লগইন</a>
             <a href="registration.html" class="top-bar__link" id="register-link">📝 নিবন্ধন</a>
@@ -116,43 +116,57 @@
               </div>
             </div>
 
-            <!-- History Timeline -->
+            <!-- History Content -->
             <div class="section-header section-header--green animate-on-scroll" id="history">
               <div class="section-header__icon">📜</div>
               <span class="section-header__text">প্রতিষ্ঠানের ইতিহাস</span>
             </div>
 
-            <div class="timeline animate-on-scroll">
-              <div class="timeline-item">
-                <div class="timeline-item__year">১৯৮৯</div>
-                <div class="timeline-item__text">চট্টগ্রামে ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয় প্রতিষ্ঠিত হয়। প্রথম
-                  বছরে মাত্র ১২০ জন শিক্ষার্থী ও ৮ জন শিক্ষক নিয়ে যাত্রা শুরু।</div>
+            <div class="history-details animate-on-scroll" style="margin-bottom: 40px;">
+              <p class="history-details__paragraph">
+                ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ একটি আধুনিক, সুনামধন্য ও আদর্শ শিক্ষাপ্রতিষ্ঠান, যা প্রতিষ্ঠালগ্ন
+                থেকে শিক্ষার উৎকর্ষতা, নৈতিক মূল্যবোধ এবং সৃজনশীল চিন্তার বিকাশে নিরলসভাবে কাজ করে যাচ্ছে। শিক্ষার্থীদের
+                শুধু একাডেমিক জ্ঞান নয়, বরং নৈতিকতা, নেতৃত্বগুণ ও মানবিক মূল্যবোধে সমৃদ্ধ করে গড়ে তোলাই আমাদের প্রধান
+                লক্ষ্য।
+              </p>
+              <p class="history-details__paragraph">
+                আমরা বিশ্বাস করি, আজকের শিক্ষার্থীরাই আগামী দিনের নেতৃত্ব দেবে। তাই যুগোপযোগী শিক্ষা, প্রযুক্তিনির্ভর
+                পাঠদান এবং সহশিক্ষা কার্যক্রমের মাধ্যমে শিক্ষার্থীদের আত্মবিশ্বাসী, দক্ষ ও দায়িত্বশীল নাগরিক হিসেবে গড়ে
+                তুলতে আমরা প্রতিশ্রুতিবদ্ধ।
+              </p>
+
+              <div class="history-details__target-card">
+                <div class="history-details__target-title">🎯 আমাদের লক্ষ্য</div>
+                <div class="history-details__target-quote">“জ্ঞান, শৃঙ্খলা, নৈতিকতা ও সৃজনশীলতার সমন্বয়ে বিশ্বমানের
+                  মানবসম্পদ তৈরি করা।”</div>
               </div>
-              <div class="timeline-item">
-                <div class="timeline-item__year">১৯৯৫</div>
-                <div class="timeline-item__text">বিদ্যালয়ে বিজ্ঞান বিভাগ চালু করা হয়। নতুন ভবন নির্মাণ সম্পন্ন এবং
-                  ছাত্র সংখ্যা ৫০০ ছাড়িয়ে যায়।</div>
+
+              <div class="history-details__features-section">
+                <h3 class="history-details__features-title">🏫 Colleges Special Features (কলেজের বিশেষ বৈশিষ্ট্যসমূহ)
+                </h3>
+                <div class="history-details__features-grid">
+                  <div class="history-details__feature-item"><span>✅</span> অভিজ্ঞ, দক্ষ ও শিক্ষার্থী-বান্ধব শিক্ষকবৃন্দ
+                  </div>
+                  <div class="history-details__feature-item"><span>✅</span> আধুনিক ও প্রযুক্তিসমৃদ্ধ শ্রেণিকক্ষ</div>
+                  <div class="history-details__feature-item"><span>✅</span> কম্পিউটার ল্যাব, বিজ্ঞানাগার ও সমৃদ্ধ
+                    পাঠাগার</div>
+                  <div class="history-details__feature-item"><span>✅</span> ইংরেজি ভাষা ও তথ্যপ্রযুক্তি শিক্ষার প্রতি
+                    বিশেষ গুরুত্ব</div>
+                  <div class="history-details__feature-item"><span>✅</span> সাংস্কৃতিক, ক্রীড়া ও সৃজনশীল কার্যক্রমে
+                    অংশগ্রহণের সুযোগ</div>
+                  <div class="history-details__feature-item"><span>✅</span> নিয়মিত মূল্যায়ন ও অভিভাবক-শিক্ষক যোগাযোগ
+                    ব্যবস্থা</div>
+                  <div class="history-details__feature-item"><span>✅</span> শিক্ষার্থীদের নৈতিক, সামাজিক ও মানসিক বিকাশে
+                    বিশেষ গুরুত্ব</div>
+                  <div class="history-details__feature-item"><span>✅</span> নিরাপদ, সুশৃঙ্খল ও শিক্ষাবান্ধব পরিবেশ</div>
+                </div>
               </div>
-              <div class="timeline-item">
-                <div class="timeline-item__year">২০০২</div>
-                <div class="timeline-item__text">প্রথমবারের মতো SSC পরীক্ষায় ১০০% পাসের হার অর্জন। কম্পিউটার ল্যাব
-                  স্থাপন করা হয়।</div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-item__year">২০১০</div>
-                <div class="timeline-item__text">ডিজিটাল ক্লাসরুম চালু, মাল্টিমিডিয়া প্রজেক্টর স্থাপন। জাতীয় পর্যায়ে
-                  শ্রেষ্ঠ বিদ্যালয়ের পুরস্কার অর্জন।</div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-item__year">২০২০</div>
-                <div class="timeline-item__text">অনলাইন শিক্ষা কার্যক্রম শুরু। COVID-19 মহামারীর সময়ও শিক্ষা কার্যক্রম
-                  অব্যাহত রাখা হয়।</div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-item__year">২০২৬</div>
-                <div class="timeline-item__text">বর্তমানে ১,২৫০+ শিক্ষার্থী ও ৪৫ জন শিক্ষক নিয়ে বিদ্যালয় চট্টগ্রামের
-                  অন্যতম সেরা শিক্ষা প্রতিষ্ঠান হিসেবে পরিচিত।</div>
-              </div>
+
+              <p class="history-details__paragraph" style="margin-top: 24px;">
+                ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ বিশ্বাস করে— প্রতিটি শিক্ষার্থীর মধ্যেই অসীম সম্ভাবনা নিহিত রয়েছে।
+                সেই সম্ভাবনার বিকাশ ঘটিয়ে যোগ্য, আদর্শ ও মানবিক মানুষ হিসেবে গড়ে তোলাই আমাদের অঙ্গীকার। শিক্ষার আলোয়
+                আলোকিত হয়ে দেশ ও জাতির কল্যাণে অবদান রাখবে— এটাই আমাদের প্রত্যাশা।
+              </p>
             </div>
 
             <!-- Managing Committee -->
@@ -191,76 +205,64 @@
       </div>
     </section>
 
-    <!-- STATS SECTION -->
-    <section class="stats-section" id="about-stats">
-      <div class="container">
-        <div class="stats-grid">
-          <div class="stat-card animate-on-scroll delay-1">
-            <div class="stat-card__icon">🎓</div>
-            <span class="stat-card__number" data-count="1250">০</span>
-            <span class="stat-card__label">মোট শিক্ষার্থী</span>
-          </div>
-          <div class="stat-card animate-on-scroll delay-2">
-            <div class="stat-card__icon">👨‍🏫</div>
-            <span class="stat-card__number" data-count="45">০</span>
-            <span class="stat-card__label">শিক্ষক-শিক্ষিকা</span>
-          </div>
-          <div class="stat-card animate-on-scroll delay-3">
-            <div class="stat-card__icon">🏆</div>
-            <span class="stat-card__number" data-count="98">০</span>
-            <span class="stat-card__label">পাসের হার (%)</span>
-          </div>
-          <div class="stat-card animate-on-scroll delay-4">
-            <div class="stat-card__icon">📅</div>
-            <span class="stat-card__number" data-count="35">০</span>
-            <span class="stat-card__label">বছরের ঐতিহ্য</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- FOOTER -->
     <footer class="footer" id="footer">
       <div class="container">
         <div class="footer-grid">
-          <div class="footer-col">
+          <!-- Column 1: About -->
+          <div class="footer-col" id="footer-about">
             <h3 class="footer-col__title">আমাদের সম্পর্কে</h3>
-            <p class="footer-col__text">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয় ১৯৮৯ সালে প্রতিষ্ঠিত। চট্টগ্রামের একটি
-              স্বনামধন্য শিক্ষা প্রতিষ্ঠান।</p>
+            <p class="footer-col__text">
+              ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ ১৯৯২ সালে প্রতিষ্ঠিত। ঢাকার একটি স্বনামধন্য শিক্ষা প্রতিষ্ঠান
+              হিসেবে আমরা শিক্ষার্থীদের সুশিক্ষিত, দক্ষ ও আদর্শ নাগরিক হিসেবে গড়ে তুলতে প্রতিশ্রুতিবদ্ধ।
+            </p>
             <div class="footer-social">
-              <a href="#" class="footer-social__link" aria-label="ফেসবুক">📘</a>
-              <a href="#" class="footer-social__link" aria-label="ইউটিউব">📺</a>
-              <a href="#" class="footer-social__link" aria-label="টুইটার">🐦</a>
+              <a href="#" class="footer-social__link" aria-label="ফেসবুক" id="social-fb">📘</a>
+              <a href="#" class="footer-social__link" aria-label="ইউটিউব" id="social-yt">📺</a>
+              <a href="#" class="footer-social__link" aria-label="টুইটার" id="social-tw">🐦</a>
+              <a href="#" class="footer-social__link" aria-label="ইনস্টাগ্রাম" id="social-ig">📷</a>
             </div>
           </div>
-          <div class="footer-col">
+
+          <!-- Column 2: Links -->
+          <div class="footer-col" id="footer-links">
             <h3 class="footer-col__title">গুরুত্বপূর্ণ লিংক</h3>
-            <a href="/" class="footer-link">হোম</a>
+            <a href="about.html" class="footer-link">আমাদের সম্পর্কে</a>
             <a href="teachers.html" class="footer-link">শিক্ষকবৃন্দ</a>
             <a href="notices.html" class="footer-link">নোটিশ বোর্ড</a>
-            <a href="results.html" class="footer-link">ফলাফল</a>
-            <a href="gallery.html" class="footer-link">গ্যালারি</a>
+            <a href="results.html" class="footer-link">পরীক্ষার ফলাফল</a>
+            <a href="gallery.html" class="footer-link">ফটো গ্যালারি</a>
+            <a href="contact.html" class="footer-link">যোগাযোগ</a>
           </div>
-          <div class="footer-col">
+
+          <!-- Column 4: Contact -->
+          <div class="footer-col" id="footer-contact">
             <h3 class="footer-col__title">যোগাযোগ</h3>
             <div class="footer-contact">
               <div class="footer-contact__icon">📍</div>
-              <div>চট্টগ্রাম, বাংলাদেশ</div>
+              <div>প্লট-২৮, রোড-১, সেক্টর-১০, উত্তরা (তুরাগ), ঢাকা</div>
             </div>
             <div class="footer-contact">
               <div class="footer-contact__icon">📞</div>
-              <div>+৮৮০ ৩১ ৬১২৩৪৫</div>
+              <div>০১৭৩৬-১৫৩৪৪৩</div>
             </div>
             <div class="footer-contact">
               <div class="footer-contact__icon">✉️</div>
-              <div>info@demopilotschool.edu.bd</div>
+              <div>bloomingflowercollege2014@gmail.com</div>
+            </div>
+            <div class="footer-contact">
+              <div class="footer-contact__icon">🕐</div>
+              <div>রবি - বৃহঃ, ৮:০০ - ৪:০০</div>
             </div>
           </div>
         </div>
       </div>
+
       <div class="footer-bottom">
-        <div class="container">&copy; ২০২৬ ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়। সর্বস্বত্ব সংরক্ষিত। | ডিজাইন ও
-          ডেভেলপমেন্ট: <a href="https://getsoft.com.bd/" target="_blank">GETSOFT</a></div>
+        <div class="container">
+          &copy; ২০২৬ ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ। সর্বস্বত্ব সংরক্ষিত। |
+          ডিজাইন ও ডেভেলপমেন্ট: <a href="https://getsoft.com.bd/" target="_blank">GETSOFT</a>
+        </div>
       </div>
     </footer>
 

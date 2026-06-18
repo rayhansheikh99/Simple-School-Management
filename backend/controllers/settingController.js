@@ -6,21 +6,21 @@ const SchoolSetting = require('../models/SchoolSetting');
 const getSettings = async (req, res) => {
   try {
     let settings = await SchoolSetting.findOne({});
-    
+
     // If no settings exist yet, return a default mock object so the site never breaks
     if (!settings) {
       settings = {
-        schoolName: 'ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়',
-        schoolNameEnglish: 'Demo Govt. Model Pilot High School',
-        establishedYear: '১৯৪৮',
-        address: 'মডেল টাউন, ঢাকা - ১২১৬',
-        phone: '০১৭০০-০০০০০০',
-        email: 'info@demoschool.edu.bd',
+        schoolName: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ',
+        schoolNameEnglish: 'Blooming Flower International College',
+        establishedYear: '১৯৯২',
+        address: 'প্লট-২৮, রোড-১, ফুলবাড়িয়া মেইন রোড, সেক্টর-১০, উত্তরা (তুরাগ), ঢাকা',
+        phone: '০১৭৩৬-১৫৩৪৪৩, ০১৬৪৪-৪৪২৯৩০, ০১৯৭৪-০১১৩০৪, ০১৯৯৯-৯৭৬৬২৫',
+        email: 'mosharafhighschool@gmail.com, bloomingflowercollege2014@gmail.com',
         logoUrl: 'assets/images/school_logo.png',
         bannerUrl: 'assets/images/hero_banner.png',
         facebookLink: 'https://facebook.com',
         youtubeLink: 'https://youtube.com',
-        aboutText: 'ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয় অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৪৮ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
+        aboutText: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৯২ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
       };
     }
 
@@ -44,15 +44,15 @@ const updateSettings = async (req, res) => {
 
   try {
     const updateData = {
-      schoolName: schoolName || 'ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়',
-      schoolNameEnglish: schoolNameEnglish || 'Demo Govt. Model Pilot High School',
-      establishedYear: establishedYear || '১৯৪৮',
-      address: address || 'মডেল টাউন, ঢাকা - ১২১৬',
-      phone: phone || '০১৭০০-০০০০০০',
-      email: email || 'info@demoschool.edu.bd',
+      schoolName: schoolName || 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ',
+      schoolNameEnglish: schoolNameEnglish || 'Blooming Flower International College',
+      establishedYear: establishedYear || '১৯৯২',
+      address: address || 'প্লট-২৮, রোড-১, ফুলবাড়িয়া মেইন রোড, সেক্টর-১০, উত্তরা (তুরাগ), ঢাকা',
+      phone: phone || '০১৭৩৬-১৫৩৪৪৩, ০১৬৪৪-৪৪২৯৩০, ০১৯৭৪-০১১৩০৪, ০১৯৯৯-৯৭৬৬২৫',
+      email: email || 'mosharafhighschool@gmail.com, bloomingflowercollege2014@gmail.com',
       facebookLink: facebookLink || 'https://facebook.com',
       youtubeLink: youtubeLink || 'https://youtube.com',
-      aboutText: aboutText || 'ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয় অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান।'
+      aboutText: aboutText || 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান।'
     };
 
     // Handle files if uploaded via Multer

@@ -5,13 +5,13 @@ description: Creates implementation-ready design-system guidance with tokens, co
 
 <!-- TYPEUI_SH_MANAGED_START -->
 
-# Demo Govt. Model Pilot High School
+# Blooming Flower International College
 
 ## Mission
-Deliver implementation-ready design-system guidance for Demo Govt. Model Pilot High School that can be applied consistently across documentation site interfaces.
+Deliver implementation-ready design-system guidance for Blooming Flower International College that can be applied consistently across documentation site interfaces.
 
 ## Brand
-- Product/brand: Demo Govt. Model Pilot High School
+- Product/brand: Blooming Flower International College
 - URL: https://ems.stitbd.net/
 - Audience: developers and technical teams
 - Product surface: documentation site

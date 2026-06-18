@@ -5,8 +5,7 @@
   <script>
     (function () {
       const savedTheme = localStorage.getItem('school-theme');
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+      if (savedTheme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
@@ -15,8 +14,8 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়ের শিক্ষকবৃন্দের তালিকা ও বিস্তারিত তথ্য।">
-  <title>শিক্ষকবৃন্দ | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
+  <meta name="description" content="ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজের শিক্ষকবৃন্দের তালিকা ও বিস্তারিত তথ্য।">
+  <title>Teachers | Blooming Flower International College</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -32,13 +31,13 @@
           <img src="assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
           <div class="top-bar__info">
             <a href="/" style="color:inherit;">
-              <h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1>
+              <h1 class="top-bar__title">ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ</h1>
             </a>
-            <span class="top-bar__subtitle">চট্টগ্রাম, বাংলাদেশ | EIIN: ১০৪৫৬৭</span>
+            <span class="top-bar__subtitle">সেক্টর-১০, উত্তরা, ঢাকা | EIIN: ১৩৭৬৭৩ | মোশারফ স্কুল ওয়েলফেয়ার ট্রাস্টের অঙ্গ প্রতিষ্ঠান</span>
           </div>
         </div>
         <div class="top-bar__right">
-          <span class="top-bar__badge top-bar__badge--gold">📅 স্থাপিত: ১৯৮৯ খ্রি.</span>
+          <span class="top-bar__badge top-bar__badge--gold">📅 স্থাপিত: ১৯৯২ খ্রি.</span>
           <div class="top-bar__links">
             <a href="admin/index.html" class="top-bar__link" id="login-link">🔑 লগইন</a>
             <a href="registration.html" class="top-bar__link" id="register-link">📝 নিবন্ধন</a>
@@ -89,17 +88,27 @@
           <span class="section-header__text">প্রধান শিক্ষক</span>
         </div>
 
-        <div class="teachers-grid" style="grid-template-columns: 1fr; max-width: 300px; margin: 0 auto 50px;">
-          <div class="teacher-card animate-on-scroll" id="ht-card">
-            <div class="teacher-card__photo-wrapper">
-              <img src="assets/images/headteacher_photo.png" alt="প্রধান শিক্ষক" class="teacher-card__photo">
-            </div>
-            <div class="teacher-card__info">
-              <div class="teacher-card__name">জনাব মোঃ দেলোয়ার হোসেন</div>
-              <div class="teacher-card__designation">প্রধান শিক্ষক (ভারপ্রাপ্ত)</div>
-              <span class="teacher-card__subject">বি.এ. (সম্মান), এম.এ., বি.এড</span>
-            </div>
-          </div>
+        <div id="headteacher-list-container" class="teachers-table-wrapper animate-on-scroll">
+          <table class="teachers-table">
+            <thead>
+              <tr>
+                <th>নাম</th>
+                <th>পদবী</th>
+                <th>শিক্ষাগত যোগ্যতা</th>
+                <th>বিষয়</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="teacher-ht">
+                <td data-label="নাম">
+                  <span class="teachers-table__name">জনাব মোঃ দেলোয়ার হোসেন</span>
+                </td>
+                <td data-label="পদবী">প্রধান শিক্ষক (ভারপ্রাপ্ত)</td>
+                <td data-label="শিক্ষাগত যোগ্যতা">বি.এ. (সম্মান), এম.এ., বি.এড</td>
+                <td data-label="বিষয়"><span class="teachers-table__badge">প্রশাসন</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <!-- Assistant Teachers -->
@@ -108,160 +117,162 @@
           <span class="section-header__text">সহকারী শিক্ষকবৃন্দ</span>
         </div>
 
-        <div class="teachers-grid">
-          <div class="teacher-card animate-on-scroll delay-1" id="t-rafiq">
-            <div class="teacher-card__photo-wrapper">
-              <img src="assets/images/chairman_photo.png" alt="শিক্ষক" class="teacher-card__photo">
-            </div>
-            <div class="teacher-card__info">
-              <div class="teacher-card__name">জনাব মোঃ রফিকুল ইসলাম</div>
-              <div class="teacher-card__designation">সহকারী প্রধান শিক্ষক</div>
-              <span class="teacher-card__subject">গণিত</span>
-            </div>
-          </div>
-
-          <div class="teacher-card animate-on-scroll delay-2" id="t-habiba">
-            <div class="teacher-card__photo-wrapper">
-              <img src="assets/images/teachers_grid.png" alt="শিক্ষক" class="teacher-card__photo">
-            </div>
-            <div class="teacher-card__info">
-              <div class="teacher-card__name">উম্মে হাবিবা</div>
-              <div class="teacher-card__designation">সহকারী শিক্ষক</div>
-              <span class="teacher-card__subject">বাংলা</span>
-            </div>
-          </div>
-
-          <div class="teacher-card animate-on-scroll delay-3" id="t-nahid">
-            <div class="teacher-card__photo-wrapper">
-              <img src="assets/images/headteacher_photo.png" alt="শিক্ষক" class="teacher-card__photo">
-            </div>
-            <div class="teacher-card__info">
-              <div class="teacher-card__name">জনাব নাহিদ হাসান</div>
-              <div class="teacher-card__designation">সহকারী শিক্ষক</div>
-              <span class="teacher-card__subject">ইংরেজি</span>
-            </div>
-          </div>
-
-          <div class="teacher-card animate-on-scroll delay-4" id="t-alam">
-            <div class="teacher-card__photo-wrapper">
-              <img src="assets/images/chairman_photo.png" alt="শিক্ষক" class="teacher-card__photo">
-            </div>
-            <div class="teacher-card__info">
-              <div class="teacher-card__name">জনাব শাহ আলম</div>
-              <div class="teacher-card__designation">সহকারী শিক্ষক</div>
-              <span class="teacher-card__subject">পদার্থবিজ্ঞান</span>
-            </div>
-          </div>
-
-          <div class="teacher-card animate-on-scroll delay-1" id="t-karim">
-            <div class="teacher-card__photo-wrapper">
-              <img src="assets/images/teachers_grid.png" alt="শিক্ষক" class="teacher-card__photo">
-            </div>
-            <div class="teacher-card__info">
-              <div class="teacher-card__name">জনাব আব্দুল করিম</div>
-              <div class="teacher-card__designation">সহকারী শিক্ষক</div>
-              <span class="teacher-card__subject">রসায়ন</span>
-            </div>
-          </div>
-
-          <div class="teacher-card animate-on-scroll delay-2" id="t-fatema">
-            <div class="teacher-card__photo-wrapper">
-              <img src="assets/images/headteacher_photo.png" alt="শিক্ষক" class="teacher-card__photo">
-            </div>
-            <div class="teacher-card__info">
-              <div class="teacher-card__name">ফাতেমা বেগম</div>
-              <div class="teacher-card__designation">সহকারী শিক্ষক</div>
-              <span class="teacher-card__subject">জীববিজ্ঞান</span>
-            </div>
-          </div>
-
-          <div class="teacher-card animate-on-scroll delay-3" id="t-mizan">
-            <div class="teacher-card__photo-wrapper">
-              <img src="assets/images/chairman_photo.png" alt="শিক্ষক" class="teacher-card__photo">
-            </div>
-            <div class="teacher-card__info">
-              <div class="teacher-card__name">জনাব মিজানুর রহমান</div>
-              <div class="teacher-card__designation">সহকারী শিক্ষক</div>
-              <span class="teacher-card__subject">ইতিহাস</span>
-            </div>
-          </div>
-
-          <div class="teacher-card animate-on-scroll delay-4" id="t-nasrin">
-            <div class="teacher-card__photo-wrapper">
-              <img src="assets/images/teachers_grid.png" alt="শিক্ষক" class="teacher-card__photo">
-            </div>
-            <div class="teacher-card__info">
-              <div class="teacher-card__name">নাসরিন আক্তার</div>
-              <div class="teacher-card__designation">সহকারী শিক্ষক</div>
-              <span class="teacher-card__subject">ভূগোল</span>
-            </div>
-          </div>
-
-          <div class="teacher-card animate-on-scroll delay-1" id="t-hasan">
-            <div class="teacher-card__photo-wrapper">
-              <img src="assets/images/headteacher_photo.png" alt="শিক্ষক" class="teacher-card__photo">
-            </div>
-            <div class="teacher-card__info">
-              <div class="teacher-card__name">জনাব হাসান মাহমুদ</div>
-              <div class="teacher-card__designation">সহকারী শিক্ষক</div>
-              <span class="teacher-card__subject">তথ্য ও যোগাযোগ প্রযুক্তি</span>
-            </div>
-          </div>
-
-          <div class="teacher-card animate-on-scroll delay-2" id="t-selina">
-            <div class="teacher-card__photo-wrapper">
-              <img src="assets/images/chairman_photo.png" alt="শিক্ষক" class="teacher-card__photo">
-            </div>
-            <div class="teacher-card__info">
-              <div class="teacher-card__name">সেলিনা পারভীন</div>
-              <div class="teacher-card__designation">সহকারী শিক্ষক</div>
-              <span class="teacher-card__subject">ইসলাম শিক্ষা</span>
-            </div>
-          </div>
+        <div id="asst-teachers-list-container" class="teachers-table-wrapper animate-on-scroll">
+          <table class="teachers-table">
+            <thead>
+              <tr>
+                <th>নাম</th>
+                <th>পদবী</th>
+                <th>শিক্ষাগত যোগ্যতা</th>
+                <th>বিষয়</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="teacher-rafiq">
+                <td data-label="নাম">
+                  <span class="teachers-table__name">জনাব মোঃ রফিকুল ইসলাম</span>
+                </td>
+                <td data-label="পদবী">সহকারী প্রধান শিক্ষক</td>
+                <td data-label="শিক্ষাগত যোগ্যতা">বি.এসসি (গণিত), এম.এসসি, বি.এড</td>
+                <td data-label="বিষয়"><span class="teachers-table__badge">গণিত</span></td>
+              </tr>
+              <tr id="teacher-habiba">
+                <td data-label="নাম">
+                  <span class="teachers-table__name">উম্মে হাবিবা</span>
+                </td>
+                <td data-label="পদবী">সহকারী শিক্ষক</td>
+                <td data-label="শিক্ষাগত যোগ্যতা">বি.এ. (বাংলা), এম.এ.</td>
+                <td data-label="বিষয়"><span class="teachers-table__badge">বাংলা</span></td>
+              </tr>
+              <tr id="teacher-nahid">
+                <td data-label="নাম">
+                  <span class="teachers-table__name">জনাব নাহিদ হাসান</span>
+                </td>
+                <td data-label="পদবী">সহকারী শিক্ষক</td>
+                <td data-label="শিক্ষাগত যোগ্যতা">বি.এ. (ইংরেজি), এম.এ.</td>
+                <td data-label="বিষয়"><span class="teachers-table__badge">ইংরেজি</span></td>
+              </tr>
+              <tr id="teacher-alam">
+                <td data-label="নাম">
+                  <span class="teachers-table__name">জনাব শাহ আলম</span>
+                </td>
+                <td data-label="পদবী">সহকারী শিক্ষক</td>
+                <td data-label="শিক্ষাগত যোগ্যতা">বি.এসসি (পদার্থ), এম.এসসি</td>
+                <td data-label="বিষয়"><span class="teachers-table__badge">পদার্থবিজ্ঞান</span></td>
+              </tr>
+              <tr id="teacher-karim">
+                <td data-label="নাম">
+                  <span class="teachers-table__name">জনাব আব্দুল করিম</span>
+                </td>
+                <td data-label="পদবী">সহকারী শিক্ষক</td>
+                <td data-label="শিক্ষাগত যোগ্যতা">বি.এসসি (রসায়ন), এম.এসসি</td>
+                <td data-label="বিষয়"><span class="teachers-table__badge">রসায়ন</span></td>
+              </tr>
+              <tr id="teacher-fatema">
+                <td data-label="নাম">
+                  <span class="teachers-table__name">ফাতেমা বেগম</span>
+                </td>
+                <td data-label="পদবী">সহকারী শিক্ষক</td>
+                <td data-label="শিক্ষাগত যোগ্যতা">বি.এসসি (উদ্ভিদবিজ্ঞান), এম.এসসি</td>
+                <td data-label="বিষয়"><span class="teachers-table__badge">জীববিজ্ঞান</span></td>
+              </tr>
+              <tr id="teacher-mizan">
+                <td data-label="নাম">
+                  <span class="teachers-table__name">জনাব মিজানুর রহমান</span>
+                </td>
+                <td data-label="পদবী">সহকারী শিক্ষক</td>
+                <td data-label="শিক্ষাগত যোগ্যতা">বি.এ. (ইতিহাস), এম.এ.</td>
+                <td data-label="বিষয়"><span class="teachers-table__badge">ইতিহাস</span></td>
+              </tr>
+              <tr id="teacher-nasrin">
+                <td data-label="নাম">
+                  <span class="teachers-table__name">নাসরিন আক্তার</span>
+                </td>
+                <td data-label="পদবী">সহকারী শিক্ষক</td>
+                <td data-label="শিক্ষাগত যোগ্যতা">বি.স.স (ভূগোল), এম.স.স</td>
+                <td data-label="বিষয়"><span class="teachers-table__badge">ভূগোল</span></td>
+              </tr>
+              <tr id="teacher-hasan">
+                <td data-label="নাম">
+                  <span class="teachers-table__name">জনাব হাসান মাহমুদ</span>
+                </td>
+                <td data-label="পদবী">সহকারী শিক্ষক</td>
+                <td data-label="শিক্ষাগত যোগ্যতা">বি.এসসি (সিএসই)</td>
+                <td data-label="বিষয়"><span class="teachers-table__badge">তথ্য ও যোগাযোগ প্রযুক্তি</span></td>
+              </tr>
+              <tr id="teacher-selina">
+                <td data-label="নাম">
+                  <span class="teachers-table__name">সেলিনা পারভীন</span>
+                </td>
+                <td data-label="পদবী">সহকারী শিক্ষক</td>
+                <td data-label="শিক্ষাগত যোগ্যতা">বি.এ. (ইসলামিক স্টাডিজ), এম.এ.</td>
+                <td data-label="বিষয়"><span class="teachers-table__badge">ইসলাম শিক্ষা</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
-
-    <!-- FOOTER -->
+    <!-- ============================================================
+       FOOTER
+       ============================================================ -->
     <footer class="footer" id="footer">
       <div class="container">
         <div class="footer-grid">
-          <div class="footer-col">
+          <!-- Column 1: About -->
+          <div class="footer-col" id="footer-about">
             <h3 class="footer-col__title">আমাদের সম্পর্কে</h3>
-            <p class="footer-col__text">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয় ১৯৮৯ সালে প্রতিষ্ঠিত।</p>
+            <p class="footer-col__text">
+              ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ ১৯৯২ সালে প্রতিষ্ঠিত। ঢাকার একটি স্বনামধন্য শিক্ষা প্রতিষ্ঠান
+              হিসেবে আমরা শিক্ষার্থীদের সুশিক্ষিত, দক্ষ ও আদর্শ নাগরিক হিসেবে গড়ে তুলতে প্রতিশ্রুতিবদ্ধ।
+            </p>
             <div class="footer-social">
-              <a href="#" class="footer-social__link" aria-label="ফেসবুক">📘</a>
-              <a href="#" class="footer-social__link" aria-label="ইউটিউব">📺</a>
+              <a href="#" class="footer-social__link" aria-label="ফেসবুক" id="social-fb">📘</a>
+              <a href="#" class="footer-social__link" aria-label="ইউটিউব" id="social-yt">📺</a>
+              <a href="#" class="footer-social__link" aria-label="টুইটার" id="social-tw">🐦</a>
+              <a href="#" class="footer-social__link" aria-label="ইনস্টাগ্রাম" id="social-ig">📷</a>
             </div>
           </div>
-          <div class="footer-col">
+
+          <!-- Column 2: Links -->
+          <div class="footer-col" id="footer-links">
             <h3 class="footer-col__title">গুরুত্বপূর্ণ লিংক</h3>
-            <a href="/" class="footer-link">হোম</a>
-            <a href="about.html" class="footer-link">প্রশাসন</a>
+            <a href="about.html" class="footer-link">আমাদের সম্পর্কে</a>
+            <a href="teachers.html" class="footer-link">শিক্ষকবৃন্দ</a>
             <a href="notices.html" class="footer-link">নোটিশ বোর্ড</a>
-            <a href="results.html" class="footer-link">ফলাফল</a>
-            <a href="gallery.html" class="footer-link">গ্যালারি</a>
+            <a href="results.html" class="footer-link">পরীক্ষার ফলাফল</a>
+            <a href="gallery.html" class="footer-link">ফটো গ্যালারি</a>
+            <a href="contact.html" class="footer-link">যোগাযোগ</a>
           </div>
-          <div class="footer-col">
+
+          <!-- Column 4: Contact -->
+          <div class="footer-col" id="footer-contact">
             <h3 class="footer-col__title">যোগাযোগ</h3>
             <div class="footer-contact">
               <div class="footer-contact__icon">📍</div>
-              <div>চট্টগ্রাম, বাংলাদেশ</div>
+              <div>প্লট-২৮, রোড-১, সেক্টর-১০, উত্তরা (তুরাগ), ঢাকা</div>
             </div>
             <div class="footer-contact">
               <div class="footer-contact__icon">📞</div>
-              <div>+৮৮০ ৩১ ৬১২৩৪৫</div>
+              <div>০১৭৩৬-১৫৩৪৪৩</div>
             </div>
             <div class="footer-contact">
               <div class="footer-contact__icon">✉️</div>
-              <div>info@demopilotschool.edu.bd</div>
+              <div>bloomingflowercollege2014@gmail.com</div>
+            </div>
+            <div class="footer-contact">
+              <div class="footer-contact__icon">🕐</div>
+              <div>রবি - বৃহঃ, ৮:০০ - ৪:০০</div>
             </div>
           </div>
         </div>
       </div>
+
       <div class="footer-bottom">
-        <div class="container">&copy; ২০২৬ ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়। সর্বস্বত্ব সংরক্ষিত। | ডিজাইন ও
-          ডেভেলপমেন্ট: <a href="https://getsoft.com.bd/" target="_blank">GETSOFT</a></div>
+        <div class="container">
+          &copy; ২০২৬ ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ। সর্বস্বত্ব সংরক্ষিত। |
+          ডিজাইন ও ডেভেলপমেন্ট: <a href="https://getsoft.com.bd/" target="_blank">GETSOFT</a>
+        </div>
       </div>
     </footer>
 

@@ -1,21 +1,31 @@
 /* ============================================================
-   ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়
+   ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ
    Dynamic Results Notice Board Loader
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', async () => {
   const resultListContainer = document.querySelector('.result-list');
-  const filterButtons = document.querySelectorAll('#results-filter .filter-btn');
+  const classFilterSelect = document.getElementById('class-filter-select');
 
   if (!resultListContainer) return;
 
   const classMapping = {
     all: { label: 'সকল শ্রেণি', badgeClass: 'notice-item__badge--academic' },
-    '6': { label: '৬ষ্ঠ শ্রেণি', badgeClass: 'notice-item__badge--exam' },
-    '7': { label: '৭ম শ্রেণি', badgeClass: 'notice-item__badge--event' },
-    '8': { label: '৮ম শ্রেণি', badgeClass: 'notice-item__badge--academic' },
-    '9': { label: '৯ম শ্রেণি', badgeClass: 'notice-item__badge--admin' },
-    '10': { label: '১০ম শ্রেণি', badgeClass: 'notice-item__badge--exam' }
+    play: { label: 'প্লে', badgeClass: 'notice-item__badge--academic' },
+    nursery: { label: 'নার্সারি', badgeClass: 'notice-item__badge--academic' },
+    kg: { label: 'কেজি', badgeClass: 'notice-item__badge--academic' },
+    '1': { label: 'প্রথম শ্রেণি', badgeClass: 'notice-item__badge--academic' },
+    '2': { label: 'দ্বিতীয় শ্রেণি', badgeClass: 'notice-item__badge--academic' },
+    '3': { label: 'তৃতীয় শ্রেণি', badgeClass: 'notice-item__badge--academic' },
+    '4': { label: 'চতুর্থ শ্রেণি', badgeClass: 'notice-item__badge--academic' },
+    '5': { label: 'পঞ্চম শ্রেণি', badgeClass: 'notice-item__badge--academic' },
+    '6': { label: 'ষষ্ঠ শ্রেণি', badgeClass: 'notice-item__badge--exam' },
+    '7': { label: 'সপ্তম শ্রেণি', badgeClass: 'notice-item__badge--event' },
+    '8': { label: 'অষ্টম শ্রেণি', badgeClass: 'notice-item__badge--academic' },
+    '9': { label: 'নবম শ্রেণি', badgeClass: 'notice-item__badge--admin' },
+    '10': { label: '১০ম শ্রেণি', badgeClass: 'notice-item__badge--exam' },
+    '11': { label: 'একাদশ শ্রেণি', badgeClass: 'notice-item__badge--exam' },
+    '12': { label: 'দ্বাদশ শ্রেণি', badgeClass: 'notice-item__badge--exam' }
   };
 
   // Create Modal Element dynamically in the DOM
@@ -119,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (results.length === 0) {
       resultListContainer.innerHTML = `
-        <div style="text-align: center; padding: 50px 0; color: #e74c3c; width: 100%; border: 1px dashed #ccc; border-radius: 8px; background: #fff;">
+        <div class="not-found-card">
           <h3>📭 কোন ফলাফল নোটিশ পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি</h3>
           <p>Results not found or not yet published</p>
         </div>
@@ -214,18 +224,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Load all results on initial page render
   await renderResults('all', initialResultId);
 
-  // Add click listeners to class filter buttons
-  filterButtons.forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-      // Toggle active classes
-      filterButtons.forEach(b => b.classList.remove('filter-btn--active'));
-      btn.classList.add('filter-btn--active');
-
-      const id = btn.getAttribute('id');
-      const className = id.replace('rf-', ''); // e.g. "rf-6" -> "6"
+  // Add change listener to class filter select dropdown
+  if (classFilterSelect) {
+    classFilterSelect.addEventListener('change', async (e) => {
+      const className = e.target.value;
       await renderResults(className);
     });
-  });
+  }
 });
 
 // CSS Injection for dynamic loading spinner

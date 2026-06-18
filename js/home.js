@@ -1,5 +1,5 @@
 /* ============================================================
-   ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়
+   ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ
    Dynamic Home Page Loader
    ============================================================ */
 
@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const tickerContent = document.querySelector('.ticker__content');
   const mainNoticeCard = document.getElementById('notice-card-main');
   const recentEventsList = document.querySelector('#events-section + .notice-list');
-  const homeTeachersGrid = document.querySelector('.teachers-section .teachers-grid');
+  const homeTeachersGrid = document.getElementById('home-teachers-list-container');
 
   // Load Dynamic Notices (Ticker, Highlights, & Events)
   if (tickerContent || mainNoticeCard || recentEventsList) {
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         notices.slice(0, 5).forEach(notice => {
           tickerHTML += `<span class="ticker__item">${notice.title}</span>`;
         });
-        
+
         // Populate and duplicate for seamless marquee loops
         tickerContent.innerHTML = tickerHTML + tickerHTML;
       }
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (mainNoticeCard) {
         const latestNotice = notices[0];
         const dateStr = formatBengaliDate(latestNotice.date);
-        
+
         mainNoticeCard.innerHTML = `
           <img src="assets/images/hero_banner.png" alt="বিদ্যালয়ের সাম্প্রতিক কার্যক্রম" class="notice-card__image">
           <div class="notice-card__body">
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (recentEventsList && notices.length > 1) {
         let eventHTML = '';
         const recentNotices = notices.slice(1, 4); // Next 3 notices
-        
+
         const categoryMapping = {
           academic: { label: 'একাডেমিক', badgeClass: 'notice-item__badge--academic' },
           exam: { label: 'পরীক্ষা', badgeClass: 'notice-item__badge--exam' },
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           const monthYear = `${months[noticeDate.getMonth()]} ${toBengaliNumerals(noticeDate.getFullYear().toString().substring(2))}`;
 
           const catDetails = categoryMapping[notice.category] || { label: 'একাডেমিক', badgeClass: 'notice-item__badge--academic' };
-          
+
           eventHTML += `
             <div class="notice-item animate-on-scroll visible" id="event-${notice._id}" style="opacity: 1; transform: translateY(0); cursor: pointer;" onclick="window.location.href='notices.html#notice-${notice._id}'">
               <div class="notice-item__date-box">
@@ -89,82 +89,41 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (teachers.length > 0) {
       // Show top 5 teachers (Head + first 4 assistants)
       const homeTeachers = teachers.slice(0, 5);
-      let teachersHTML = '';
-      
+      let teachersHTML = `
+        <table class="teachers-table">
+          <thead>
+            <tr>
+              <th>নাম</th>
+              <th>পদবী</th>
+              <th>শিক্ষাগত যোগ্যতা</th>
+              <th>বিষয়</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
       const typeMapping = {
         head: 'প্রধান শিক্ষক',
         assistant: 'সহকারী শিক্ষক',
         staff: 'স্টাফ'
       };
 
-      homeTeachers.forEach((teacher, index) => {
+      homeTeachers.forEach((teacher) => {
         teachersHTML += `
-          <div class="teacher-card animate-on-scroll delay-${(index % 4) + 1} visible" id="teacher-${teacher._id}" style="opacity: 1; transform: translateY(0);">
-            <div class="teacher-card__photo-wrapper">
-              <img src="${getMediaUrl(teacher.photo)}" alt="${teacher.name}" class="teacher-card__photo">
-            </div>
-            <div class="teacher-card__info">
-              <div class="teacher-card__name">${teacher.name}</div>
-              <div class="teacher-card__designation">${typeMapping[teacher.type] || 'সহকারী শিক্ষক'} | 📱 ${teacher.phone}</div>
-              <span class="teacher-card__subject">${teacher.subject}</span>
-            </div>
-          </div>
+          <tr id="teacher-${teacher._id}">
+            <td data-label="নাম"><span class="teachers-table__name">${teacher.name}</span></td>
+            <td data-label="পদবী">${typeMapping[teacher.type] || 'সহকারী শিক্ষক'}</td>
+            <td data-label="শিক্ষাগত যোগ্যতা">${teacher.qualifications || '-'}</td>
+            <td data-label="বিষয়"><span class="teachers-table__badge">${teacher.subject || '-'}</span></td>
+          </tr>
         `;
       });
+      teachersHTML += `
+          </tbody>
+        </table>
+      `;
       homeTeachersGrid.innerHTML = teachersHTML;
     }
   }
 
-  // Load Dynamic Committee Messages (Chairman & Head Teacher)
-  const homeMessagesContainer = document.getElementById('home-messages-container');
-  if (homeMessagesContainer) {
-    const members = await fetchCommitteeMembers();
-    // Filter members that have messages
-    const membersWithMessages = members.filter(m => m.message && m.message.trim() !== '');
-
-    if (membersWithMessages.length > 0) {
-      let messagesHTML = '';
-      membersWithMessages.forEach(member => {
-        let headerClass = 'message-card__header';
-        let headerWithEmoji = member.header;
-
-        if (member.header.includes('সভাপতি') || member.header.includes('Chairman') || member.header.includes('President') || member.header.includes('চেয়ারম্যান')) {
-          headerClass += ' message-card__header--chairman';
-          if (!headerWithEmoji.startsWith('🏛️')) {
-            headerWithEmoji = '🏛️ ' + headerWithEmoji;
-          }
-        } else if (member.header.includes('প্রধান শিক্ষক') || member.header.includes('সদস্য সচিব') || member.header.includes('Head')) {
-          headerClass += ' message-card__header--headteacher';
-          if (!headerWithEmoji.startsWith('👨‍🏫')) {
-            headerWithEmoji = '👨‍🏫 ' + headerWithEmoji;
-          }
-        } else {
-          headerClass += ' message-card__header--chairman';
-          if (!headerWithEmoji.startsWith('👤')) {
-            headerWithEmoji = '👤 ' + headerWithEmoji;
-          }
-        }
-
-        messagesHTML += `
-          <div class="message-card animate-on-scroll visible" id="member-${member._id}" style="opacity: 1; transform: translateY(0);">
-            <div class="${headerClass}">
-              ${headerWithEmoji}
-            </div>
-            <div class="message-card__body">
-              <img src="${getMediaUrl(member.photo)}" alt="${member.name}" class="message-card__photo" onerror="this.onerror=null; this.src='${getMediaUrl('assets/images/default_teacher.png')}';">
-              <div class="message-card__content">
-                <div class="message-card__name">${member.name}</div>
-                <div class="message-card__designation">${member.designation}</div>
-                <p class="message-card__text">${member.message}</p>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-      homeMessagesContainer.innerHTML = messagesHTML;
-    } else {
-      homeMessagesContainer.innerHTML = '';
-      homeMessagesContainer.style.display = 'none';
-    }
-  }
 });

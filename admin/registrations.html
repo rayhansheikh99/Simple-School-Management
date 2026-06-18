@@ -5,17 +5,21 @@
   <script>
     (function () {
       const savedTheme = localStorage.getItem('school-theme');
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+      if (savedTheme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
+      }
+
+      // Check auth token immediately to prevent dashboard flashing for unauthenticated users
+      if (!localStorage.getItem('adminToken')) {
+        window.location.href = 'index.html';
       }
     })();
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ভর্তি আবেদনসমূহ পরিচালনা | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
+  <title>Manage Admission Registrations | Blooming Flower International College</title>
   <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -34,14 +38,14 @@
         </button>
         <img src="../assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
         <div class="top-bar__info">
-          <a href="../index.html" style="color:inherit;">
-            <h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1>
+          <a href="/" style="color:inherit;">
+            <h1 class="top-bar__title">ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ</h1>
           </a>
           <span class="top-bar__subtitle">প্রশাসনিক ড্যাশবোর্ড নিয়ন্ত্রণ কক্ষ</span>
         </div>
       </div>
       <div class="top-bar__right">
-        <a href="../index.html" class="btn btn--secondary btn--sm">🏠 হোমপেজে ফিরুন</a>
+        <a href="/" class="btn btn--secondary btn--sm">🏠 হোমপেজে ফিরুন</a>
       </div>
     </div>
   </header>
@@ -62,7 +66,7 @@
             এডমিন</span>
         </div>
         <nav>
-          <a href="/" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
+          <a href="index.html" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
           <a href="notices.html" class="db-menu-btn" style="text-decoration: none;">📋 নোটিশবোর্ড পরিচালনা</a>
           <a href="teachers.html" class="db-menu-btn" style="text-decoration: none;">👨‍🏫 শিক্ষকবৃন্দ ডাটাবেজ</a>
           <a href="committee.html" class="db-menu-btn" style="text-decoration: none;">🏛️ ম্যানেজিং কমিটি</a>
@@ -161,10 +165,6 @@
         document.head.appendChild(style);
       }
 
-      // Load initial page data & badges
-      updateSidebarBadges();
-      loadAdminRegistrations();
-
       // Logout handler
       document.getElementById('logout-btn').addEventListener('click', () => {
         Swal.fire({
@@ -186,7 +186,15 @@
         });
       });
 
+      // ============================================================
+      // DOM References — defined before any function that uses them
+      // ============================================================
+      let currentRegFilter = 'all';
+      const adminRegistrationsList = document.getElementById('admin-registrations-list');
+
+      // ============================================================
       // Badges sync helper
+      // ============================================================
       async function updateSidebarBadges() {
         try {
           const [contactData, registrationsData] = await Promise.all([
@@ -206,47 +214,53 @@
             regBtn.innerHTML = `📝 নিবন্ধন আবেদন (${toBengaliNumerals(pendingRegs)})`;
           }
         } catch (e) {
-          console.error(e);
+          console.error('Badge update error:', e);
         }
       }
 
       // ============================================================
       // STUDENT REGISTRATIONS (নিবন্ধন) API TRANSACTIONS
       // ============================================================
-      let currentRegFilter = 'all';
-      const adminRegistrationsList = document.getElementById('admin-registrations-list');
+      function formatDesiredClass(classStr) {
+        const classMap = {
+          'play': 'প্লে', 'nursery': 'নার্সারি', 'kg': 'কেজি',
+          '1': 'প্রথম শ্রেণি', '2': 'দ্বিতীয় শ্রেণি', '3': 'তৃতীয় শ্রেণি', '4': 'চতুর্থ শ্রেণি', '5': 'পঞ্চম শ্রেণি',
+          '6': 'ষষ্ঠ শ্রেণি', '7': 'সপ্তম শ্রেণি', '8': 'অষ্টম শ্রেণি', '9': 'নবম শ্রেণি', '10': 'দশম শ্রেণি', '11': 'একাদশ শ্রেণি', '12': 'দ্বাদশ শ্রেণি'
+        };
+        return classMap[classStr] || classStr;
+      }
 
       async function loadAdminRegistrations(filterStatus = 'all') {
         currentRegFilter = filterStatus;
 
+        // Show loading state
+        adminRegistrationsList.innerHTML = `
+          <div style="text-align:center; padding: 40px; color: #888;">
+            <div style="display:inline-block; width:32px; height:32px; border:3px solid #e2e8f0; border-top-color:#2563eb; border-radius:50%; animation:spin 0.7s linear infinite; margin-bottom:12px;"></div>
+            <p style="margin:0; font-size:0.95rem;">তথ্য লোড হচ্ছে...</p>
+          </div>
+          <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+        `;
+
         try {
-          // Fetch all registrations (without status filter first, so we can count pending)
           const allRegs = await fetchRegistrations(jwtToken);
 
-          // Calculate pending count for sidebar badge
+          // Update pending count in sidebar
           const pendingCount = allRegs.filter(r => r.status === 'pending').length;
           const regBtn = document.querySelector('a[href="registrations.html"]');
           if (regBtn) {
             regBtn.innerHTML = `📝 নিবন্ধন আবেদন (${toBengaliNumerals(pendingCount)})`;
           }
 
-          // Filter registrations based on filterStatus
+          // Filter based on selected status
           let filteredRegs = allRegs;
           if (filterStatus !== 'all') {
             filteredRegs = allRegs.filter(r => r.status === filterStatus);
           }
 
           if (filteredRegs.length === 0) {
-            adminRegistrationsList.innerHTML = '<p style="color:#e74c3c; font-weight: bold; padding: 20px; text-align: center;">কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>';
+            adminRegistrationsList.innerHTML = '<p style="color:#e74c3c; font-weight: bold; padding: 20px; text-align: center;">কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>';
             return;
-          }
-
-          function formatDesiredClass(classStr) {
-            const classMap = {
-              '6': '৬ষ্ঠ', '7': '৭ম', '8': '৮ম', '9': '৯ম', '10': '১০ম',
-              '৬': '৬ষ্ঠ', '৭': '৭ম', '৮': '৮ম', '৯': '৯ম', '১০': '১০ম'
-            };
-            return classMap[classStr] || classStr;
           }
 
           let regHTML = '';
@@ -268,7 +282,7 @@
             regHTML += `
               <div class="manager-item" style="display: block; ${borderStyle} margin-bottom: 15px; padding: 20px; border-radius: 8px;">
                 <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-                  <img src="${getMediaUrl(r.photo)}" style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; background: #fafafa;" onerror="this.src='assets/images/default_teacher.png'">
+                  <img src="${getMediaUrl(r.photo)}" style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; background: #fafafa;" onerror="this.src='../assets/images/default_teacher.png'">
                   <div style="flex: 1; min-width: 250px;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
                       <h3 style="margin: 0; color: #333; font-size: 1.25rem; font-weight: 700;">${r.studentName}</h3>
@@ -277,13 +291,14 @@
                     
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; font-size: 0.9rem; color: #555;">
                       <div><strong>শ্রেণি:</strong> ${formatDesiredClass(r.desiredClass)}</div>
+                      ${r.desiredGroup ? `<div><strong>বিভাগ:</strong> ${r.desiredGroup}</div>` : ''}
                       <div><strong>মোবাইল:</strong> ${toBengaliNumerals(r.phone)}</div>
-                      <div><strong>লিঙ্গ:</strong> ${r.gender === 'male' ? 'ছেলে' : 'মেয়ে'}</div>
+                      <div><strong>লিঙ্গ:</strong> ${r.gender === 'male' ? 'ছেলে' : 'মেয়ে'}</div>
                       <div><strong>জন্ম তারিখ:</strong> ${formatBengaliDate(r.dateOfBirth)}</div>
                       <div><strong>পিতার নাম:</strong> ${r.fatherName}</div>
                       <div><strong>মাতার নাম:</strong> ${r.motherName}</div>
                       <div><strong>ইমেইল:</strong> ${r.email || 'নেই'}</div>
-                      <div><strong>পূর্ববর্তী বিদ্যালয়:</strong> ${r.previousSchool || 'নেই'}</div>
+                      <div><strong>পূর্ববর্তী বিদ্যালয়:</strong> ${r.previousSchool || 'নেই'}</div>
                     </div>
                   </div>
                 </div>
@@ -316,7 +331,7 @@
           adminRegistrationsList.innerHTML = regHTML;
         } catch (error) {
           console.error('Error loading registrations:', error);
-          adminRegistrationsList.innerHTML = '<p style="color:red; text-align:center; padding:20px;">উপাত্ত লোড করতে ব্যর্থ হয়েছে।</p>';
+          adminRegistrationsList.innerHTML = '<p style="color:red; text-align:center; padding:20px;">উপাত্ত লোড করতে ব্যর্থ হয়েছে। পেজ রিফ্রেশ করুন।</p>';
         }
       }
 
@@ -410,7 +425,7 @@
       window.deleteRegistrationItem = async (id) => {
         Swal.fire({
           title: 'আবেদনটি মুছে ফেলতে চান?',
-          text: "এই আবেদন রেকর্ডটি স্থায়ীভাবে মুছে ফেলা হবে!",
+          text: "এই আবেদন রেকর্ডটি স্থায়ীভাবে মুছে ফেলা হবে!",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#dc3545',
@@ -429,7 +444,7 @@
             if (res.success) {
               Swal.fire({
                 icon: 'success',
-                title: 'মুছে ফেলা হয়েছে!',
+                title: 'মুছে ফেলা হয়েছে!',
                 text: 'আবেদনটি সফলভাবে মুছে ফেলা হয়েছে।',
                 timer: 1500,
                 showConfirmButton: false
@@ -442,6 +457,12 @@
           }
         });
       };
+
+      // ============================================================
+      // Load initial page data AFTER all functions are defined
+      // ============================================================
+      updateSidebarBadges();
+      loadAdminRegistrations();
 
     });
   </script>

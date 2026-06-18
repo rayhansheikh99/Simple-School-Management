@@ -1,5 +1,5 @@
 /* ============================================================
-   ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়
+   ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ
    Dynamic Gallery Loader
    ============================================================ */
 
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (items.length === 0) {
       galleryGrid.innerHTML = `
-        <div style="text-align: center; padding: 40px 0; color: #777; grid-column: 1 / -1; width: 100%; border: 1px dashed #ddd; border-radius: 8px;">
+        <div class="not-found-card" style="grid-column: 1 / -1; margin: 0;">
           <p>কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>
         </div>
       `;

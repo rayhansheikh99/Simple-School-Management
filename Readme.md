@@ -1,10 +1,10 @@
-# Demo Govt. Model Pilot High School
+# Blooming Flower International College
 
 ## Mission
-Create implementation-ready, token-driven UI guidance for Demo Govt. Model Pilot High School that is optimized for consistency, accessibility, and fast delivery across documentation site.
+Create implementation-ready, token-driven UI guidance for Blooming Flower International College that is optimized for consistency, accessibility, and fast delivery across documentation site.
 
 ## Brand
-- Product/brand: Demo Govt. Model Pilot High School
+- Product/brand: Blooming Flower International College
 - URL: https://ems.stitbd.net/
 - Audience: developers and technical teams
 - Product surface: documentation site

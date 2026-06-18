@@ -5,17 +5,21 @@
   <script>
     (function () {
       const savedTheme = localStorage.getItem('school-theme');
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+      if (savedTheme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
+      }
+
+      // Check auth token immediately to prevent dashboard flashing for unauthenticated users
+      if (!localStorage.getItem('adminToken')) {
+        window.location.href = 'index.html';
       }
     })();
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ম্যানেজিং কমিটি পরিচালনা | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
+  <title>Manage Managing Committee | Blooming Flower International College</title>
   <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -34,14 +38,14 @@
         </button>
         <img src="../assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
         <div class="top-bar__info">
-          <a href="../index.html" style="color:inherit;">
-            <h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1>
+          <a href="/" style="color:inherit;">
+            <h1 class="top-bar__title">ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ</h1>
           </a>
           <span class="top-bar__subtitle">প্রশাসনিক ড্যাশবোর্ড নিয়ন্ত্রণ কক্ষ</span>
         </div>
       </div>
       <div class="top-bar__right">
-        <a href="../index.html" class="btn btn--secondary btn--sm">🏠 হোমপেজে ফিরুন</a>
+        <a href="/" class="btn btn--secondary btn--sm">🏠 হোমপেজে ফিরুন</a>
       </div>
     </div>
   </header>
@@ -62,7 +66,7 @@
             এডমিন</span>
         </div>
         <nav>
-          <a href="/" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
+          <a href="index.html" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
           <a href="notices.html" class="db-menu-btn" style="text-decoration: none;">📋 নোটিশবোর্ড পরিচালনা</a>
           <a href="teachers.html" class="db-menu-btn" style="text-decoration: none;">👨‍🏫 শিক্ষকবৃন্দ ডাটাবেজ</a>
           <a href="committee.html" class="db-menu-btn active" style="text-decoration: none;">🏛️ ম্যানেজিং কমিটি</a>

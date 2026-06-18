@@ -5,17 +5,21 @@
   <script>
     (function () {
       const savedTheme = localStorage.getItem('school-theme');
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+      if (savedTheme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
+      }
+
+      // Check auth token immediately to prevent dashboard flashing for unauthenticated users
+      if (!localStorage.getItem('adminToken')) {
+        window.location.href = 'index.html';
       }
     })();
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>পরীক্ষার ফলাফল প্রকাশনা পরিচালনা | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
+  <title>Manage Exam Results | Blooming Flower International College</title>
   <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -34,14 +38,14 @@
         </button>
         <img src="../assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
         <div class="top-bar__info">
-          <a href="../index.html" style="color:inherit;">
-            <h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1>
+          <a href="/" style="color:inherit;">
+            <h1 class="top-bar__title">ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ</h1>
           </a>
           <span class="top-bar__subtitle">প্রশাসনিক ড্যাশবোর্ড নিয়ন্ত্রণ কক্ষ</span>
         </div>
       </div>
       <div class="top-bar__right">
-        <a href="../index.html" class="btn btn--secondary btn--sm">🏠 হোমপেজে ফিরুন</a>
+        <a href="/" class="btn btn--secondary btn--sm">🏠 হোমপেজে ফিরুন</a>
       </div>
     </div>
   </header>
@@ -62,7 +66,7 @@
             এডমিন</span>
         </div>
         <nav>
-          <a href="/" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
+          <a href="index.html" class="db-menu-btn" style="text-decoration: none;">🏠 ড্যাশবোর্ড ওভারভিউ</a>
           <a href="notices.html" class="db-menu-btn" style="text-decoration: none;">📋 নোটিশবোর্ড পরিচালনা</a>
           <a href="teachers.html" class="db-menu-btn" style="text-decoration: none;">👨‍🏫 শিক্ষকবৃন্দ ডাটাবেজ</a>
           <a href="committee.html" class="db-menu-btn" style="text-decoration: none;">🏛️ ম্যানেজিং কমিটি</a>
@@ -103,11 +107,21 @@
                 <label for="res-class">শ্রেণি *</label>
                 <select id="res-class" class="form-input" required>
                   <option value="all">সকল শ্রেণি</option>
+                  <option value="play">প্লে</option>
+                  <option value="nursery">নার্সারি</option>
+                  <option value="kg">কেজি</option>
+                  <option value="1">প্রথম শ্রেণি</option>
+                  <option value="2">দ্বিতীয় শ্রেণি</option>
+                  <option value="3">তৃতীয় শ্রেণি</option>
+                  <option value="4">চতুর্থ শ্রেণি</option>
+                  <option value="5">পঞ্চম শ্রেণি</option>
                   <option value="6">৬ষ্ঠ শ্রেণি</option>
-                  <option value="7">সপ্তম শ্রেণি</option>
-                  <option value="8">অষ্টম শ্রেণি</option>
-                  <option value="9">নবম শ্রেণি</option>
-                  <option value="10">দশম শ্রেণি</option>
+                  <option value="7">৭ম শ্রেণি</option>
+                  <option value="8">৮ম শ্রেণি</option>
+                  <option value="9">৯ম শ্রেণি</option>
+                  <option value="10">১০ম শ্রেণি</option>
+                  <option value="11">একাদশ শ্রেণি</option>
+                  <option value="12">দ্বাদশ শ্রেণি</option>
                 </select>
               </div>
               <div class="form-group">
@@ -162,11 +176,21 @@
 
       const classMapping = {
         all: { label: 'সকল শ্রেণি' },
+        play: { label: 'প্লে' },
+        nursery: { label: 'নার্সারি' },
+        kg: { label: 'কেজি' },
+        '1': { label: 'প্রথম শ্রেণি' },
+        '2': { label: 'দ্বিতীয় শ্রেণি' },
+        '3': { label: 'তৃতীয় শ্রেণি' },
+        '4': { label: 'চতুর্থ শ্রেণি' },
+        '5': { label: 'পঞ্চম শ্রেণি' },
         '6': { label: '৬ষ্ঠ শ্রেণি' },
-        '7': { label: 'সপ্তম শ্রেণি' },
+        '7': { label: '৭ম শ্রেণি' },
         '8': { label: 'অষ্টম শ্রেণি' },
         '9': { label: 'নবম শ্রেণি' },
-        '10': { label: 'দশম শ্রেণি' }
+        '10': { label: 'দশম শ্রেণি' },
+        '11': { label: 'একাদশ শ্রেণি' },
+        '12': { label: 'দ্বাদশ শ্রেণি' }
       };
 
       // Update sidebar role badge & apply viewer restrictions

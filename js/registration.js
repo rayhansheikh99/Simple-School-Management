@@ -1,5 +1,5 @@
 /* ============================================================
-   ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়
+   ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ
    Student Registration Form Handler
    ============================================================ */
 
@@ -39,6 +39,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Toggle desiredGroup field based on desiredClass selection
+  const classSelect = document.getElementById('reg-desiredClass');
+  const groupWrapper = document.getElementById('group-select-wrapper');
+  const groupSelect = document.getElementById('reg-desiredGroup');
+
+  if (classSelect && groupWrapper && groupSelect) {
+    classSelect.addEventListener('change', function () {
+      const selectedClass = this.value;
+      if (['9', '10', '11', '12'].includes(selectedClass)) {
+        groupWrapper.style.display = 'flex';
+      } else {
+        groupWrapper.style.display = 'none';
+        groupSelect.value = '';
+      }
+    });
+  }
+
   // Form submission
   if (form) {
     form.addEventListener('submit', async function (e) {
@@ -51,6 +68,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const dateOfBirth = document.getElementById('reg-dateOfBirth').value;
       const gender = document.getElementById('reg-gender').value;
       const desiredClass = document.getElementById('reg-desiredClass').value;
+      const desiredGroupEl = document.getElementById('reg-desiredGroup');
+      const desiredGroup = desiredGroupEl ? desiredGroupEl.value : '';
       const phone = document.getElementById('reg-phone').value.trim();
       const address = document.getElementById('reg-address').value.trim();
 
@@ -67,6 +86,19 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
+      // If class is 9, 10, 11, or 12, then desiredGroup is required
+      if (['9', '10', '11', '12'].includes(desiredClass) && !desiredGroup) {
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({
+            icon: 'error',
+            title: 'অসম্পূর্ণ তথ্য!',
+            text: 'শ্রেণি ৯-১২ এর জন্য বিভাগ (গ্রুপ) নির্বাচন করা আবশ্যক।',
+            confirmButtonText: 'ঠিক আছে'
+          });
+        }
+        return;
+      }
+
       // Build FormData for multipart upload
       const formData = new FormData();
       formData.append('studentName', studentName);
@@ -75,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
       formData.append('dateOfBirth', dateOfBirth);
       formData.append('gender', gender);
       formData.append('desiredClass', desiredClass);
+      formData.append('desiredGroup', desiredGroup);
       formData.append('phone', phone);
       formData.append('address', address);
 
@@ -107,10 +140,12 @@ document.addEventListener('DOMContentLoaded', function () {
               confirmButtonColor: '#2563eb'
             }).then(() => {
               form.reset();
+              if (groupWrapper) groupWrapper.style.display = 'none';
               photoPreview.innerHTML = '<span class="placeholder-icon">📷</span>';
             });
           } else {
             form.reset();
+            if (groupWrapper) groupWrapper.style.display = 'none';
             photoPreview.innerHTML = '<span class="placeholder-icon">📷</span>';
           }
         } else {

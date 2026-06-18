@@ -1,5 +1,5 @@
 /* ============================================================
-   ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়
+   ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ
    Main JavaScript
    ============================================================ */
 
@@ -55,13 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Listen for system changes if user has no saved preference
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.getItem('school-theme')) {
-        const newSystemTheme = e.matches ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', newSystemTheme);
-        toggleBtn.innerHTML = `<span class="theme-toggle-icon">${newSystemTheme === 'dark' ? '☀️' : '🌙'}</span>`;
-      }
-    });
   }
   initThemeSwitcher();
 
@@ -561,9 +554,6 @@ async function applyDynamicSchoolSettings() {
     const settings = await fetchSettings();
     if (!settings) return;
 
-
-
-    // 3. Update Footer Contact Column
     const footerContact = document.getElementById('footer-contact');
     if (footerContact) {
       const contactDivs = footerContact.querySelectorAll('.footer-contact');

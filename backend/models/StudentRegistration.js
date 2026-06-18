@@ -43,8 +43,12 @@ const StudentRegistration = sequelize.define('StudentRegistration', {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      isIn: [['6', '7', '8', '9', '10']]
+      isIn: [['play', 'nursery', 'kg', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']]
     }
+  },
+  desiredGroup: {
+    type: DataTypes.STRING,
+    defaultValue: ''
   },
   phone: {
     type: DataTypes.STRING,

@@ -10,32 +10,32 @@ const SchoolSetting = sequelize.define('SchoolSetting', {
   schoolName: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়'
+    defaultValue: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ'
   },
   schoolNameEnglish: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'Demo Govt. Model Pilot High School'
+    defaultValue: 'Blooming Flower International College'
   },
   establishedYear: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: '১৯৪৮'
+    defaultValue: '১৯৯২'
   },
   address: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'মডেল টাউন, ঢাকা - ১২১৬'
+    defaultValue: 'প্লট-২৮, রোড-১, ফুলবাড়িয়া মেইন রোড, সেক্টর-১০, উত্তরা (তুরাগ), ঢাকা'
   },
   phone: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: '০১৭০০-০০০০০০'
+    defaultValue: '০১৭৩৬-১৫৩৪৪৩, ০১৬৪৪-৪৪২৯৩০, ০১৯৭৪-০১১৩০৪, ০১৯৯৯-৯৭৬৬২৫'
   },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'info@demoschool.edu.bd'
+    defaultValue: 'mosharafhighschool@gmail.com, bloomingflowercollege2014@gmail.com'
   },
   logoUrl: {
     type: DataTypes.STRING,
@@ -55,7 +55,7 @@ const SchoolSetting = sequelize.define('SchoolSetting', {
   },
   aboutText: {
     type: DataTypes.TEXT,
-    defaultValue: 'ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয় অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৪৮ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
+    defaultValue: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৯২ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
   }
 }, {
   timestamps: true

@@ -1,5 +1,5 @@
 /* ============================================================
-   ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়
+   ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ
    Dynamic Committee Page Loader
    ============================================================ */
 
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (members.length === 0) {
     committeeContainer.innerHTML = `
-      <div style="text-align: center; padding: 30px 0; color: #e74c3c; grid-column: 1 / -1; width: 100%; font-weight: bold;">
+      <div class="not-found-card" style="grid-column: 1 / -1; margin: 0;">
         <p>ম্যানেজিং কমিটির কোনো তথ্য পাওয়া যায়নি (Data not found)</p>
       </div>
     `;

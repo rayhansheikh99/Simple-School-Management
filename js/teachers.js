@@ -1,17 +1,17 @@
 /* ============================================================
-   ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়
-   Dynamic Teachers Page Loader
+   ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ
+   Dynamic Teachers Page Loader (List/Table Format)
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const headteacherContainer = document.querySelector('#headteacher-section + .teachers-grid');
-  const assistantsContainer = document.querySelector('#asst-teachers-section + .teachers-grid');
+  const headteacherContainer = document.getElementById('headteacher-list-container');
+  const assistantsContainer = document.getElementById('asst-teachers-list-container');
 
   if (!headteacherContainer || !assistantsContainer) return;
 
   // Show loaders
   const loadingHTML = `
-    <div style="text-align: center; padding: 20px 0; color: #555; grid-column: 1 / -1; width: 100%;">
+    <div style="text-align: center; padding: 30px 0; color: #555; width: 100%;">
       <div class="loader-spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid var(--color-primary, #1c69b5); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 10px;"></div>
       <p>লোড হচ্ছে...</p>
     </div>
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (teachers.length === 0) {
     const errorHTML = `
-      <div style="text-align: center; padding: 30px 0; color: #e74c3c; grid-column: 1 / -1; width: 100%;">
+      <div class="not-found-card">
         <p>কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>
       </div>
     `;
@@ -45,45 +45,71 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Render Headteacher
   if (headteachers.length > 0) {
-    let htHTML = '';
+    let htHTML = `
+      <table class="teachers-table">
+        <thead>
+          <tr>
+            <th>নাম</th>
+            <th>পদবী</th>
+            <th>শিক্ষাগত যোগ্যতা</th>
+            <th>বিষয়</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
     headteachers.forEach(ht => {
       htHTML += `
-        <div class="teacher-card animate-on-scroll visible" id="teacher-${ht._id}" style="opacity: 1; transform: translateY(0);">
-          <div class="teacher-card__photo-wrapper">
-            <img src="${getMediaUrl(ht.photo)}" alt="${ht.name}" class="teacher-card__photo" onerror="this.onerror=null; this.src='${getMediaUrl('assets/images/default_teacher.png')}';">
-          </div>
-          <div class="teacher-card__info">
-            <div class="teacher-card__name">${ht.name}</div>
-            <div class="teacher-card__designation">${typeMapping[ht.type] || 'প্রধান শিক্ষক'} | 📱 ${ht.phone}</div>
-            <span class="teacher-card__subject">${ht.qualifications || ht.subject}</span>
-          </div>
-        </div>
+        <tr id="teacher-${ht._id}">
+          <td data-label="নাম">
+            <span class="teachers-table__name">${ht.name}</span>
+          </td>
+          <td data-label="পদবী">${typeMapping[ht.type] || 'প্রধান শিক্ষক'}</td>
+          <td data-label="শিক্ষাগত যোগ্যতা">${ht.qualifications || '-'}</td>
+          <td data-label="বিষয়"><span class="teachers-table__badge">${ht.subject || '-'}</span></td>
+        </tr>
       `;
     });
+    htHTML += `
+        </tbody>
+      </table>
+    `;
     headteacherContainer.innerHTML = htHTML;
   } else {
-    headteacherContainer.innerHTML = '<div style="text-align: center; grid-column: 1/-1; color: #777;">প্রধান শিক্ষক: কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</div>';
+    headteacherContainer.innerHTML = '<div class="not-found-card"><p>প্রধান শিক্ষক: কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p></div>';
   }
 
   // Render Assistant Teachers
   if (assistants.length > 0) {
-    let astHTML = '';
-    assistants.forEach((ast, index) => {
+    let astHTML = `
+      <table class="teachers-table">
+        <thead>
+          <tr>
+            <th>নাম</th>
+            <th>পদবী</th>
+            <th>শিক্ষাগত যোগ্যতা</th>
+            <th>বিষয়</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+    assistants.forEach((ast) => {
       astHTML += `
-        <div class="teacher-card animate-on-scroll delay-${(index % 4) + 1} visible" id="teacher-${ast._id}" style="opacity: 1; transform: translateY(0);">
-          <div class="teacher-card__photo-wrapper">
-            <img src="${getMediaUrl(ast.photo)}" alt="${ast.name}" class="teacher-card__photo" onerror="this.onerror=null; this.src='${getMediaUrl('assets/images/default_teacher.png')}';">
-          </div>
-          <div class="teacher-card__info">
-            <div class="teacher-card__name">${ast.name}</div>
-            <div class="teacher-card__designation">${typeMapping[ast.type] || 'সহকারী শিক্ষক'} | 📱 ${ast.phone}</div>
-            <span class="teacher-card__subject">${ast.subject}</span>
-          </div>
-        </div>
+        <tr id="teacher-${ast._id}">
+          <td data-label="নাম">
+            <span class="teachers-table__name">${ast.name}</span>
+          </td>
+          <td data-label="পদবী">${typeMapping[ast.type] || 'সহকারী শিক্ষক'}</td>
+          <td data-label="শিক্ষাগত যোগ্যতা">${ast.qualifications || '-'}</td>
+          <td data-label="বিষয়"><span class="teachers-table__badge">${ast.subject || '-'}</span></td>
+        </tr>
       `;
     });
+    astHTML += `
+        </tbody>
+      </table>
+    `;
     assistantsContainer.innerHTML = astHTML;
   } else {
-    assistantsContainer.innerHTML = '<div style="text-align: center; grid-column: 1/-1; color: #777;">সহকারী শিক্ষক: কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</div>';
+    assistantsContainer.innerHTML = '<div class="not-found-card"><p>সহকারী শিক্ষক: কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p></div>';
   }
 });

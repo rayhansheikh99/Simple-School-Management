@@ -5,8 +5,7 @@
   <script>
     (function () {
       const savedTheme = localStorage.getItem('school-theme');
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+      if (savedTheme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
@@ -16,8 +15,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়ের নোটিশ বোর্ড - সকল গুরুত্বপূর্ণ বিজ্ঞপ্তি ও ঘোষণা।">
-  <title>নোটিশ বোর্ড | ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</title>
+    content="ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজের নোটিশ বোর্ড - সকল গুরুত্বপূর্ণ বিজ্ঞপ্তি ও ঘোষণা।">
+  <title>Notice Board | Blooming Flower International College</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -33,13 +32,13 @@
           <img src="assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
           <div class="top-bar__info">
             <a href="/" style="color:inherit;">
-              <h1 class="top-bar__title">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়</h1>
+              <h1 class="top-bar__title">ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ</h1>
             </a>
-            <span class="top-bar__subtitle">চট্টগ্রাম, বাংলাদেশ | EIIN: ১০৪৫৬৭</span>
+            <span class="top-bar__subtitle">সেক্টর-১০, উত্তরা, ঢাকা | EIIN: ১০৪৫৬৭</span>
           </div>
         </div>
         <div class="top-bar__right">
-          <span class="top-bar__badge top-bar__badge--gold">📅 স্থাপিত: ১৯৮৯ খ্রি.</span>
+          <span class="top-bar__badge top-bar__badge--gold">📅 স্থাপিত: ১৯৯২ খ্রি.</span>
           <div class="top-bar__links">
             <a href="admin/index.html" class="top-bar__link" id="login-link">🔑 লগইন</a>
             <a href="registration.html" class="top-bar__link" id="register-link">📝 নিবন্ধন</a>
@@ -197,42 +196,63 @@
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer" id="footer">
       <div class="container">
         <div class="footer-grid">
-          <div class="footer-col">
+          <!-- Column 1: About -->
+          <div class="footer-col" id="footer-about">
             <h3 class="footer-col__title">আমাদের সম্পর্কে</h3>
-            <p class="footer-col__text">ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয় ১৯৮৯ সালে প্রতিষ্ঠিত।</p>
+            <p class="footer-col__text">
+              ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ ১৯৯২ সালে প্রতিষ্ঠিত। ঢাকার একটি স্বনামধন্য শিক্ষা প্রতিষ্ঠান
+              হিসেবে আমরা শিক্ষার্থীদের সুশিক্ষিত, দক্ষ ও আদর্শ নাগরিক হিসেবে গড়ে তুলতে প্রতিশ্রুতিবদ্ধ।
+            </p>
+            <div class="footer-social">
+              <a href="#" class="footer-social__link" aria-label="ফেসবুক" id="social-fb">📘</a>
+              <a href="#" class="footer-social__link" aria-label="ইউটিউব" id="social-yt">📺</a>
+              <a href="#" class="footer-social__link" aria-label="টুইটার" id="social-tw">🐦</a>
+              <a href="#" class="footer-social__link" aria-label="ইনস্টাগ্রাম" id="social-ig">📷</a>
+            </div>
           </div>
-          <div class="footer-col">
+
+          <!-- Column 2: Links -->
+          <div class="footer-col" id="footer-links">
             <h3 class="footer-col__title">গুরুত্বপূর্ণ লিংক</h3>
-            <a href="/" class="footer-link">হোম</a>
-            <a href="about.html" class="footer-link">প্রশাসন</a>
+            <a href="about.html" class="footer-link">আমাদের সম্পর্কে</a>
             <a href="teachers.html" class="footer-link">শিক্ষকবৃন্দ</a>
-            <a href="results.html" class="footer-link">ফলাফল</a>
-            <a href="gallery.html" class="footer-link">গ্যালারি</a>
+            <a href="notices.html" class="footer-link">নোটিশ বোর্ড</a>
+            <a href="results.html" class="footer-link">পরীক্ষার ফলাফল</a>
+            <a href="gallery.html" class="footer-link">ফটো গ্যালারি</a>
+            <a href="contact.html" class="footer-link">যোগাযোগ</a>
           </div>
-          <div class="footer-col">
+
+          <!-- Column 4: Contact -->
+          <div class="footer-col" id="footer-contact">
             <h3 class="footer-col__title">যোগাযোগ</h3>
             <div class="footer-contact">
               <div class="footer-contact__icon">📍</div>
-              <div>চট্টগ্রাম, বাংলাদেশ</div>
+              <div>প্লট-২৮, রোড-১, সেক্টর-১০, উত্তরা (তুরাগ), ঢাকা</div>
             </div>
             <div class="footer-contact">
               <div class="footer-contact__icon">📞</div>
-              <div>+৮৮০ ৩১ ৬১২৩৪৫</div>
+              <div>০১৭৩৬-১৫৩৪৪৩</div>
             </div>
             <div class="footer-contact">
               <div class="footer-contact__icon">✉️</div>
-              <div>info@demopilotschool.edu.bd</div>
+              <div>bloomingflowercollege2014@gmail.com</div>
+            </div>
+            <div class="footer-contact">
+              <div class="footer-contact__icon">🕐</div>
+              <div>রবি - বৃহঃ, ৮:০০ - ৪:০০</div>
             </div>
           </div>
         </div>
       </div>
+
       <div class="footer-bottom">
-        <div class="container">&copy; ২০২৬ ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়। সর্বস্বত্ব সংরক্ষিত। | ডিজাইন ও
-          ডেভেলপমেন্ট: <a href="https://getsoft.com.bd/" target="_blank">GETSOFT</a></div>
+        <div class="container">
+          &copy; ২০২৬ ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ। সর্বস্বত্ব সংরক্ষিত। |
+          ডিজাইন ও ডেভেলপমেন্ট: <a href="https://getsoft.com.bd/" target="_blank">GETSOFT</a>
+        </div>
       </div>
     </footer>
 

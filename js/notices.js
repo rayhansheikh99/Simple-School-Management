@@ -1,5 +1,5 @@
 /* ============================================================
-   ডেমো সরকারি মডেল পাইলট উচ্চ বিদ্যালয়
+   ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ
    Dynamic Notices Page Loader
    ============================================================ */
 
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (notices.length === 0) {
       noticeListContainer.innerHTML = `
-        <div style="text-align: center; padding: 50px 0; color: #e74c3c; width: 100%; border: 1px dashed #ccc; border-radius: 8px; background: #fff;">
+        <div class="not-found-card">
           <h3>📭 কোন তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি</h3>
           <p>Data not found or not yet added</p>
         </div>
