@@ -1,17 +1,17 @@
----
+﻿---
 name: design-system-demo-govt-model-pilot-high-school
 description: Creates implementation-ready design-system guidance with tokens, component behavior, and accessibility standards. Use when creating or updating UI rules, component specifications, or design-system documentation.
 ---
 
 <!-- TYPEUI_SH_MANAGED_START -->
 
-# Blooming Flower International College
+# Greenfield Academy
 
 ## Mission
-Deliver implementation-ready design-system guidance for Blooming Flower International College that can be applied consistently across documentation site interfaces.
+Deliver implementation-ready design-system guidance for Greenfield Academy that can be applied consistently across documentation site interfaces.
 
 ## Brand
-- Product/brand: Blooming Flower International College
+- Product/brand: Greenfield Academy
 - URL: https://ems.stitbd.net/
 - Audience: developers and technical teams
 - Product surface: documentation site

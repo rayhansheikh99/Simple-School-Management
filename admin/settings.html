@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="bn">
 
 <head>
@@ -19,7 +19,7 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>General Settings | Blooming Flower International College</title>
+  <title>General Settings | Greenfield Academy</title>
   <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -212,7 +212,7 @@
         <img src="../assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
         <div class="top-bar__info">
           <a href="/" style="color:inherit;">
-            <h1 class="top-bar__title">ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ</h1>
+            <h1 class="top-bar__title">গ্রিনফিল্ড একাডেমি</h1>
           </a>
           <span class="top-bar__subtitle">প্রশাসনিক ড্যাশবোর্ড নিয়ন্ত্রণ কক্ষ</span>
         </div>
@@ -283,7 +283,7 @@
               <!-- Phone Number -->
               <div class="settings-group">
                 <label for="phone">মোবাইল নম্বর <span style="color: red;">*</span></label>
-                <input type="text" id="phone" name="phone" class="settings-input" placeholder="যেমন: ০১৭৩৬-১৫৩৪৪৩"
+                <input type="text" id="phone" name="phone" class="settings-input" placeholder="যেমন: ০১৭০০-০০০০০০"
                   required>
               </div>
 
@@ -291,7 +291,7 @@
               <div class="settings-group">
                 <label for="email">ইমেইল ঠিকানা <span style="color: red;">*</span></label>
                 <input type="text" id="email" name="email" class="settings-input"
-                  placeholder="যেমন: bloomingflowercollege2014@gmail.com, school@gmail.com" required>
+                  placeholder="যেমন: demo@greenfieldacademy.edu.bd, school@gmail.com" required>
               </div>
 
               <!-- Facebook Page Link -->
@@ -314,7 +314,7 @@
             <div class="settings-group settings-full" style="margin-top: 15px;">
               <label for="aboutText">আমাদের সম্পর্কে (সংক্ষিপ্ত বিবরণ)</label>
               <textarea id="aboutText" name="aboutText" class="settings-input" rows="4"
-                placeholder="যেমন: ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান..."></textarea>
+                placeholder="যেমন: গ্রিনফিল্ড একাডেমি অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান..."></textarea>
             </div>
 
 
@@ -475,8 +475,8 @@
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('schoolName', 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ');
-        formData.append('schoolNameEnglish', 'Blooming Flower International College');
+        formData.append('schoolName', 'গ্রিনফিল্ড একাডেমি');
+        formData.append('schoolNameEnglish', 'Greenfield Academy');
         formData.append('establishedYear', '১৯৯২');
         formData.append('address', document.getElementById('address').value.trim());
         formData.append('phone', document.getElementById('phone').value.trim());

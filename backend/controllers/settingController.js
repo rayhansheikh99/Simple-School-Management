@@ -1,4 +1,4 @@
-const SchoolSetting = require('../models/SchoolSetting');
+﻿const SchoolSetting = require('../models/SchoolSetting');
 
 // @desc    Get active school settings
 // @route   GET /api/settings
@@ -10,17 +10,17 @@ const getSettings = async (req, res) => {
     // If no settings exist yet, return a default mock object so the site never breaks
     if (!settings) {
       settings = {
-        schoolName: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ',
-        schoolNameEnglish: 'Blooming Flower International College',
-        establishedYear: '১৯৯২',
-        address: 'প্লট-২৮, রোড-১, ফুলবাড়িয়া মেইন রোড, সেক্টর-১০, উত্তরা (তুরাগ), ঢাকা',
-        phone: '০১৭৩৬-১৫৩৪৪৩, ০১৬৪৪-৪৪২৯৩০, ০১৯৭৪-০১১৩০৪, ০১৯৯৯-৯৭৬৬২৫',
-        email: 'mosharafhighschool@gmail.com, bloomingflowercollege2014@gmail.com',
+        schoolName: 'গ্রিনফিল্ড একাডেমি',
+        schoolNameEnglish: 'Rose Valley International College',
+        establishedYear: '১৯৯৫',
+        address: 'প্লট-১২, রোড-৩, সেক্টর-৪, উত্তরা, ঢাকা',
+        phone: '০১৭০০-০০০০০০, ০১৮০০-০০০০০০, ০১৯০০-০০০০০০',
+        email: 'demo@greenfieldacademy.edu.bd',
         logoUrl: 'assets/images/school_logo.png',
         bannerUrl: 'assets/images/hero_banner.png',
         facebookLink: 'https://facebook.com',
         youtubeLink: 'https://youtube.com',
-        aboutText: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৯২ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
+        aboutText: 'গ্রিনফিল্ড একাডেমি অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৯৫ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
       };
     }
 
@@ -44,15 +44,15 @@ const updateSettings = async (req, res) => {
 
   try {
     const updateData = {
-      schoolName: schoolName || 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ',
-      schoolNameEnglish: schoolNameEnglish || 'Blooming Flower International College',
-      establishedYear: establishedYear || '১৯৯২',
-      address: address || 'প্লট-২৮, রোড-১, ফুলবাড়িয়া মেইন রোড, সেক্টর-১০, উত্তরা (তুরাগ), ঢাকা',
-      phone: phone || '০১৭৩৬-১৫৩৪৪৩, ০১৬৪৪-৪৪২৯৩০, ০১৯৭৪-০১১৩০৪, ০১৯৯৯-৯৭৬৬২৫',
-      email: email || 'mosharafhighschool@gmail.com, bloomingflowercollege2014@gmail.com',
+      schoolName: schoolName || 'গ্রিনফিল্ড একাডেমি',
+      schoolNameEnglish: schoolNameEnglish || 'Rose Valley International College',
+      establishedYear: establishedYear || '১৯৯৫',
+      address: address || 'প্লট-১২, রোড-৩, সেক্টর-৪, উত্তরা, ঢাকা',
+      phone: phone || '০১৭০০-০০০০০০, ০১৮০০-০০০০০০, ০১৯০০-০০০০০০',
+      email: email || 'demo@greenfieldacademy.edu.bd',
       facebookLink: facebookLink || 'https://facebook.com',
       youtubeLink: youtubeLink || 'https://youtube.com',
-      aboutText: aboutText || 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান।'
+      aboutText: aboutText || 'গ্রিনফিল্ড একাডেমি অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান।'
     };
 
     // Handle files if uploaded via Multer

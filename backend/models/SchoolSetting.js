@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+﻿const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db').sequelize;
 
 const SchoolSetting = sequelize.define('SchoolSetting', {
@@ -10,32 +10,32 @@ const SchoolSetting = sequelize.define('SchoolSetting', {
   schoolName: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ'
+    defaultValue: 'গ্রিনফিল্ড একাডেমি'
   },
   schoolNameEnglish: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'Blooming Flower International College'
+    defaultValue: 'Rose Valley International College'
   },
   establishedYear: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: '১৯৯২'
+    defaultValue: '১৯৯৫'
   },
   address: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'প্লট-২৮, রোড-১, ফুলবাড়িয়া মেইন রোড, সেক্টর-১০, উত্তরা (তুরাগ), ঢাকা'
+    defaultValue: 'প্লট-১২, রোড-৩, সেক্টর-৪, উত্তরা, ঢাকা'
   },
   phone: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: '০১৭৩৬-১৫৩৪৪৩, ০১৬৪৪-৪৪২৯৩০, ০১৯৭৪-০১১৩০৪, ০১৯৯৯-৯৭৬৬২৫'
+    defaultValue: '০১৭০০-০০০০০০, ০১৮০০-০০০০০০, ০১৯০০-০০০০০০'
   },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'mosharafhighschool@gmail.com, bloomingflowercollege2014@gmail.com'
+    defaultValue: 'demo@greenfieldacademy.edu.bd'
   },
   logoUrl: {
     type: DataTypes.STRING,
@@ -55,7 +55,7 @@ const SchoolSetting = sequelize.define('SchoolSetting', {
   },
   aboutText: {
     type: DataTypes.TEXT,
-    defaultValue: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৯২ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
+    defaultValue: 'গ্রিনফিল্ড একাডেমি অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৯৫ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
   }
 }, {
   timestamps: true

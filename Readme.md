@@ -1,10 +1,10 @@
-# Blooming Flower International College
+﻿# Greenfield Academy
 
 ## Mission
-Create implementation-ready, token-driven UI guidance for Blooming Flower International College that is optimized for consistency, accessibility, and fast delivery across documentation site.
+Create implementation-ready, token-driven UI guidance for Greenfield Academy that is optimized for consistency, accessibility, and fast delivery across documentation site.
 
 ## Brand
-- Product/brand: Blooming Flower International College
+- Product/brand: Greenfield Academy
 - URL: https://ems.stitbd.net/
 - Audience: developers and technical teams
 - Product surface: documentation site

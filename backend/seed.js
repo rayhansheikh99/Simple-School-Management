@@ -264,15 +264,15 @@ const seedData = async () => {
     console.log('Seeding committee members...');
     const mockCommittee = [
       {
-        name: 'রফিকুল ইসলাম',
+        name: 'রফিকুল হাসান',
         designation: 'সভাপতি',
         header: 'চেয়ারম্যান',
-        message: 'শিক্ষাই জাতির মেরুদণ্ড। প্রতিটি শিক্ষার্থীর মেধা বিকাশে আমরা নিরলস কাজ করে যাচ্ছি। আমাদের বিদ্যালয়কে দেশের সেরা প্রতিষ্ঠানে পরিণত করাই আমাদের স্বপ্ন।',
+        message: 'শিক্ষাই জাতির মেরুদণ্ড। প্রতিটি শিক্ষার্থীর মেধা বিকাশে আমরা নিরলস কাজ করে যাচ্ছি। আমাদের বিদ্যালয়কে দেশের সেরা প্রতিষ্ঠানে পরিণত করাই আমাদের স্বপ্ন।',
         photo: 'assets/images/default_teacher.png',
         order: 1
       },
       {
-        name: 'শাহাদাত চৌধুরী',
+        name: 'শাহেদ চৌধুরী',
         designation: 'সদস্য',
         header: 'দাতা',
         message: '',
@@ -280,7 +280,7 @@ const seedData = async () => {
         order: 2
       },
       {
-        name: 'হায়দার খোন্দকার',
+        name: 'হাসান খোন্দকার',
         designation: 'সদস্য',
         header: 'অভিভাবক',
         message: '',
@@ -288,7 +288,7 @@ const seedData = async () => {
         order: 3
       },
       {
-        name: 'মো: নুরুল আলম',
+        name: 'মো: নূর উদ্দীন',
         designation: 'সদস্য',
         header: 'অভিভাবক',
         message: '',
@@ -296,7 +296,7 @@ const seedData = async () => {
         order: 4
       },
       {
-        name: 'মো: আনোয়ার',
+        name: 'মো: আনোয়ারুল হক',
         designation: 'সদস্য',
         header: 'অভিভাবক',
         message: '',
@@ -304,7 +304,7 @@ const seedData = async () => {
         order: 5
       },
       {
-        name: 'সাদিয়া ইসলাম',
+        name: 'সুফিয়া কামাল',
         designation: 'সদস্য',
         header: 'মহিলা অভিভাবক',
         message: '',

@@ -1,5 +1,5 @@
 /* ============================================================
-   ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ
+   গ্রিনফিল্ড একাডেমি
    Design System & Complete Styles
    ============================================================ */
 
@@ -1077,12 +1077,13 @@ h6 {
   box-shadow: var(--shadow-card);
   margin-bottom: 24px;
   border: 1px solid var(--color-border-light);
+  height: 260px;
 }
 
 .history-card__image {
   width: 42%;
+  height: 100%;
   object-fit: cover;
-  min-height: 250px;
 }
 
 .history-card__body {
@@ -1127,6 +1128,7 @@ h6 {
 @media (max-width: 768px) {
   .history-card {
     flex-direction: column;
+    height: auto;
   }
 
   .history-card__image {
@@ -2926,17 +2928,15 @@ h6 {
 }
 
 .committee-table thead {
-  background-color: #dbeafe;
-  /* Soft blue background */
+  background-color: var(--color-primary-light);
 }
 
 .committee-table th {
   padding: 16px 20px;
-  color: #1e3a8a;
-  /* Deep navy text */
+  color: var(--color-primary);
   font-weight: 700;
   font-size: var(--font-size-base);
-  border-bottom: 2px solid #bfdbfe;
+  border-bottom: 2px solid var(--color-border-light);
   text-align: center;
 }
 
@@ -2977,7 +2977,7 @@ h6 {
   height: 42px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #ffffff;
+  border: 2px solid var(--color-surface-card);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform var(--motion-fast, 300ms) var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
 }
@@ -2994,15 +2994,15 @@ h6 {
 /* Vertical lines as in the user's reference image */
 .committee-table th:not(:last-child),
 .committee-table td:not(:last-child) {
-  border-right: 1px solid #dee2e6;
+  border-right: 1px solid var(--color-border-light);
 }
 
 .committee-table tbody tr:hover {
-  background-color: #f1f5f9;
+  background-color: var(--color-surface-base);
 }
 
 .committee-table tbody tr:nth-child(even) {
-  background-color: #f8fafc;
+  background-color: var(--color-surface-section);
 }
 
 /* ============================================================

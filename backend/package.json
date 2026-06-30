@@ -1,7 +1,7 @@
 {
   "name": "demo-school-backend",
   "version": "1.0.0",
-  "description": "Express & MongoDB backend for Blooming Flower International College",
+  "description": "Express backend for Rose Valley International College",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

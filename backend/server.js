@@ -29,12 +29,11 @@ app.use(cors({
       callback(null, true);
     } else {
       const allowedOrigins = [
-        'https://bloomingflowerinternationalcollege.edu.bd',
-        'http://bloomingflowerinternationalcollege.edu.bd',
         'http://localhost:5000',
+        'http://localhost:3000',
         'http://localhost:5500',
         'http://127.0.0.1:5501',
-        'http://localhost:3000'
+        'https://edumanage.site'
       ];
       if (!origin || allowedOrigins.includes(origin) || origin === 'null') {
         callback(null, true);
@@ -98,7 +97,7 @@ mainRouter.use('/committee', require('./routes/committeeRoutes'));
 
 mainRouter.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to the Blooming Flower International College API!',
+    message: 'Welcome to the Rose Valley International College API!',
     status: 'online',
     version: '1.0.0'
   });

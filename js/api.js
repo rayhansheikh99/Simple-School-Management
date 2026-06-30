@@ -1,5 +1,5 @@
 /* ============================================================
-   ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ
+   গ্রিনফিল্ড একাডেমি
    Frontend Client API Connector
    ============================================================ */
 
@@ -12,7 +12,7 @@ const API_BASE_URL = (
   window.location.protocol === 'file:'
 )
   ? 'http://localhost:5000/api'
-  : 'https://bloomingflowerinternationalcollege.edu.bd/api';
+  : 'https://edumanage.site/api';
 
 const UPLOADS_BASE_URL = (
   window.location.hostname === 'localhost' ||
@@ -21,7 +21,7 @@ const UPLOADS_BASE_URL = (
   window.location.protocol === 'file:'
 )
   ? 'http://localhost:5000'
-  : 'https://bloomingflowerinternationalcollege.edu.bd';
+  : 'https://edumanage.site';
 
 
 // Helper: Translate digits to Bengali numerals
