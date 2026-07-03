@@ -119,6 +119,42 @@ const deleteResult = async (req, res) => {
   }
 };
 
+// @desc    Update result record
+// @route   PUT /api/results/:id
+// @access  Private/Admin
+const updateResult = async (req, res) => {
+  try {
+    const result = await Result.findByPk(req.params.id);
+    if (!result) {
+      return res.status(404).json({ success: false, message: 'ফলাফল নোটিশটি খুঁজে পাওয়া যায়নি।' });
+    }
+
+    const updateFields = { ...req.body };
+
+    // Handle PDF replacement if new file uploaded
+    if (req.file) {
+      // Delete old PDF from disk if it was local upload
+      if (result.pdfUrl && result.pdfUrl.startsWith('uploads/')) {
+        const oldPdfPath = path.join(__dirname, '../', result.pdfUrl);
+        if (fs.existsSync(oldPdfPath)) {
+          fs.unlinkSync(oldPdfPath);
+        }
+      }
+      updateFields.pdfUrl = `uploads/${req.file.filename}`;
+    }
+
+    if (updateFields.year) {
+      updateFields.year = parseInt(updateFields.year, 10);
+    }
+
+    await result.update(updateFields);
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   searchResult,
   getResultsSummary,
@@ -126,5 +162,6 @@ module.exports = {
   createResult,
   bulkUploadResults,
   getAllResults,
-  deleteResult
+  deleteResult,
+  updateResult
 };

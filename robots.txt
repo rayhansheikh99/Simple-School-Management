@@ -1,0 +1,10 @@
+# robots.txt for Greenfield Academy
+User-agent: *
+Allow: /
+
+# Disallow admin panel and API backend endpoints from indexation
+Disallow: /admin/
+Disallow: /backend/
+
+# Sitemap location
+Sitemap: https://edumanage.site/sitemap.xml

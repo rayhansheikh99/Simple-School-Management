@@ -7,7 +7,8 @@ const {
   createResult,
   bulkUploadResults,
   getAllResults,
-  deleteResult
+  deleteResult,
+  updateResult
 } = require('../controllers/resultController');
 const { protect, adminOnly } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
@@ -21,6 +22,7 @@ router.route('/')
   .post(protect, adminOnly, upload.single('pdf'), createResult);
 
 router.route('/:id')
+  .put(protect, adminOnly, upload.single('pdf'), updateResult)
   .delete(protect, adminOnly, deleteResult);
 
 router.post('/bulk', protect, adminOnly, bulkUploadResults);

@@ -2107,6 +2107,101 @@ h6 {
   color: #e65100;
 }
 
+/* Notice / Result Card Responsive Design */
+@media (max-width: 768px) {
+  .notice-item {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    grid-template-areas: 
+      "date badge"
+      "content content" !important;
+    gap: 16px !important;
+    align-items: center !important;
+    padding: 16px !important;
+  }
+
+  .notice-item__date-box {
+    grid-area: date !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background: var(--color-surface-raised) !important;
+    padding: 6px 12px !important;
+    border-radius: var(--radius-sm) !important;
+    min-width: unset !important;
+    text-align: left !important;
+    width: fit-content !important;
+    border-left: 2px solid var(--color-primary) !important;
+  }
+
+  .notice-item__day {
+    display: inline !important;
+    font-size: var(--font-size-base) !important;
+    font-weight: 700 !important;
+  }
+
+  .notice-item__month {
+    display: inline !important;
+    font-size: var(--font-size-xs) !important;
+    font-weight: 600 !important;
+  }
+
+  .notice-item__badge {
+    grid-area: badge !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+  }
+
+  .notice-item__content {
+    grid-area: content !important;
+    width: 100% !important;
+  }
+
+  /* Make action buttons grid and wrap correctly on mobile */
+  .notice-item__content div[style*="display: flex"],
+  .notice-item__content div[style*="margin-top"] {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin-top: 16px !important;
+  }
+
+  .notice-item__content div[style*="display: flex"] .btn,
+  .notice-item__content div[style*="margin-top"] .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 10px 16px !important;
+  }
+}
+
+/* Secondary Button Colors inside light theme cards */
+.notice-item .btn--secondary {
+  background: var(--color-surface-base, #f0f2f5);
+  color: var(--color-text-primary, #1a1a2e) !important;
+  border: 1px solid var(--color-border, #dee2e6);
+}
+
+.notice-item .btn--secondary:hover {
+  background: var(--color-surface-muted, #e2e8f0);
+  border-color: var(--color-border, #dee2e6);
+  color: var(--color-text-primary, #1a1a2e) !important;
+  transform: translateY(-2px);
+}
+
+/* Dark Mode Overrides for secondary buttons inside notice card */
+[data-theme="dark"] .notice-item .btn--secondary {
+  background: #1e293b;
+  color: #f8fafc !important;
+  border: 1px solid #334155;
+}
+
+[data-theme="dark"] .notice-item .btn--secondary:hover {
+  background: #334155;
+  color: #ffffff !important;
+}
+
 /* ============================================================
    CONTACT PAGE
    ============================================================ */

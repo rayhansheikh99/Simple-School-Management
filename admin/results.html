@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="bn">
 
 <head>
@@ -213,7 +213,9 @@
           form, 
           #add-result-form, 
           .btn-delete, 
+          .btn-edit,
           button[onclick*="delete"], 
+          button[onclick*="edit"], 
           input[type="file"] {
             display: none !important;
           }
@@ -356,14 +358,16 @@
                       ${res.pdfUrl ? `| <a href="${getMediaUrl(res.pdfUrl)}" target="_blank" style="color: #1c69b5; font-weight: bold; margin-left: 5px;">📎 পিডিএফ ফাইল দেখুন</a>` : ''}
                     </div>
                   </div>
-                  <button class="btn-delete" onclick="deleteResultItem('${res._id}')" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border-radius: 6px; cursor: pointer;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="3 6 5 6 21 6"></polyline>
-                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      <line x1="10" y1="11" x2="10" y2="17"></line>
-                      <line x1="14" y1="11" x2="14" y2="17"></line>
-                    </svg>
-                  </button>
+                  <div style="display: flex; gap: 8px;">
+                    <button class="btn-edit" onclick="editResultItem('${res._id}')" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border-radius: 6px; cursor: pointer; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; transition: all 0.2s;" onmouseover="this.style.background='#bae6fd'" onmouseout="this.style.background='#e0f2fe'"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></button>
+                    <button class="btn-delete" onclick="deleteResultItem('${res._id}')" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border-radius: 6px; cursor: pointer;">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></svg>
+                    </button>
+                  </div>
                 </div>
               `;
             });
@@ -411,9 +415,175 @@
         });
       };
 
+      // ============================================================
+      // EDIT RESULTS HANDLERS
+      // ============================================================
+      const editResultModal = document.getElementById('edit-result-modal');
+      const closeEditModal = document.getElementById('close-edit-modal');
+      const cancelEditBtn = document.getElementById('btn-cancel-edit');
+      const editResultForm = document.getElementById('edit-result-form');
+
+      const openEditModalFunc = () => {
+        editResultModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
+
+      const closeEditModalFunc = () => {
+        editResultModal.classList.remove('active');
+        document.body.style.overflow = '';
+        editResultForm.reset();
+      };
+
+      closeEditModal.addEventListener('click', closeEditModalFunc);
+      cancelEditBtn.addEventListener('click', closeEditModalFunc);
+      editResultModal.addEventListener('click', (e) => {
+        if (e.target === editResultModal) closeEditModalFunc();
+      });
+
+      window.editResultItem = async (id) => {
+        try {
+          Swal.fire({
+            title: 'তথ্য লোড হচ্ছে...',
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+          });
+
+          // Re-use API endpoint using JWT auth
+          const response = await fetch(`${API_BASE_URL}/results`, {
+            headers: { 'Authorization': `Bearer ${jwtToken}` }
+          });
+          const result = await response.json();
+          Swal.close();
+
+          if (result.success) {
+            const item = result.data.find(r => r.id === parseInt(id, 10) || r._id === id);
+            if (item) {
+              document.getElementById('edit-result-id').value = item.id || item._id;
+              document.getElementById('edit-result-title').value = item.title;
+              document.getElementById('edit-result-class').value = item.class;
+              document.getElementById('edit-result-year').value = item.year;
+              document.getElementById('edit-result-content').value = item.content;
+              openEditModalFunc();
+            } else {
+              Swal.fire({ icon: 'error', title: 'ব্যর্থ', text: 'ফলাফলের তথ্য পাওয়া যায়নি।' });
+            }
+          } else {
+            Swal.fire({ icon: 'error', title: 'ব্যর্থ', text: 'সার্ভার থেকে ফলাফল নোটিশ রিট্রিভ করতে ব্যর্থ।' });
+          }
+        } catch (error) {
+          console.error(error);
+          Swal.fire({ icon: 'error', title: 'ত্রুটি', text: 'সার্ভার সংযোগ ব্যাহত হয়েছে।' });
+        }
+      };
+
+      editResultForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('edit-result-id').value;
+        const title = document.getElementById('edit-result-title').value;
+        const className = document.getElementById('edit-result-class').value;
+        const year = document.getElementById('edit-result-year').value;
+        const content = document.getElementById('edit-result-content').value;
+        const fileInput = document.getElementById('edit-result-pdf');
+
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('class', className);
+        formData.append('year', year);
+        formData.append('content', content);
+        if (fileInput.files[0]) {
+          formData.append('pdf', fileInput.files[0]);
+        }
+
+        try {
+          Swal.fire({
+            title: 'হালনাগাদ করা হচ্ছে...',
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+          });
+
+          const response = await fetch(`${API_BASE_URL}/results/${id}`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${jwtToken}` },
+            body: formData
+          });
+          const data = await response.json();
+
+          if (data.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'সফল!',
+              text: 'ফলাফল নোটিশটি সফলভাবে হালনাগাদ করা হয়েছে।',
+              timer: 1500,
+              showConfirmButton: false
+            });
+            closeEditModalFunc();
+            loadAdminResults();
+          } else {
+            Swal.fire({ icon: 'error', title: 'হালনাগাদ ব্যর্থ', text: data.message });
+          }
+        } catch (error) {
+          console.error(error);
+          Swal.fire({ icon: 'error', title: 'সংযোগ ত্রুটি', text: 'সার্ভারে তথ্য পাঠানো সম্ভব হয়নি।' });
+        }
+      });
+
     });
   </script>
   <script src="../js/admin-sidebar.js"></script>
+
+  <!-- Edit Result Modal -->
+  <div id="edit-result-modal" class="notice-modal">
+    <div class="notice-modal-container" style="max-width: 600px; padding: 30px;">
+      <button class="notice-modal__close" id="close-edit-modal">&times;</button>
+      <h3 style="margin-bottom: 20px; font-weight: bold; font-size: 1.3rem; color: var(--color-text-primary);">✏️ পরীক্ষার ফলাফল নোটিশ সংশোধন</h3>
+      <form id="edit-result-form">
+        <input type="hidden" id="edit-result-id">
+        <div class="db-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+          <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="edit-result-title" style="font-weight: 600; font-size: 0.9rem;">ফলাফলের শিরোনাম *</label>
+            <input type="text" id="edit-result-title" class="form-input" required>
+          </div>
+          <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="edit-result-class" style="font-weight: 600; font-size: 0.9rem;">শ্রেণি *</label>
+            <select id="edit-result-class" class="form-input" required>
+              <option value="all">সকল শ্রেণি</option>
+              <option value="play">প্লে</option>
+              <option value="nursery">নার্সারি</option>
+              <option value="kg">কেজি</option>
+              <option value="1">প্রথম শ্রেণি</option>
+              <option value="2">দ্বিতীয় শ্রেণি</option>
+              <option value="3">তৃতীয় শ্রেণি</option>
+              <option value="4">চতুর্থ শ্রেণি</option>
+              <option value="5">পঞ্চম শ্রেণি</option>
+              <option value="6">৬ষ্ঠ শ্রেণি</option>
+              <option value="7">৭ম শ্রেণি</option>
+              <option value="8">৮ম শ্রেণি</option>
+              <option value="9">৯ম শ্রেণি</option>
+              <option value="10">১০ম শ্রেণি</option>
+              <option value="11">একাদশ শ্রেণি</option>
+              <option value="12">দ্বাদশ শ্রেণি</option>
+            </select>
+          </div>
+          <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="edit-result-year" style="font-weight: 600; font-size: 0.9rem;">পরীক্ষার বছর *</label>
+            <input type="number" id="edit-result-year" class="form-input" min="2020" max="2100" required>
+          </div>
+          <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="edit-result-pdf" style="font-weight: 600; font-size: 0.9rem;">ফলাফল ফাইল পরিবর্তন করুন (PDF - ফাঁকা রাখলে আগেরটি থাকবে)</label>
+            <input type="file" id="edit-result-pdf" accept=".pdf" class="form-input" style="padding: 6px;">
+          </div>
+          <div class="form-group db-form-full" style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 5px;">
+            <label for="edit-result-content" style="font-weight: 600; font-size: 0.9rem;">ফলাফলের বিবরণ (বিস্তারিত) *</label>
+            <textarea id="edit-result-content" class="form-input" style="height: 120px;" required></textarea>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px;">
+          <button type="button" class="btn btn--outline" id="btn-cancel-edit" style="cursor: pointer; padding: 10px 20px;">বাতিল</button>
+          <button type="submit" class="btn btn--primary" style="cursor: pointer; padding: 10px 20px;">💾 পরিবর্তন সংরক্ষণ করুন</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 
 </html>

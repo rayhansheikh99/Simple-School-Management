@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="bn">
 
 <head>
@@ -170,7 +170,9 @@
           #bulk-result-form, 
           #add-gallery-form,
           .btn-delete, 
+          .btn-edit,
           button[onclick*="delete"], 
+          button[onclick*="edit"], 
           button[onclick*="approve"], 
           button[onclick*="reject"], 
           button[onclick*="markMessageRead"],
@@ -315,7 +317,10 @@
                   ${notice.pdfUrl ? `| <a href="${getMediaUrl(notice.pdfUrl)}" target="_blank" style="color: #1c69b5; font-weight: bold; margin-left: 5px;">📎 ফাইল দেখুন</a>` : ''}
                 </div>
               </div>
-              <button class="btn-delete" onclick="deleteNoticeItem('${notice._id}')" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border-radius: 6px; cursor: pointer;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn-edit" onclick="editNoticeItem('${notice._id}')" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border-radius: 6px; cursor: pointer; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; transition: all 0.2s;" onmouseover="this.style.background='#bae6fd'" onmouseout="this.style.background='#e0f2fe'"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></button>
+                <button class="btn-delete" onclick="deleteNoticeItem('${notice._id}')" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border-radius: 6px; cursor: pointer;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+              </div>
             </div>
           `;
         });
@@ -358,9 +363,148 @@
         });
       };
 
+      // ============================================================
+      // EDIT NOTICES HANDLERS
+      // ============================================================
+      const editNoticeModal = document.getElementById('edit-notice-modal');
+      const closeEditModal = document.getElementById('close-edit-modal');
+      const cancelEditBtn = document.getElementById('btn-cancel-edit');
+      const editNoticeForm = document.getElementById('edit-notice-form');
+
+      const openEditModalFunc = () => {
+        editNoticeModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
+
+      const closeEditModalFunc = () => {
+        editNoticeModal.classList.remove('active');
+        document.body.style.overflow = '';
+        editNoticeForm.reset();
+      };
+
+      closeEditModal.addEventListener('click', closeEditModalFunc);
+      cancelEditBtn.addEventListener('click', closeEditModalFunc);
+      editNoticeModal.addEventListener('click', (e) => {
+        if (e.target === editNoticeModal) closeEditModalFunc();
+      });
+
+      window.editNoticeItem = async (id) => {
+        try {
+          Swal.fire({
+            title: 'তথ্য লোড হচ্ছে...',
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+          });
+
+          const response = await fetch(`${API_BASE_URL}/notices/${id}`);
+          const result = await response.json();
+          Swal.close();
+
+          if (result.success) {
+            document.getElementById('edit-notice-id').value = result.data.id || result.data._id;
+            document.getElementById('edit-notice-title').value = result.data.title;
+            document.getElementById('edit-notice-category').value = result.data.category;
+            document.getElementById('edit-notice-content').value = result.data.content;
+            openEditModalFunc();
+          } else {
+            Swal.fire({ icon: 'error', title: 'ব্যর্থ', text: 'নোটিশের তথ্য পাওয়া যায়নি।' });
+          }
+        } catch (error) {
+          console.error(error);
+          Swal.fire({ icon: 'error', title: 'ত্রুটি', text: 'সার্ভার সংযোগ ব্যাহত হয়েছে।' });
+        }
+      };
+
+      editNoticeForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('edit-notice-id').value;
+        const title = document.getElementById('edit-notice-title').value;
+        const category = document.getElementById('edit-notice-category').value;
+        const content = document.getElementById('edit-notice-content').value;
+        const fileInput = document.getElementById('edit-notice-pdf');
+
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('category', category);
+        formData.append('content', content);
+        if (fileInput.files[0]) {
+          formData.append('pdf', fileInput.files[0]);
+        }
+
+        try {
+          Swal.fire({
+            title: 'হালনাগাদ করা হচ্ছে...',
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+          });
+
+          const response = await fetch(`${API_BASE_URL}/notices/${id}`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${jwtToken}` },
+            body: formData
+          });
+          const data = await response.json();
+
+          if (data.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'সফল!',
+              text: 'নোটিশটি সফলভাবে হালনাগাদ করা হয়েছে।',
+              timer: 1500,
+              showConfirmButton: false
+            });
+            closeEditModalFunc();
+            loadAdminNotices();
+          } else {
+            Swal.fire({ icon: 'error', title: 'হালনাগাদ ব্যর্থ', text: data.message });
+          }
+        } catch (error) {
+          console.error(error);
+          Swal.fire({ icon: 'error', title: 'সংযোগ ত্রুটি', text: 'সার্ভারে নোটিশ পাঠানো সম্ভব হয়নি।' });
+        }
+      });
+
     });
   </script>
   <script src="../js/admin-sidebar.js"></script>
+
+  <!-- Edit Notice Modal -->
+  <div id="edit-notice-modal" class="notice-modal">
+    <div class="notice-modal-container" style="max-width: 600px; padding: 30px;">
+      <button class="notice-modal__close" id="close-edit-modal">&times;</button>
+      <h3 style="margin-bottom: 20px; font-weight: bold; font-size: 1.3rem; color: var(--color-text-primary);">✏️ নোটিশ তথ্য সংশোধন</h3>
+      <form id="edit-notice-form">
+        <input type="hidden" id="edit-notice-id">
+        <div class="db-form-grid" style="display: flex; flex-direction: column; gap: 15px;">
+          <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="edit-notice-title" style="font-weight: 600; font-size: 0.9rem;">নোটিশের শিরোনাম *</label>
+            <input type="text" id="edit-notice-title" class="form-input" required>
+          </div>
+          <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="edit-notice-category" style="font-weight: 600; font-size: 0.9rem;">ক্যাটাগরি *</label>
+            <select id="edit-notice-category" class="form-input" required>
+              <option value="academic">একাডেমিক</option>
+              <option value="exam">পরীক্ষা</option>
+              <option value="event">অনুষ্ঠান</option>
+              <option value="admin">প্রশাসনিক</option>
+            </select>
+          </div>
+          <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="edit-notice-content" style="font-weight: 600; font-size: 0.9rem;">বার্তার বিবরণ (বিস্তারিত) *</label>
+            <textarea id="edit-notice-content" class="form-input" style="height: 120px;" required></textarea>
+          </div>
+          <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="edit-notice-pdf" style="font-weight: 600; font-size: 0.9rem;">সংযুক্তি ফাইল পরিবর্তন করুন (PDF / ছবি - ফাঁকা রাখলে আগেরটি থাকবে)</label>
+            <input type="file" id="edit-notice-pdf" accept=".pdf,image/*" class="form-input" style="padding: 6px;">
+          </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px;">
+          <button type="button" class="btn btn--outline" id="btn-cancel-edit" style="cursor: pointer; padding: 10px 20px;">বাতিল</button>
+          <button type="submit" class="btn btn--primary" style="cursor: pointer; padding: 10px 20px;">💾 পরিবর্তন সংরক্ষণ করুন</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 
 </html>
