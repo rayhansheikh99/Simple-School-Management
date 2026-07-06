@@ -1,71 +1,116 @@
-﻿# Greenfield Academy
+# Greenfield Academy - School Management System
 
-## Mission
-Create implementation-ready, token-driven UI guidance for Greenfield Academy that is optimized for consistency, accessibility, and fast delivery across documentation site.
+A modern, responsive, and SEO-optimized School Management System and public information portal for Greenfield Academy (Sector-5, Uttara, Dhaka). The platform consists of a dynamic public frontend, student online registration, and a secure administration panel.
 
-## Brand
-- Product/brand: Greenfield Academy
-- URL: https://ems.stitbd.net/
-- Audience: developers and technical teams
-- Product surface: documentation site
+---
 
-## Style Foundations
-- Visual style: clean, functional, implementation-oriented
-- Main font style: `font.family.primary=Montserrat`, `font.family.stack=Montserrat, SolaimanLipiNormal, sans-serif`, `font.size.base=16px`, `font.weight.base=700`, `font.lineHeight.base=24px`
-- Typography scale: `font.size.xs=14px`, `font.size.sm=16px`, `font.size.md=16.5px`, `font.size.lg=17px`, `font.size.xl=18px`, `font.size.2xl=20px`, `font.size.3xl=40px`, `font.size.4xl=80px`
-- Color palette: `color.surface.base=#000000`, `color.text.secondary=#555555`, `color.text.tertiary=#333333`, `color.text.inverse=#ffffff`, `color.surface.muted=#1c69b5`, `color.surface.raised=#e6f9fd`
-- Spacing scale: `space.1=3px`, `space.2=4px`, `space.3=5px`, `space.4=7px`, `space.5=9px`, `space.6=10px`, `space.7=12px`, `space.8=14px`
-- Radius/shadow/motion tokens: `radius.xs=22px` | `motion.duration.instant=300ms`, `motion.duration.fast=500ms`, `motion.duration.normal=800ms`
+## 🌟 Key Features
 
-## Accessibility
-- Target: WCAG 2.2 AA
-- Keyboard-first interactions required.
-- Focus-visible rules required.
-- Contrast constraints required.
+### 1. 🖥️ Public Frontend Portal
+* **Homepage**: Interactive slider hero banner, scrolling news ticker, history card, photo gallery, headmaster's statement, and statistics.
+* **Teachers Directory**: Responsive grid/table list of teachers with search functionality.
+* **Managing Committee**: Grid presentation of committee members including their messages (বাণী).
+* **Notice Board**: Paginated/filtered board of events, exams, and academic announcements.
+* **Results Portal**: Searchable list of examination results with class filters and secure PDF download links.
+* **Online Registration**: Easy-to-use admission form with dynamic validation and sweetalert notifications.
 
-## Writing Tone
-Concise, confident, implementation-focused.
+### 2. 🔐 Administrative Dashboard (Role-Based Access)
+* **Access Control**: Role-based routing (Admin vs. Viewer). Admin role has full CRUD capabilities; Viewer role is read-only.
+* **Notice Board Management**: Create, edit, and delete notices.
+* **Teachers Database Management**: Add, update, and remove teachers (profile pictures, contact info, qualifications).
+* **Managing Committee Management**: Add, edit, and delete committee members with custom display sorting order.
+* **Exam Results Management**: Upload exam results, associate them with specific classes/years, attach PDFs, and modify metadata.
 
-## Rules: Do
-- Use semantic tokens, not raw hex values, in component guidance.
-- Every component must define states for default, hover, focus-visible, active, disabled, loading, and error.
-- Component behavior should specify responsive and edge-case handling.
-- Interactive components must document keyboard, pointer, and touch behavior.
-- Accessibility acceptance criteria must be testable in implementation.
+### 3. 📱 Mobile & Accessibility Redesigns
+* **Notice & Result Cards**: Stacked grid layouts specifically optimized for screens `<768px`.
+* **Contrast Standards**: WCAG 2.2 AA compliant button styling, correcting transparent text overlaps on light background card elements.
 
-## Rules: Don't
-- Do not allow low-contrast text or hidden focus indicators.
-- Do not introduce one-off spacing or typography exceptions.
-- Do not use ambiguous labels or non-descriptive actions.
-- Do not ship component guidance without explicit state rules.
+### 4. 🚀 SEO Optimization
+* **Structured Data**: JSON-LD Schema (Local School definition) implemented on the homepage.
+* **Metadata**: Full Open Graph (OG) and Twitter Card tags configured across public routes.
+* **Crawl Controls**: Active `robots.txt` configuration and automated `sitemap.xml` index mapping.
 
-## Guideline Authoring Workflow
-1. Restate design intent in one sentence.
-2. Define foundations and semantic tokens.
-3. Define component anatomy, variants, interactions, and state behavior.
-4. Add accessibility acceptance criteria with pass/fail checks.
-5. Add anti-patterns, migration notes, and edge-case handling.
-6. End with a QA checklist.
+---
 
-## Required Output Structure
-- Context and goals.
-- Design tokens and foundations.
-- Component-level rules (anatomy, variants, states, responsive behavior).
-- Accessibility requirements and testable acceptance criteria.
-- Content and tone standards with examples.
-- Anti-patterns and prohibited implementations.
-- QA checklist.
+## 🛠️ Technology Stack
 
-## Component Rule Expectations
-- Include keyboard, pointer, and touch behavior.
-- Include spacing and typography token requirements.
-- Include long-content, overflow, and empty-state handling.
-- Include known page component density: links (198), buttons (23), lists (23), cards (1), navigation (1).
+* **Frontend**: Vanilla HTML5, Vanilla CSS3 (custom CSS variables & tokens), Vanilla JavaScript (ES6+).
+* **Backend**: Node.js, Express.js.
+* **Database & ORM**: MySQL database, Sequelize ORM.
+* **Authentication**: JSON Web Token (JWT) authorization middleware.
+* **File Uploads**: Multer middleware.
 
-- Extraction diagnostics: Audience and product surface inference confidence is low; verify generated brand context.
+---
 
-## Quality Gates
-- Every non-negotiable rule must use "must".
-- Every recommendation should use "should".
-- Every accessibility rule must be testable in implementation.
-- Teams should prefer system consistency over local visual exceptions.
+## 📁 Directory Structure
+
+```
+├── admin/                  # Administrative Dashboard HTML pages
+│   ├── index.html          # Admin Login & Panel Dashboard
+│   ├── notices.html        # Notice board editor
+│   ├── teachers.html       # Teacher manager
+│   ├── results.html        # Result uploader & manager
+│   └── ...
+├── assets/                 # Image assets, logos, and uploaded files
+├── css/                    # Frontend stylesheet (style.css, admin.css)
+├── js/                     # Frontend Javascript routers and utilities
+├── backend/                # Express backend application
+│   ├── config/             # DB connection credentials
+│   ├── controllers/        # Express route controller actions
+│   ├── models/             # Sequelize database models
+│   ├── routes/             # API routing endpoints
+│   ├── middleware/         # Auth & upload middleware
+│   ├── seed.js             # Demo database seeder
+│   └── server.js           # Server runner
+├── robots.txt              # SEO crawler index instructions
+├── sitemap.xml             # SEO search sitemap index
+└── Readme.md               # Documentation guide
+```
+
+---
+
+## ⚙️ Getting Started & Setup
+
+### Prerequisites
+* [Node.js](https://nodejs.org/) (v16+)
+* [MySQL Server](https://www.mysql.com/)
+
+### Database Configuration
+1. Start your local MySQL server.
+2. Create a database named `school_db`:
+   ```sql
+   CREATE DATABASE school_db;
+   ```
+3. Navigate to the `backend` folder and create a `.env` file containing:
+   ```env
+   PORT=5000
+   NODE_ENV=development
+   MYSQL_HOST=localhost
+   MYSQL_PORT=3306
+   MYSQL_USER=root
+   MYSQL_PASSWORD=your_password_here
+   MYSQL_DATABASE=school_db
+   JWT_SECRET=your_jwt_secret_token_here
+   ```
+
+### Installation
+1. Install backend dependencies:
+   ```bash
+   cd backend
+   npm install
+   ```
+
+2. Seed database records (creates mock data and default users):
+   ```bash
+   node seed.js
+   ```
+   * *Admin User*: Username: `admin` | Password: `password123`
+   * *Viewer User*: Username: `user` | Password: `pass123`
+
+3. Start the Express development server:
+   ```bash
+   node server.js
+   ```
+
+4. Open the public portal:
+   * Launch `index.html` on your browser directly or host the root folder using any static server (e.g. Live Server).
