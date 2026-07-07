@@ -14,23 +14,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (tickerContent || mainNoticeCard || recentEventsList) {
     const notices = await fetchNotices('all', 6); // Fetch top 6 notices
 
-    if (notices.length > 0) {
-      // 1. Render Ticker Content
-      if (tickerContent) {
+    // 1. Render Ticker Content
+    if (tickerContent) {
+      if (notices.length > 0) {
         let tickerHTML = '';
         notices.slice(0, 5).forEach(notice => {
           tickerHTML += `<span class="ticker__item">${notice.title}</span>`;
         });
-
-        // Populate and duplicate for seamless marquee loops
         tickerContent.innerHTML = tickerHTML + tickerHTML;
+      } else {
+        tickerContent.innerHTML = '<span class="ticker__item">কোনো সাম্প্রতিক নোটিশ পাওয়া যায়নি।</span>';
       }
+    }
 
-      // 2. Render Main Highlight Card
-      if (mainNoticeCard) {
+    // 2. Render Main Highlight Card
+    if (mainNoticeCard) {
+      if (notices.length > 0) {
         const latestNotice = notices[0];
         const dateStr = formatBengaliDate(latestNotice.date);
-
         mainNoticeCard.innerHTML = `
           <img src="assets/images/hero_banner.png" alt="বিদ্যালয়ের সাম্প্রতিক কার্যক্রম" class="notice-card__image">
           <div class="notice-card__body">
@@ -40,10 +41,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             <a href="notices.html#notice-${latestNotice._id}" class="notice-card__more">আরও পড়ুন →</a>
           </div>
         `;
+      } else {
+        mainNoticeCard.innerHTML = `
+          <div class="not-found-card" style="text-align: center; padding: 30px 0; color: #555; width: 100%;">
+            <p>কোনো সাম্প্রতিক নোটিশ পাওয়া যায়নি (No notices found)</p>
+          </div>
+        `;
       }
+    }
 
-      // 3. Render Next 3 Recent Events/Notices
-      if (recentEventsList && notices.length > 1) {
+    // 3. Render Next 3 Recent Events/Notices
+    if (recentEventsList) {
+      if (notices.length > 1) {
         let eventHTML = '';
         const recentNotices = notices.slice(1, 4); // Next 3 notices
 
@@ -78,6 +87,30 @@ document.addEventListener('DOMContentLoaded', async () => {
           `;
         });
         recentEventsList.innerHTML = eventHTML;
+      } else {
+        recentEventsList.innerHTML = `
+          <div class="not-found-card" style="text-align: center; padding: 20px; color: #555; width: 100%;">
+            <p>কোনো অতিরিক্ত সাম্প্রতিক কার্যক্রম পাওয়া যায়নি (No additional activities found)</p>
+          </div>
+        `;
+      }
+    }
+
+    // 4. Render Sidebar Notices
+    const sidebarNoticesBody = document.querySelector('#sidebar-notices .sidebar-card__body');
+    if (sidebarNoticesBody) {
+      if (notices.length > 0) {
+        let sidebarHTML = '';
+        notices.slice(0, 5).forEach(notice => {
+          sidebarHTML += `<a href="notices.html#notice-${notice._id}" class="sidebar-link sidebar-link--notice">${notice.title}</a>`;
+        });
+        sidebarNoticesBody.innerHTML = sidebarHTML;
+      } else {
+        sidebarNoticesBody.innerHTML = `
+          <div style="text-align: center; padding: 15px; color: #666; font-size: 0.85rem;">
+            কোনো সাম্প্রতিক নোটিশ পাওয়া যায়নি।
+          </div>
+        `;
       }
     }
   }
@@ -123,6 +156,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         </table>
       `;
       homeTeachersGrid.innerHTML = teachersHTML;
+    } else {
+      homeTeachersGrid.innerHTML = `
+        <div class="not-found-card" style="text-align: center; padding: 30px 0; color: #555; width: 100%;">
+          <p>কোন শিক্ষকের তথ্য পাওয়া যায়নি অথবা এখনও যুক্ত করা হয়নি (Data not found or not yet added)</p>
+        </div>
+      `;
     }
   }
 

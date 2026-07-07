@@ -20,7 +20,7 @@ const SchoolSetting = sequelize.define('SchoolSetting', {
   establishedYear: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: '১৯৯২'
+    defaultValue: '২০১৪'
   },
   address: {
     type: DataTypes.STRING,
@@ -55,7 +55,7 @@ const SchoolSetting = sequelize.define('SchoolSetting', {
   },
   aboutText: {
     type: DataTypes.TEXT,
-    defaultValue: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৯২ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
+    defaultValue: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ২০১৪ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
   }
 }, {
   timestamps: true

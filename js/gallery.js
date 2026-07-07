@@ -37,7 +37,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     let galleryHTML = '';
-    items.forEach((item, index) => {
+    const isHomePage = filterButtons.length === 0;
+    const itemsToShow = isHomePage ? items.slice(0, 6) : items;
+
+    itemsToShow.forEach((item, index) => {
       galleryHTML += `
         <div class="gallery-item animate-on-scroll delay-${(index % 3) + 1} visible" id="gallery-${item._id}" style="opacity: 1; transform: translateY(0);">
           <img src="${getMediaUrl(item.image)}" alt="${item.title || 'গ্যালারি ছবি'}">

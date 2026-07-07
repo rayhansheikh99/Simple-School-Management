@@ -12,7 +12,7 @@ const getSettings = async (req, res) => {
       settings = {
         schoolName: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ',
         schoolNameEnglish: 'Blooming Flower International College',
-        establishedYear: '১৯৯২',
+        establishedYear: '২০১৪',
         address: 'প্লট-২৮, রোড-১, ফুলবাড়িয়া মেইন রোড, সেক্টর-১০, উত্তরা (তুরাগ), ঢাকা',
         phone: '০১৭৩৬-১৫৩৪৪৩, ০১৬৪৪-৪৪২৯৩০, ০১৯৭৪-০১১৩০৪, ০১৯৯৯-৯৭৬৬২৫',
         email: 'mosharafhighschool@gmail.com, bloomingflowercollege2014@gmail.com',
@@ -20,7 +20,7 @@ const getSettings = async (req, res) => {
         bannerUrl: 'assets/images/hero_banner.png',
         facebookLink: 'https://facebook.com',
         youtubeLink: 'https://youtube.com',
-        aboutText: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৯২ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
+        aboutText: 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ২০১৪ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
       };
     }
 
@@ -46,7 +46,7 @@ const updateSettings = async (req, res) => {
     const updateData = {
       schoolName: schoolName || 'ব্লুমিং ফ্লাওয়ার ইন্টারন্যাশনাল কলেজ',
       schoolNameEnglish: schoolNameEnglish || 'Blooming Flower International College',
-      establishedYear: establishedYear || '১৯৯২',
+      establishedYear: establishedYear || '২০১৪',
       address: address || 'প্লট-২৮, রোড-১, ফুলবাড়িয়া মেইন রোড, সেক্টর-১০, উত্তরা (তুরাগ), ঢাকা',
       phone: phone || '০১৭৩৬-১৫৩৪৪৩, ০১৬৪৪-৪৪২৯৩০, ০১৯৭৪-০১১৩০৪, ০১৯৯৯-৯৭৬৬২৫',
       email: email || 'mosharafhighschool@gmail.com, bloomingflowercollege2014@gmail.com',
