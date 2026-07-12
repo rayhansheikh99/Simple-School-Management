@@ -5,13 +5,13 @@ description: Creates implementation-ready design-system guidance with tokens, co
 
 <!-- TYPEUI_SH_MANAGED_START -->
 
-# Greenfield Academy
+# Nobomallika Model Academy
 
 ## Mission
-Deliver implementation-ready design-system guidance for Greenfield Academy that can be applied consistently across documentation site interfaces.
+Deliver implementation-ready design-system guidance for Nobomallika Model Academy that can be applied consistently across documentation site interfaces.
 
 ## Brand
-- Product/brand: Greenfield Academy
+- Product/brand: Nobomallika Model Academy
 - URL: https://ems.stitbd.net/
 - Audience: developers and technical teams
 - Product surface: documentation site

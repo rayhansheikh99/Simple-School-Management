@@ -1,5 +1,5 @@
-﻿/* ============================================================
-   গ্রিনফিল্ড একাডেমি
+/* ============================================================
+   নবমল্লিকা মডেল একাডেমী
    Dynamic Home Page Loader
    ============================================================ */
 
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (tickerContent || mainNoticeCard || recentEventsList) {
     const notices = await fetchNotices('all', 6); // Fetch top 6 notices
 
-    if (notices.length > 0) {
+    if (notices && notices.length > 0) {
       // 1. Render Ticker Content
       if (tickerContent) {
         let tickerHTML = '';
@@ -43,42 +43,76 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       // 3. Render Next 3 Recent Events/Notices
-      if (recentEventsList && notices.length > 1) {
-        let eventHTML = '';
-        const recentNotices = notices.slice(1, 4); // Next 3 notices
+      if (recentEventsList) {
+        if (notices.length > 1) {
+          let eventHTML = '';
+          const recentNotices = notices.slice(1, 4); // Next 3 notices
 
-        const categoryMapping = {
-          academic: { label: 'একাডেমিক', badgeClass: 'notice-item__badge--academic' },
-          exam: { label: 'পরীক্ষা', badgeClass: 'notice-item__badge--exam' },
-          event: { label: 'অনুষ্ঠান', badgeClass: 'notice-item__badge--event' },
-          admin: { label: 'প্রশাসনিক', badgeClass: 'notice-item__badge--admin' }
-        };
+          const categoryMapping = {
+            academic: { label: 'একাডেমিক', badgeClass: 'notice-item__badge--academic' },
+            exam: { label: 'পরীক্ষা', badgeClass: 'notice-item__badge--exam' },
+            event: { label: 'অনুষ্ঠান', badgeClass: 'notice-item__badge--event' },
+            admin: { label: 'প্রশাসনিক', badgeClass: 'notice-item__badge--admin' }
+          };
 
-        const months = ['জানু', 'ফেব্রু', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টে', 'অক্টো', 'নভে', 'ডিসে'];
+          const months = ['জানু', 'ফেব্রু', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টে', 'অক্টো', 'নভে', 'ডিসে'];
 
-        recentNotices.forEach((notice, idx) => {
-          const noticeDate = new Date(notice.date);
-          const day = toBengaliNumerals(noticeDate.getDate());
-          const monthYear = `${months[noticeDate.getMonth()]} ${toBengaliNumerals(noticeDate.getFullYear().toString().substring(2))}`;
+          recentNotices.forEach((notice, idx) => {
+            const noticeDate = new Date(notice.date);
+            const day = toBengaliNumerals(noticeDate.getDate());
+            const monthYear = `${months[noticeDate.getMonth()]} ${toBengaliNumerals(noticeDate.getFullYear().toString().substring(2))}`;
 
-          const catDetails = categoryMapping[notice.category] || { label: 'একাডেমিক', badgeClass: 'notice-item__badge--academic' };
+            const catDetails = categoryMapping[notice.category] || { label: 'একাডেমিক', badgeClass: 'notice-item__badge--academic' };
 
-          eventHTML += `
-            <div class="notice-item animate-on-scroll visible" id="event-${notice._id}" style="opacity: 1; transform: translateY(0); cursor: pointer;" onclick="window.location.href='notices.html#notice-${notice._id}'">
-              <div class="notice-item__date-box">
-                <span class="notice-item__day">${day}</span>
-                <span class="notice-item__month">${monthYear}</span>
+            eventHTML += `
+              <div class="notice-item animate-on-scroll visible" id="event-${notice._id}" style="opacity: 1; transform: translateY(0); cursor: pointer;" onclick="window.location.href='notices.html#notice-${notice._id}'">
+                <div class="notice-item__date-box">
+                  <span class="notice-item__day">${day}</span>
+                  <span class="notice-item__month">${monthYear}</span>
+                </div>
+                <div class="notice-item__content" style="flex: 1;">
+                  <h3>${notice.title}</h3>
+                  <p>${notice.content.substring(0, 60)}...</p>
+                </div>
+                <span class="notice-item__badge ${catDetails.badgeClass}">${catDetails.label}</span>
               </div>
-              <div class="notice-item__content" style="flex: 1;">
-                <h3>${notice.title}</h3>
-                <p>${notice.content.substring(0, 60)}...</p>
-              </div>
-              <span class="notice-item__badge ${catDetails.badgeClass}">${catDetails.label}</span>
-            </div>
-          `;
-        });
-        recentEventsList.innerHTML = eventHTML;
+            `;
+          });
+          recentEventsList.innerHTML = eventHTML;
+        } else {
+          recentEventsList.innerHTML = '';
+          const eventsSection = document.getElementById('events-section');
+          if (eventsSection) eventsSection.style.display = 'none';
+        }
       }
+
+      // 4. Render Sidebar Notices Card
+      const sidebarNotices = document.getElementById('sidebar-notices');
+      if (sidebarNotices) {
+        const sidebarBody = sidebarNotices.querySelector('.sidebar-card__body');
+        if (sidebarBody) {
+          let sidebarHTML = '';
+          notices.slice(0, 5).forEach(notice => {
+            sidebarHTML += `<a href="notices.html#notice-${notice._id}" class="sidebar-link sidebar-link--notice">${notice.title}</a>`;
+          });
+          sidebarBody.innerHTML = sidebarHTML;
+        }
+      }
+    } else {
+      // Hide all notice components if none exist
+      const tickerEl = document.getElementById('ticker');
+      if (tickerEl) tickerEl.style.display = 'none';
+
+      if (mainNoticeCard) mainNoticeCard.style.display = 'none';
+
+      if (recentEventsList) {
+        recentEventsList.innerHTML = '';
+        const eventsSection = document.getElementById('events-section');
+        if (eventsSection) eventsSection.style.display = 'none';
+      }
+
+      const sidebarNotices = document.getElementById('sidebar-notices');
+      if (sidebarNotices) sidebarNotices.style.display = 'none';
     }
   }
 
@@ -86,7 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (homeTeachersGrid) {
     const teachers = await fetchTeachers();
 
-    if (teachers.length > 0) {
+    if (teachers && teachers.length > 0) {
       // Show top 5 teachers (Head + first 4 assistants)
       const homeTeachers = teachers.slice(0, 5);
       let teachersHTML = `
@@ -123,6 +157,37 @@ document.addEventListener('DOMContentLoaded', async () => {
         </table>
       `;
       homeTeachersGrid.innerHTML = teachersHTML;
+    } else {
+      homeTeachersGrid.innerHTML = '';
+      const teachersSection = document.getElementById('teachers-section');
+      if (teachersSection) teachersSection.style.display = 'none';
+    }
+  }
+
+  // Load Dynamic Home Page Gallery Grid
+  const homeGalleryGrid = document.querySelector('.gallery-section .gallery-grid');
+  if (homeGalleryGrid) {
+    if (typeof fetchGalleryItems === 'function') {
+      const items = await fetchGalleryItems('all');
+      if (items && items.length > 0) {
+        const topItems = items.slice(0, 6); // Limit to top 6
+        let galleryHTML = '';
+        topItems.forEach((item, index) => {
+          galleryHTML += `
+            <div class="gallery-item animate-on-scroll delay-${(index % 3) + 1} visible" id="gallery-${item._id}" style="opacity: 1; transform: translateY(0);">
+              <img src="${getMediaUrl(item.image)}" alt="${item.title || 'গ্যালারি ছবি'}">
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__caption">${item.title || 'গ্যালারি ছবি'}</span>
+              </div>
+            </div>
+          `;
+        });
+        homeGalleryGrid.innerHTML = galleryHTML;
+      } else {
+        homeGalleryGrid.innerHTML = '';
+        const gallerySection = document.getElementById('gallery-section');
+        if (gallerySection) gallerySection.style.display = 'none';
+      }
     }
   }
 

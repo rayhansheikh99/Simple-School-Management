@@ -1,5 +1,5 @@
-﻿/* ============================================================
-   গ্রিনফিল্ড একাডেমি
+/* ============================================================
+   নবমল্লিকা মডেল একাডেমী
    Main JavaScript
    ============================================================ */
 
@@ -181,24 +181,24 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ============================================================
-  // Lightbox Gallery
+  // Lightbox Gallery (Event Delegation)
   // ============================================================
-  const galleryItems = document.querySelectorAll('.gallery-item');
   const lightbox = document.querySelector('.lightbox');
   const lightboxImg = lightbox ? lightbox.querySelector('img') : null;
   const lightboxClose = lightbox ? lightbox.querySelector('.lightbox__close') : null;
 
-  if (galleryItems.length > 0 && lightbox && lightboxImg) {
-    galleryItems.forEach(function (item) {
-      item.addEventListener('click', function () {
-        const img = this.querySelector('img');
+  if (lightbox && lightboxImg) {
+    document.addEventListener('click', function (e) {
+      const item = e.target.closest('.gallery-item');
+      if (item) {
+        const img = item.querySelector('img');
         if (img) {
           lightboxImg.src = img.src;
           lightboxImg.alt = img.alt;
           lightbox.classList.add('active');
           document.body.style.overflow = 'hidden';
         }
-      });
+      }
     });
 
     function closeLightbox() {

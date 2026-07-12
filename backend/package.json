@@ -1,7 +1,7 @@
 {
   "name": "demo-school-backend",
   "version": "1.0.0",
-  "description": "Express backend for Rose Valley International College",
+  "description": "Express backend for Nobomallika Model Academy",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

@@ -1,5 +1,5 @@
 /* ============================================================
-   গ্রিনফিল্ড একাডেমি
+   নবমল্লিকা মডেল একাডেমী
    Frontend Client API Connector
    ============================================================ */
 
@@ -12,7 +12,7 @@ const API_BASE_URL = (
   window.location.protocol === 'file:'
 )
   ? 'http://localhost:5000/api'
-  : 'https://edumanage.site/api';
+  : window.location.protocol + '//nobomallikamodelacademy.edu.bd/api';
 
 const UPLOADS_BASE_URL = (
   window.location.hostname === 'localhost' ||
@@ -21,7 +21,7 @@ const UPLOADS_BASE_URL = (
   window.location.protocol === 'file:'
 )
   ? 'http://localhost:5000'
-  : 'https://edumanage.site';
+  : window.location.protocol + '//nobomallikamodelacademy.edu.bd';
 
 
 // Helper: Translate digits to Bengali numerals

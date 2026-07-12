@@ -33,7 +33,8 @@ app.use(cors({
         'http://localhost:3000',
         'http://localhost:5500',
         'http://127.0.0.1:5501',
-        'https://edumanage.site'
+        'http://nobomallikamodelacademy.edu.bd',
+        'https://nobomallikamodelacademy.edu.bd'
       ];
       if (!origin || allowedOrigins.includes(origin) || origin === 'null') {
         callback(null, true);
@@ -97,7 +98,7 @@ mainRouter.use('/committee', require('./routes/committeeRoutes'));
 
 mainRouter.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to the Rose Valley International College API!',
+    message: 'Welcome to the Nobomallika Model Academy API!',
     status: 'online',
     version: '1.0.0'
   });

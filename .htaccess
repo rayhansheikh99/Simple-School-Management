@@ -3,7 +3,7 @@ RewriteEngine On
 # ১. কেউ .html সহ ঢুকলে তাকে এক্সটেনশন ছাড়া ইউআরএল-এ রিডাইরেক্ট করবে (শুধুমাত্র মেইন সাইটের জন্য)
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^\ ]+)\.html\ HTTP [NC]
 RewriteCond %{REQUEST_URI} !^/admin/
-RewriteRule ^([^.]+)\.html$ https://bloomingflowerinternationalcollege.edu.bd/$1 [R=301,L]
+RewriteRule ^([^.]+)\.html$ https://nobomallikamodelacademy.edu.bd/$1 [R=301,L]
 
 # ২. মেইন সাইটের এক্সটেনশন ছাড়া রিকোয়েস্টকে .html ফাইলে ম্যাপ করবে (admin ফোল্ডারকে বাদ দিয়ে)
 RewriteCond %{REQUEST_URI} !^/admin/

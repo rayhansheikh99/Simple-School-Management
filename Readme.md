@@ -1,6 +1,6 @@
-# Greenfield Academy - School Management System
+# Nobomallika Model Academy - School Management System
 
-A modern, responsive, and SEO-optimized School Management System and public information portal for Greenfield Academy (Sector-5, Uttara, Dhaka). The platform consists of a dynamic public frontend, student online registration, and a secure administration panel.
+A modern, responsive, and SEO-optimized School Management System and public information portal for Nobomallika Model Academy (Sector-5, Uttara, Dhaka). The platform consists of a dynamic public frontend, student online registration, and a secure administration panel.
 
 ---
 

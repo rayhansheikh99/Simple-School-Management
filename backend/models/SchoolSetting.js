@@ -1,4 +1,4 @@
-﻿const { DataTypes } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db').sequelize;
 
 const SchoolSetting = sequelize.define('SchoolSetting', {
@@ -10,32 +10,32 @@ const SchoolSetting = sequelize.define('SchoolSetting', {
   schoolName: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'গ্রিনফিল্ড একাডেমি'
+    defaultValue: 'নবমল্লিকা মডেল একাডেমী'
   },
   schoolNameEnglish: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'Rose Valley International College'
+    defaultValue: 'Nobomallika Model Academy'
   },
   establishedYear: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: '১৯৯৫'
+    defaultValue: '২০০৪'
   },
   address: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'প্লট-১২, রোড-৩, সেক্টর-৪, উত্তরা, ঢাকা'
+    defaultValue: 'রসুলনগর, সারুলিয়া, ডেমরা, ঢাকা'
   },
   phone: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: '০১৭০০-০০০০০০, ০১৮০০-০০০০০০, ০১৯০০-০০০০০০'
+    defaultValue: '০১৬১৮-৪৪৪৬৩৭, ০১৩০৯-১৩৮৯৪৪, ০১৮০০-০০০০০০, ০১৯০০-০০০০০০'
   },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'demo@greenfieldacademy.edu.bd'
+    defaultValue: 'nobomillika2003@gmail.com'
   },
   logoUrl: {
     type: DataTypes.STRING,
@@ -55,7 +55,7 @@ const SchoolSetting = sequelize.define('SchoolSetting', {
   },
   aboutText: {
     type: DataTypes.TEXT,
-    defaultValue: 'গ্রিনফিল্ড একাডেমি অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৯৫ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
+    defaultValue: 'নবমল্লিকা মডেল একাডেমী অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৯৫ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
   }
 }, {
   timestamps: true

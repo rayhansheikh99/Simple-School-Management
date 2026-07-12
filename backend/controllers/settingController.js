@@ -1,28 +1,11 @@
-﻿const SchoolSetting = require('../models/SchoolSetting');
+const SchoolSetting = require('../models/SchoolSetting');
 
 // @desc    Get active school settings
 // @route   GET /api/settings
 // @access  Public
 const getSettings = async (req, res) => {
   try {
-    let settings = await SchoolSetting.findOne({});
-
-    // If no settings exist yet, return a default mock object so the site never breaks
-    if (!settings) {
-      settings = {
-        schoolName: 'গ্রিনফিল্ড একাডেমি',
-        schoolNameEnglish: 'Rose Valley International College',
-        establishedYear: '১৯৯৫',
-        address: 'প্লট-১২, রোড-৩, সেক্টর-৪, উত্তরা, ঢাকা',
-        phone: '০১৭০০-০০০০০০, ০১৮০০-০০০০০০, ০১৯০০-০০০০০০',
-        email: 'demo@greenfieldacademy.edu.bd',
-        logoUrl: 'assets/images/school_logo.png',
-        bannerUrl: 'assets/images/hero_banner.png',
-        facebookLink: 'https://facebook.com',
-        youtubeLink: 'https://youtube.com',
-        aboutText: 'গ্রিনফিল্ড একাডেমি অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান। ১৯৯৫ সালে প্রতিষ্ঠিত এই বিদ্যাপীঠ দীর্ঘ দিন ধরে শিক্ষা, সংস্কৃতি ও ক্রীড়া ক্ষেত্রে গৌরবময় অবদান রেখে চলেছে।'
-      };
-    }
+    const settings = await SchoolSetting.findOne({});
 
     res.json({
       success: true,
@@ -44,15 +27,15 @@ const updateSettings = async (req, res) => {
 
   try {
     const updateData = {
-      schoolName: schoolName || 'গ্রিনফিল্ড একাডেমি',
-      schoolNameEnglish: schoolNameEnglish || 'Rose Valley International College',
-      establishedYear: establishedYear || '১৯৯৫',
-      address: address || 'প্লট-১২, রোড-৩, সেক্টর-৪, উত্তরা, ঢাকা',
-      phone: phone || '০১৭০০-০০০০০০, ০১৮০০-০০০০০০, ০১৯০০-০০০০০০',
-      email: email || 'demo@greenfieldacademy.edu.bd',
-      facebookLink: facebookLink || 'https://facebook.com',
-      youtubeLink: youtubeLink || 'https://youtube.com',
-      aboutText: aboutText || 'গ্রিনফিল্ড একাডেমি অত্র অঞ্চলের একটি ঐতিহ্যবাহী শিক্ষাপ্রতিষ্ঠান।'
+      schoolName: schoolName !== undefined ? schoolName : '',
+      schoolNameEnglish: schoolNameEnglish !== undefined ? schoolNameEnglish : '',
+      establishedYear: establishedYear !== undefined ? establishedYear : '',
+      address: address !== undefined ? address : '',
+      phone: phone !== undefined ? phone : '',
+      email: email !== undefined ? email : '',
+      facebookLink: facebookLink !== undefined ? facebookLink : '',
+      youtubeLink: youtubeLink !== undefined ? youtubeLink : '',
+      aboutText: aboutText !== undefined ? aboutText : ''
     };
 
     // Handle files if uploaded via Multer

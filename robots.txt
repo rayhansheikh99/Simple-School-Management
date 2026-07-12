@@ -1,4 +1,4 @@
-# robots.txt for Greenfield Academy
+# robots.txt for Nobomallika Model Academy
 User-agent: *
 Allow: /
 
@@ -7,4 +7,4 @@ Disallow: /admin/
 Disallow: /backend/
 
 # Sitemap location
-Sitemap: https://edumanage.site/sitemap.xml
+Sitemap: http://nobomallikamodelacademy.edu.bd/sitemap.xml
