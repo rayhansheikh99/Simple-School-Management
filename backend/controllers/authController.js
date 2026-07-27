@@ -96,8 +96,36 @@ const getMe = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    return res.status(400).json({ success: false, message: 'সব পাসওয়ার্ড ফিল্ড পূরণ করুন।' });
+  }
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ success: false, message: 'নতুন পাসওয়ার্ড দুটি মিলছে না।' });
+  }
+  if (newPassword.length < 6) {
+    return res.status(400).json({ success: false, message: 'নতুন পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।' });
+  }
+
+  try {
+    const user = await User.findByPk(req.user.id);
+    if (!user || !(await user.matchPassword(currentPassword))) {
+      return res.status(401).json({ success: false, message: 'বর্তমান পাসওয়ার্ডটি সঠিক নয়।' });
+    }
+
+    user.password = newPassword;
+    await user.save();
+    res.json({ success: true, message: 'পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে। আবার লগইন করুন।' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'পাসওয়ার্ড পরিবর্তন করা যায়নি।' });
+  }
+};
+
 module.exports = {
   loginUser,
   registerSeedUser,
-  getMe
+  getMe,
+  changePassword
 };

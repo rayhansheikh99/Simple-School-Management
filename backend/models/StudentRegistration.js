@@ -14,6 +14,14 @@ const StudentRegistration = sequelize.define('StudentRegistration', {
       this.setDataValue('studentName', value ? value.trim() : '');
     }
   },
+  studentNameEnglish: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: '',
+    set(value) {
+      this.setDataValue('studentNameEnglish', value ? value.trim() : '');
+    }
+  },
   fatherName: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -21,11 +29,27 @@ const StudentRegistration = sequelize.define('StudentRegistration', {
       this.setDataValue('fatherName', value ? value.trim() : '');
     }
   },
+  fatherNameEnglish: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: '',
+    set(value) {
+      this.setDataValue('fatherNameEnglish', value ? value.trim() : '');
+    }
+  },
   motherName: {
     type: DataTypes.STRING,
     allowNull: false,
     set(value) {
       this.setDataValue('motherName', value ? value.trim() : '');
+    }
+  },
+  motherNameEnglish: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: '',
+    set(value) {
+      this.setDataValue('motherNameEnglish', value ? value.trim() : '');
     }
   },
   dateOfBirth: {

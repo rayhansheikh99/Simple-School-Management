@@ -227,7 +227,8 @@ function getMediaUrl(photoPath) {
   if (photoPath.startsWith('assets/')) {
     return prefix + photoPath;
   }
-  return `${UPLOADS_BASE_URL}/${photoPath}`;
+  // Uploaded files are exposed by the backend at /api/uploads in production.
+  return `${UPLOADS_BASE_URL}/api/${photoPath}`;
 }
 
 // 10. Fetch school settings

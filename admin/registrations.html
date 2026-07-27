@@ -20,7 +20,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Admission Registrations | Nobomallika Model Academy</title>
-  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=1" sizes="any">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="../css/admin.css">
@@ -39,7 +39,7 @@
         <img src="../assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
         <div class="top-bar__info">
           <a href="/" style="color:inherit;">
-            <h1 class="top-bar__title">নবমল্লিকা মডেল একাডেমী</h1>
+            <h1 class="top-bar__title">নবমল্লিকা মডেল একাডেমী (Nobomallika Model Academy)</h1>
           </a>
           <span class="top-bar__subtitle">প্রশাসনিক ড্যাশবোর্ড নিয়ন্ত্রণ কক্ষ</span>
         </div>
@@ -285,7 +285,10 @@
                   <img src="${getMediaUrl(r.photo)}" style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; background: #fafafa;" onerror="this.src='../assets/images/default_teacher.png'">
                   <div style="flex: 1; min-width: 250px;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
-                      <h3 style="margin: 0; color: #333; font-size: 1.25rem; font-weight: 700;">${r.studentName}</h3>
+                      <div>
+                        <h3 style="margin: 0; color: #333; font-size: 1.25rem; font-weight: 700;">${r.studentName}</h3>
+                        <div style="margin-top: 3px; color: #64748b; font-size: 0.9rem;">${r.studentNameEnglish || 'নেই'}</div>
+                      </div>
                       <span style="font-size: 0.8rem; font-weight: bold; padding: 4px 12px; border-radius: 20px; ${statusClass}">${statusText}</span>
                     </div>
                     
@@ -295,8 +298,10 @@
                       <div><strong>মোবাইল:</strong> ${toBengaliNumerals(r.phone)}</div>
                       <div><strong>লিঙ্গ:</strong> ${r.gender === 'male' ? 'ছেলে' : 'মেয়ে'}</div>
                       <div><strong>জন্ম তারিখ:</strong> ${formatBengaliDate(r.dateOfBirth)}</div>
-                      <div><strong>পিতার নাম:</strong> ${r.fatherName}</div>
-                      <div><strong>মাতার নাম:</strong> ${r.motherName}</div>
+                      <div><strong>পিতার নাম (বাংলা):</strong> ${r.fatherName}</div>
+                      <div><strong>পিতার নাম (English):</strong> ${r.fatherNameEnglish || 'নেই'}</div>
+                      <div><strong>মাতার নাম (বাংলা):</strong> ${r.motherName}</div>
+                      <div><strong>মাতার নাম (English):</strong> ${r.motherNameEnglish || 'নেই'}</div>
                       <div><strong>ইমেইল:</strong> ${r.email || 'নেই'}</div>
                       <div><strong>পূর্ববর্তী বিদ্যালয়:</strong> ${r.previousSchool || 'নেই'}</div>
                     </div>

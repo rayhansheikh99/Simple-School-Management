@@ -5,12 +5,12 @@ const StudentRegistration = require('../models/StudentRegistration');
 // @access  Public
 const submitRegistration = async (req, res) => {
   const {
-    studentName, fatherName, motherName, dateOfBirth,
+    studentName, studentNameEnglish, fatherName, fatherNameEnglish, motherName, motherNameEnglish, dateOfBirth,
     gender, desiredClass, desiredGroup, phone, email, address, previousSchool
   } = req.body;
 
   // Validate required fields
-  if (!studentName || !fatherName || !motherName || !dateOfBirth || !gender || !desiredClass || !phone || !address) {
+  if (!studentName || !studentNameEnglish || !fatherName || !fatherNameEnglish || !motherName || !motherNameEnglish || !dateOfBirth || !gender || !desiredClass || !phone || !address) {
     return res.status(400).json({
       success: false,
       message: 'সকল আবশ্যক ক্ষেত্র পূরণ করুন।'
@@ -20,8 +20,11 @@ const submitRegistration = async (req, res) => {
   try {
     const registrationData = {
       studentName,
+      studentNameEnglish,
       fatherName,
+      fatherNameEnglish,
       motherName,
+      motherNameEnglish,
       dateOfBirth,
       gender,
       desiredClass,

@@ -63,8 +63,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Collect required values
       const studentName = document.getElementById('reg-studentName').value.trim();
+      const studentNameEnglish = document.getElementById('reg-studentNameEnglish').value.trim();
       const fatherName = document.getElementById('reg-fatherName').value.trim();
+      const fatherNameEnglish = document.getElementById('reg-fatherNameEnglish').value.trim();
       const motherName = document.getElementById('reg-motherName').value.trim();
+      const motherNameEnglish = document.getElementById('reg-motherNameEnglish').value.trim();
       const dateOfBirth = document.getElementById('reg-dateOfBirth').value;
       const gender = document.getElementById('reg-gender').value;
       const desiredClass = document.getElementById('reg-desiredClass').value;
@@ -74,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const address = document.getElementById('reg-address').value.trim();
 
       // Validate required fields
-      if (!studentName || !fatherName || !motherName || !dateOfBirth || !gender || !desiredClass || !phone || !address) {
+      if (!studentName || !studentNameEnglish || !fatherName || !fatherNameEnglish || !motherName || !motherNameEnglish || !dateOfBirth || !gender || !desiredClass || !phone || !address) {
         if (typeof Swal !== 'undefined') {
           Swal.fire({
             icon: 'error',
@@ -102,8 +105,11 @@ document.addEventListener('DOMContentLoaded', function () {
       // Build FormData for multipart upload
       const formData = new FormData();
       formData.append('studentName', studentName);
+      formData.append('studentNameEnglish', studentNameEnglish);
       formData.append('fatherName', fatherName);
+      formData.append('fatherNameEnglish', fatherNameEnglish);
       formData.append('motherName', motherName);
+      formData.append('motherNameEnglish', motherNameEnglish);
       formData.append('dateOfBirth', dateOfBirth);
       formData.append('gender', gender);
       formData.append('desiredClass', desiredClass);

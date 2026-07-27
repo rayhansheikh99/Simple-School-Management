@@ -40,7 +40,7 @@ const Teacher = sequelize.define('Teacher', {
     type: DataTypes.STRING,
     defaultValue: 'assistant',
     validate: {
-      isIn: [['head', 'assistant', 'staff']]
+      isIn: [['head', 'assistant_head', 'assistant', 'third_class_staff', 'fourth_class_staff', 'staff']]
     }
   },
   order: {

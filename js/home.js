@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <table class="teachers-table">
           <thead>
             <tr>
+              <th>ছবি</th>
               <th>নাম</th>
               <th>পদবী</th>
               <th>শিক্ষাগত যোগ্যতা</th>
@@ -138,13 +139,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const typeMapping = {
         head: 'প্রধান শিক্ষক',
+        assistant_head: 'সহকারী প্রধান শিক্ষক',
         assistant: 'সহকারী শিক্ষক',
+        third_class_staff: 'তৃতীয় শ্রেণীর কর্মচারী',
+        fourth_class_staff: 'চতুর্থ শ্রেণীর কর্মচারী',
         staff: 'স্টাফ'
       };
 
       homeTeachers.forEach((teacher) => {
         teachersHTML += `
           <tr id="teacher-${teacher._id}">
+            <td data-label="ছবি"><img src="${getMediaUrl(teacher.photo)}" alt="${teacher.name}" class="teachers-table__avatar" onerror="this.onerror=null; this.src='${getMediaUrl('assets/images/default_teacher.png')}';"></td>
             <td data-label="নাম"><span class="teachers-table__name">${teacher.name}</span></td>
             <td data-label="পদবী">${typeMapping[teacher.type] || 'সহকারী শিক্ষক'}</td>
             <td data-label="শিক্ষাগত যোগ্যতা">${teacher.qualifications || '-'}</td>

@@ -139,8 +139,10 @@
   --color-surface-section: #0b0f1a;
 
   /* Text */
-  --color-text-primary: #cbd5e1; /* soft off-white */
-  --color-text-secondary: #94a3b8; /* muted grey */
+  --color-text-primary: #cbd5e1;
+  /* soft off-white */
+  --color-text-secondary: #94a3b8;
+  /* muted grey */
   --color-text-tertiary: #94a3b8;
   --color-text-inverse: #070b13;
   --color-text-muted: #64748b;
@@ -750,7 +752,7 @@ h6 {
 }
 
 .hero__content p {
-  font-size: var(--font-size-xl);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
   opacity: 0.95;
   line-height: 1.6;
   margin-bottom: 24px;
@@ -2112,7 +2114,7 @@ h6 {
   .notice-item {
     display: grid !important;
     grid-template-columns: 1fr auto !important;
-    grid-template-areas: 
+    grid-template-areas:
       "date badge"
       "content content" !important;
     gap: 16px !important;
@@ -3154,6 +3156,7 @@ h6 {
 }
 
 @media (min-width: 769px) {
+
   .teachers-table th:not(:last-child),
   .teachers-table td:not(:last-child) {
     border-right: 1px solid var(--color-border-light);
@@ -3274,20 +3277,25 @@ h6 {
    DARK MODE BUTTONS & BADGES OVERRIDES (DARK TYPE COLORS)
    ============================================================ */
 [data-theme="dark"] .btn--primary {
-  background: #1e3a8a; /* Deep Navy Blue */
-  color: #e2e8f0; /* Soft off-white */
+  background: #1e3a8a;
+  /* Deep Navy Blue */
+  color: #e2e8f0;
+  /* Soft off-white */
   box-shadow: 0 4px 12px rgba(30, 58, 138, 0.35);
 }
 
 [data-theme="dark"] .btn--primary:hover {
-  background: #1e40af; /* Slightly lighter navy blue on hover */
+  background: #1e40af;
+  /* Slightly lighter navy blue on hover */
   box-shadow: 0 6px 20px rgba(30, 64, 175, 0.45);
   color: #e2e8f0;
 }
 
 [data-theme="dark"] .btn--outline {
-  color: #93c5fd; /* Lighter blue for high text readability */
-  border-color: #1e40af; /* Deep blue border */
+  color: #93c5fd;
+  /* Lighter blue for high text readability */
+  border-color: #1e40af;
+  /* Deep blue border */
   background: transparent;
 }
 
@@ -3298,7 +3306,8 @@ h6 {
 }
 
 [data-theme="dark"] .btn--gold {
-  background: linear-gradient(135deg, #78350f 0%, #92400e 50%, #78350f 100%); /* Deep Bronze/Amber */
+  background: linear-gradient(135deg, #78350f 0%, #92400e 50%, #78350f 100%);
+  /* Deep Bronze/Amber */
   color: #e2e8f0;
 }
 
@@ -3307,14 +3316,16 @@ h6 {
 }
 
 [data-theme="dark"] .top-bar__badge--gold {
-  background: linear-gradient(135deg, #78350f 0%, #92400e 50%, #78350f 100%); /* Deep Bronze/Amber */
+  background: linear-gradient(135deg, #78350f 0%, #92400e 50%, #78350f 100%);
+  /* Deep Bronze/Amber */
   color: #e2e8f0;
   border: none;
 }
 
 [data-theme="dark"] .filter-btn:hover,
 [data-theme="dark"] .filter-btn--active {
-  background: #1e3a8a; /* Deep Navy Blue */
+  background: #1e3a8a;
+  /* Deep Navy Blue */
   color: #e2e8f0;
   border-color: #1e3a8a;
 }
@@ -3468,6 +3479,7 @@ h6 {
   border-color: #4a90d9 !important;
   color: #4a90d9 !important;
 }
+
 [data-theme="dark"] .swal2-icon.swal2-question .swal2-icon-content {
   color: #4a90d9 !important;
 }
@@ -3477,6 +3489,7 @@ h6 {
   border-color: #d97706 !important;
   color: #d97706 !important;
 }
+
 [data-theme="dark"] .swal2-icon.swal2-warning .swal2-icon-content {
   color: #d97706 !important;
 }
@@ -3485,6 +3498,7 @@ h6 {
 [data-theme="dark"] .swal2-icon.swal2-error {
   border-color: #e53e3e !important;
 }
+
 [data-theme="dark"] .swal2-icon.swal2-error .swal2-x-mark-line-left,
 [data-theme="dark"] .swal2-icon.swal2-error .swal2-x-mark-line-right {
   background-color: #e53e3e !important;
@@ -3495,9 +3509,11 @@ h6 {
   border-color: #38a169 !important;
   color: #38a169 !important;
 }
+
 [data-theme="dark"] .swal2-icon.swal2-success [class^="swal2-success-line"] {
   background-color: #38a169 !important;
 }
+
 [data-theme="dark"] .swal2-icon.swal2-success .swal2-success-ring {
   border-color: rgba(56, 161, 105, 0.3) !important;
 }
@@ -3516,6 +3532,7 @@ h6 {
   color: #d0d8e4 !important;
   border-color: rgba(255, 255, 255, 0.15) !important;
 }
+
 [data-theme="dark"] .swal2-input:focus,
 [data-theme="dark"] .swal2-textarea:focus {
   border-color: #4a90d9 !important;
@@ -3526,6 +3543,7 @@ h6 {
 [data-theme="dark"] .swal2-close {
   color: #a0aec0 !important;
 }
+
 [data-theme="dark"] .swal2-close:hover {
   color: #e8edf5 !important;
 }

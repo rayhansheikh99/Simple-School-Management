@@ -20,7 +20,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>General Settings | Nobomallika Model Academy</title>
-  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=1" sizes="any">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="../css/admin.css">
@@ -147,6 +147,29 @@
       box-shadow: 0 4px 12px rgba(28, 105, 181, 0.2);
     }
 
+    .account-security-section {
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .password-settings-grid {
+      margin-bottom: 0;
+    }
+
+    .password-form-actions {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 4px;
+    }
+
+    .password-form-actions .btn-save-settings {
+      width: calc((100% - 20px) / 2);
+      margin-top: 0;
+      justify-content: center;
+    }
+
     @media (max-width: 768px) {
 
       .settings-grid,
@@ -156,6 +179,10 @@
 
       .settings-full {
         grid-column: span 1;
+      }
+
+      .password-form-actions .btn-save-settings {
+        width: 100%;
       }
     }
 
@@ -173,6 +200,10 @@
     [data-theme="dark"] .settings-input:focus {
       background: var(--color-surface-base);
       border-color: var(--color-primary);
+    }
+
+    [data-theme="dark"] .account-security-section {
+      border-color: var(--color-border-light);
     }
 
     [data-theme="dark"] .upload-card {
@@ -212,7 +243,7 @@
         <img src="../assets/images/school_logo.png" alt="স্কুল লোগো" class="top-bar__logo">
         <div class="top-bar__info">
           <a href="/" style="color:inherit;">
-            <h1 class="top-bar__title">নবমল্লিকা মডেল একাডেমী</h1>
+            <h1 class="top-bar__title">নবমল্লিকা মডেল একাডেমী (Nobomallika Model Academy)</h1>
           </a>
           <span class="top-bar__subtitle">প্রশাসনিক ড্যাশবোর্ড নিয়ন্ত্রণ কক্ষ</span>
         </div>
@@ -331,12 +362,48 @@
             </button>
 
           </form>
+
+          <section class="account-security-section">
+            <div class="db-header">
+              <h2 class="db-title" style="font-size: 1.3rem;">🔐 অ্যাকাউন্ট সিকিউরিটি</h2>
+            </div>
+
+            <form id="change-password-form">
+              <div class="settings-grid password-settings-grid">
+                <div class="settings-group">
+                  <label for="current-password">বর্তমান পাসওয়ার্ড</label>
+                  <div class="password-input-wrapper">
+                    <input type="password" id="current-password" class="settings-input" autocomplete="current-password" required>
+                    <button type="button" class="password-toggle-btn" data-password-toggle="current-password" aria-label="পাসওয়ার্ড দেখান" title="পাসওয়ার্ড দেখান">👁️</button>
+                  </div>
+                </div>
+                <div class="settings-group">
+                  <label for="new-password">নতুন পাসওয়ার্ড</label>
+                  <div class="password-input-wrapper">
+                    <input type="password" id="new-password" class="settings-input" minlength="6" autocomplete="new-password" required>
+                    <button type="button" class="password-toggle-btn" data-password-toggle="new-password" aria-label="পাসওয়ার্ড দেখান" title="পাসওয়ার্ড দেখান">👁️</button>
+                  </div>
+                </div>
+                <div class="settings-group">
+                  <label for="confirm-password">নতুন পাসওয়ার্ড নিশ্চিত করুন</label>
+                  <div class="password-input-wrapper">
+                    <input type="password" id="confirm-password" class="settings-input" minlength="6" autocomplete="new-password" required>
+                    <button type="button" class="password-toggle-btn" data-password-toggle="confirm-password" aria-label="পাসওয়ার্ড দেখান" title="পাসওয়ার্ড দেখান">👁️</button>
+                  </div>
+                </div>
+                <div class="password-form-actions">
+                  <button type="submit" class="btn-save-settings">পাসওয়ার্ড পরিবর্তন করুন</button>
+                </div>
+              </div>
+            </form>
+          </section>
         </section>
       </main>
     </div>
   </div>
 
   <script src="../js/api.js"></script>
+  <script src="../js/password-toggle.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       let jwtToken = localStorage.getItem('adminToken');
@@ -367,7 +434,6 @@
       if (adminRole === 'viewer') {
         const style = document.createElement('style');
         style.innerHTML = `
-          form, 
           #add-notice-form, 
           #add-teacher-form, 
           #add-result-form, 
@@ -378,7 +444,7 @@
           button[onclick*="approve"], 
           button[onclick*="reject"], 
           button[onclick*="markMessageRead"],
-          .btn-save-settings,
+          #school-settings-form .btn-save-settings,
           #school-settings-form button[type="submit"],
           input[type="file"],
           .upload-card {
@@ -401,6 +467,35 @@
       // Load current settings and badges
       updateSidebarBadges();
       loadSchoolSettings();
+
+      const changePasswordForm = document.getElementById('change-password-form');
+
+      changePasswordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          const response = await fetch(`${API_BASE_URL}/auth/change-password`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwtToken}` },
+            body: JSON.stringify({
+              currentPassword: document.getElementById('current-password').value,
+              newPassword: document.getElementById('new-password').value,
+              confirmPassword: document.getElementById('confirm-password').value
+            })
+          });
+          const data = await response.json();
+          if (data.success) {
+            await Swal.fire({ icon: 'success', title: 'পাসওয়ার্ড পরিবর্তন হয়েছে', text: data.message });
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            localStorage.removeItem('adminRole');
+            window.location.href = 'index.html';
+          } else {
+            Swal.fire({ icon: 'error', title: 'ত্রুটি', text: data.message });
+          }
+        } catch (error) {
+          Swal.fire({ icon: 'error', title: 'সার্ভার সংযোগে ত্রুটি', text: 'পরে আবার চেষ্টা করুন।' });
+        }
+      });
 
       // Logout handler
       document.getElementById('logout-btn').addEventListener('click', () => {
